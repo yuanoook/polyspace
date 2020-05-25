@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Thruple</title>
+	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
+</head>
+
+<body>
+	<h1 id="dom_msg"></h1>
+    <a href="http://storage.googleapis.com/tfjs-vis/mnist/dist/index.html">
+        http://storage.googleapis.com/tfjs-vis/mnist/dist/index.html
+    </a>
+	<script>
+		const log = msg => (dom_msg.innerText = msg)
+        log('TF.js: ' + window.tf.version.tfjs)
+        const model = tf.sequential({
+            layers: [
+                tf.layers.dense({inputShape: [784], units: 32, activation: 'relu'}),
+                tf.layers.dense({units: 10, activation: 'softmax'}),
+            ]
+        });
+        model.weights.forEach(w => {
+            console.log(w.name, w.shape);
+        });
+        model.compile({
+            optimizer: 'sgd',
+            loss: 'categoricalCrossentropy',
+            metrics: ['accuracy']
+        });
+
+        // Generate dummy data.
+        const data = tf.randomNormal([100, 784]);
+        const labels = tf.randomUniform([100, 10]);
+        function onBatchEnd(batch, logs) {
+            console.log('Accuracy', logs.acc);
+        }
+        // Train for 5 epochs with batch size of 32.
+        model.fit(data, labels, {
+            epochs: 50,
+            batchSize: 32,
+            callbacks: {onBatchEnd}
+        }).then(info => {
+            console.log('Final accuracy', info.history.acc);
+        });
+
+        showExamples(data.nextTestBatch(20))
+
+        async function showExamples(examples) {
+            // Get a surface
+            const surface = tfvis.visor().surface({
+                name: 'Thruple',
+                tab: 'Input Data'
+            });
+            const drawArea = surface.drawArea;
+            // Get the examples
+            const numExamples = examples.xs.shape[0];
+
+            for (let i = 0; i < numExamples; i++) {
+                const imageTensor = tf.tidy(() => {
+                return examples.xs.slice([i, 0], [1, examples.xs.shape[1]]).reshape([28, 28, 1]);
+                }); // Create a canvas element to render each example
+
+                const canvas = document.createElement('canvas');
+                canvas.width = 28;
+                canvas.height = 28;
+                canvas.style = 'margin: 4px;';
+                await tf.browser.toPixels(imageTensor, canvas);
+                drawArea.appendChild(canvas);
+                imageTensor.dispose();
+            }
+        }
+	</script>
+</body>
+
+</html>

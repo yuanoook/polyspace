@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Thruple</title>
-	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-vis"></script>
-    <style>
-        a::after {
-            content: " (" attr(href) ")";
-        }
-    </style>
+    <style>a::after {content: attr(href);}</style>
 </head>
-
 <body>
     <h1>Thruple</h1>
-    <a href="http://storage.googleapis.com/tfjs-vis/mnist/dist/index.html">tfvis examples</a>
-	<pre id="dom_msg"></pre>
-	<script src="./index.js"></script>
+    <p>Explore the potentials of binary classifier</p>
+    <p><a href="https://github.com/yuanoook/thruple"></a></p>
+    <p><a href="http://www.songho.ca/dsp/index.html"></a></p>
+    <p><a href="http://storage.googleapis.com/tfjs-vis/mnist/dist/index.html"></a></p>
+	<script src="./scripts/logger.js"></script><script>Logger.open()</script>
+	<script src="./scripts/index.js"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 (async () => {
-    const log = (...msg) => (window.dom_msg.innerHTML += (msg.join('') + '<br/><br/>'))
-    log('TF.js: ' + window.tf.version.tfjs)
+    log('TF.js: ', window.tf.version.tfjs)
 
     const model = tf.sequential({
         layers: [
@@ -35,7 +34,7 @@
         batchSize: 32,
         callbacks: {onBatchEnd}
     });
-    log('Final accuracy ', '<br/>', history.acc.reverse().join('<br/>'));
+    log('Final accuracy ', history.acc.reverse());
 
     async function showExamples(data) {
         // Get a surface

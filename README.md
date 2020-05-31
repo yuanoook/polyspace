@@ -1,4 +1,4 @@
 # Thruple
 
 ## Demo
-https://yuanoook.github.io/Thruple
+https://yuanoook.github.io/thruple

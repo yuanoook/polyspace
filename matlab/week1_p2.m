@@ -35,5 +35,3 @@ end
 function y = im_pad(img, pad_size)
     y = padarray(img, [pad_size pad_size], "symmetric");
 end
-
-

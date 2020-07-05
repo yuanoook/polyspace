@@ -90,3 +90,13 @@ b_fft_conj = conj(b_fft);
 b_fft_conj_recovered = ifft2(b_fft_conj);
 figure;
 imshow(b_fft_conj_recovered, []);
+
+
+
+figure;
+surf(log(fftshift(abs(magnitude_spectrum_inverse))));
+zlabel('exp');
+colorbar;
+colormap jet;
+shading interp;
+

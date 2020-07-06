@@ -1,5 +1,3 @@
-% a = imread('https://raw.githubusercontent.com/yuanoook/thruple/master/statics/test1.tif');
-% imshow(a);
 b = imread('https://raw.githubusercontent.com/yuanoook/thruple/master/statics/test2.tif');
 imshow(b);
 size(b)

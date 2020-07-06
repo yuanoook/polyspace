@@ -1,15 +1,10 @@
-%  Histogram processing
-
 a = imread('https://raw.githubusercontent.com/yuanoook/thruple/master/statics/test1.tif');
 imshow(a);
 size(a)
-test(a);
 
-function test(img)
-  figure;
-  imshow(img, []);
-  imshow(localhisteq(img), []);
-end
+imshow(localhisteq(a), []);
+imshow(localhisteq(a, 7), []);
+imshow(histeq(a), []);
 
 function y = localhisteq(f, m, n)
   arguments
@@ -29,7 +24,7 @@ function y = localhisteq(f, m, n)
       cell=f_pad(row:row+m-1, col:col+n-1);
       cell_histeq = histeq(cell);
       cell_histeq_center_pixel = cell_histeq(m_half+1, n_half+1);
-      y(row, col) = cell_histeq_center_pixel
+      y(row, col) = cell_histeq_center_pixel;
     end
   end
 end

@@ -35,12 +35,12 @@ end
 
 function y = local_histeq_filter(a)
   [height, width] = size(a);
-  hist = zeros(256, 1);
+  cell_hist = zeros(256, 1);
 
   for row=1:height
     for col=1:width
       value = a(row, col)
-      hist(value, 0) = hist(value, 0) + 1
+      cell_hist(value) = cell_hist(value) + 1
     end
   end
 
@@ -51,7 +51,7 @@ function y = local_histeq_filter(a)
 
   center_pixel_value_cumulation = 0
   for row=1:center_pixel_value
-    center_pixel_value_cumulation = center_pixel_value_cumulation + hist(row, 1);
+    center_pixel_value_cumulation = center_pixel_value_cumulation + cell_hist(row);
   end
 
   y = floor(255 * center_pixel_value_cumulation / pixel_count);

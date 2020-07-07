@@ -16,13 +16,13 @@ function y = localhisteq(f, m, n)
   [height, width] = size(f);
   m_half = floor(m / 2);
   n_half = floor(n / 2);
-  f_pad = padarray(f, [m n], "symmetric");
+  f_pad = padarray(f, [m_half n_half], "symmetric");
 
   y = zeros(height, width);
   for row=1:height
     for col=1:width
-      cell=f_pad(row:row+m-1, col:col+n-1);
-      y(row, col) = local_histeq_filter(cell);
+      kernel_cell=f_pad(row:row+m-1, col:col+n-1);
+      y(row, col) = local_histeq_filter(kernel_cell);
     end
   end
 end
@@ -49,7 +49,7 @@ function y = local_histeq_filter(a)
   pixel_count = height * width;
   center_pixel_value = a(height_half + 1, width_half + 1);
 
-  center_pixel_value_cumulation = 0
+  center_pixel_value_cumulation = 0;
   for row=1:center_pixel_value
     center_pixel_value_cumulation = center_pixel_value_cumulation + cell_hist(row);
   end

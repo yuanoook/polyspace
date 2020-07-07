@@ -1,10 +1,12 @@
+clear all;
+
 a = imread('https://raw.githubusercontent.com/yuanoook/thruple/master/statics/test1.tif');
 imshow(a);
 size(a)
 
 imshow(localhisteq(a), []);
-imshow(localhisteq(a, 7), []);
-imshow(histeq(a), []);
+% imshow(localhisteq(a, 7), []);
+% imshow(histeq(a), []);
 
 function y = localhisteq(f, m, n)
   arguments
@@ -40,7 +42,7 @@ function y = local_histeq_filter(a)
   for row=1:height
     for col=1:width
       value = a(row, col);
-      cell_hist(value) = cell_hist(value) + 1;
+      cell_hist(value+1) = cell_hist(value+1) + 1;
     end
   end
 
@@ -50,8 +52,8 @@ function y = local_histeq_filter(a)
   center_pixel_value = a(height_half + 1, width_half + 1);
 
   center_pixel_value_cumulation = 0;
-  for row=1:center_pixel_value
-    center_pixel_value_cumulation = center_pixel_value_cumulation + cell_hist(row);
+  for row=0:center_pixel_value
+    center_pixel_value_cumulation = center_pixel_value_cumulation + cell_hist(row+1);
   end
 
   y = floor(255 * center_pixel_value_cumulation / pixel_count);

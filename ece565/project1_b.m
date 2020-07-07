@@ -2,11 +2,11 @@ b = imread('https://raw.githubusercontent.com/yuanoook/thruple/master/statics/te
 imshow(b);
 size(b)
 
-
 b_fft = fft2(b);
-magnitude_spectrum = abs(b_fft);
-% Plot the 2d fourier transform of the signal
+
+% Display magnitude spectrum
 figure;
+magnitude_spectrum = abs(b_fft);
 s_ft_ln = log(magnitude_spectrum);
 surf(fftshift(s_ft_ln));
 title('The Fourier transform | magnitude spectrum in 3D');
@@ -14,87 +14,35 @@ zlabel('exp');
 colorbar;
 colormap jet;
 shading interp;
+
+% Display phase spectrum
 figure;
 phase_spectrum = angle(b_fft);
-
-
-figure;
 imshow(fftshift(phase_spectrum), [])
 title('The Fourier transform | phase spectrum');
 colorbar;
 colormap jet;
 
-
+% (a) Display inverse transform of phase spectrum
 phase_term = exp(phase_spectrum * 1i);
 phase_term_inverse = ifft2(phase_term);
-
 figure;
 phase_term_inverse_abs = abs(phase_term_inverse);
 imshow(phase_term_inverse_abs, []);
-
 figure;
 phase_term_inverse_real = real(phase_term_inverse);
 imshow(phase_term_inverse_real, []);
-
 phase_term_inverse_imag = imag(phase_term_inverse);
-
 figure;
 imshow(phase_term_inverse_imag, []);
 
-
-
+% (b) Display inverse transform of magnitude spectrum
 figure;
 magnitude_spectrum_inverse = ifft2(magnitude_spectrum);
-imshow(fftshift(log(magnitude_spectrum_inverse)), []);
+imshow(fftshift(log(abs(magnitude_spectrum_inverse))), []);
 
-imshow(magnitude_spectrum_inverse, []);
-
+% (c) Display inverse transform with conjugate of phase component
 figure;
-phase_spectrum = angle(b_fft);
-
-
-phase_term = exp(phase_spectrum * 1i);
-phase_term_inverse = ifft2(phase_term);
-
-figure;
-imshow(phase_term_inverse, []);
-
-
-figure;
-phase_term_inverse_abs = abs(phase_term_inverse);
-imshow(phase_term_inverse_abs, []);
-
-
-figure;
-phase_term_inverse_real = real(phase_term_inverse);
-imshow(phase_term_inverse_real, []);
-
-
-phase_term_inverse_imag = imag(phase_term_inverse);
-
-figure;
-imshow(phase_term_inverse_imag, []);
-
-
-
-
-
 conjugate_fft = magnitude_spectrum .* exp(-i * angle(b_fft));
 conjugate_recovered = ifft2(conjugate_fft);
-figure;
 imshow(conjugate_recovered, []);
-
-b_fft_conj = conj(b_fft);
-b_fft_conj_recovered = ifft2(b_fft_conj);
-figure;
-imshow(b_fft_conj_recovered, []);
-
-
-
-figure;
-surf(log(fftshift(abs(magnitude_spectrum_inverse))));
-zlabel('exp');
-colorbar;
-colormap jet;
-shading interp;
-

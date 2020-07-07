@@ -8,7 +8,7 @@ imshow(localhisteq(a), []);
 % imshow(localhisteq(a, 7), []);
 % imshow(histeq(a), []);
 
-function y = localhisteq(f, m, n)
+function g = localhisteq(f, m, n)
   arguments
       f (:,:) double
       m (1,1) double {mustBeOdd} = 3
@@ -20,11 +20,11 @@ function y = localhisteq(f, m, n)
   n_half = floor(n / 2);
   f_pad = padarray(f, [m_half n_half], "symmetric");
 
-  y = zeros(height, width);
+  g = zeros(height, width);
   for row=1:height
     for col=1:width
       kernel_cell=f_pad(row:row+m-1, col:col+n-1);
-      y(row, col) = local_histeq_filter(kernel_cell);
+      g(row, col) = local_histeq_filter(kernel_cell);
     end
   end
 end
@@ -37,24 +37,19 @@ end
 
 function y = local_histeq_filter(a)
   [height, width] = size(a);
-  cell_hist = zeros(256, 1);
+  height_half = floor(height / 2);
+  width_half = floor(width / 2);
+  center_pixel_value = a(height_half + 1, width_half + 1);
+  center_pixel_value_hist_accumulation = 0;
 
   for row=1:height
     for col=1:width
-      value = a(row, col);
-      cell_hist(value+1) = cell_hist(value+1) + 1;
+      if a(row, col) <= center_pixel_value
+        center_pixel_value_hist_accumulation = center_pixel_value_hist_accumulation + 1;
+      end
     end
   end
 
-  height_half = floor(height / 2);
-  width_half = floor(width / 2);
   pixel_count = height * width;
-  center_pixel_value = a(height_half + 1, width_half + 1);
-
-  center_pixel_value_cumulation = 0;
-  for row=0:center_pixel_value
-    center_pixel_value_cumulation = center_pixel_value_cumulation + cell_hist(row+1);
-  end
-
-  y = floor(255 * center_pixel_value_cumulation / pixel_count);
+  y = floor(255 * center_pixel_value_hist_accumulation / pixel_count);
 end

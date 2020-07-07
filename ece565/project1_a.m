@@ -39,8 +39,8 @@ function y = local_histeq_filter(a)
 
   for row=1:height
     for col=1:width
-      value = a(row, col)
-      cell_hist(value) = cell_hist(value) + 1
+      value = a(row, col);
+      cell_hist(value) = cell_hist(value) + 1;
     end
   end
 

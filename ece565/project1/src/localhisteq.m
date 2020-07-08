@@ -6,9 +6,9 @@
 
 function g = localhisteq(f, m, n)
   arguments
-      f (:,:) double
-      m (1,1) double {mustBeOdd} = 3
-      n (1,1) double {mustBeOdd} = m
+    f (:,:) double
+    m (1,1) double {mustBeOdd} = 3
+    n (1,1) double {mustBeOdd} = m
   end
 
   [height, width] = size(f);

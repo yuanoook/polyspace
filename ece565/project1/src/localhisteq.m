@@ -35,17 +35,9 @@ function y = local_histeq_filter(a)
   [height, width] = size(a);
   height_half = floor(height / 2);
   width_half = floor(width / 2);
-  center_pixel_value = a(height_half + 1, width_half + 1);
-  center_pixel_value_hist_accumulation = 0;
-
-  for row=1:height
-    for col=1:width
-      if a(row, col) <= center_pixel_value
-        center_pixel_value_hist_accumulation = center_pixel_value_hist_accumulation + 1;
-      end
-    end
-  end
+  center = a(height_half + 1, width_half + 1);
+  [center_hist_accumulation, ~] = size(a(a <= center));
 
   pixel_count = height * width;
-  y = floor(255 * center_pixel_value_hist_accumulation / pixel_count);
+  y = floor(255 * center_hist_accumulation / pixel_count);
 end

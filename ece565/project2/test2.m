@@ -12,9 +12,9 @@ imshow(polymersomes_bgt, []);
 
 histogram(polymersomes_bgt);
 
-function y = basic_global_thresholding(img)
-  t = find_basic_threshold(img);
-  y = global_thresholding(img, t);
+function y = otsu_global_thresholding(img)
+  [k, spb] = otsu_threshold(img)
+  y = global_thresholding(img, k);
 end
 
 % Otsu's algorithm may be summarized as follows:
@@ -45,48 +45,48 @@ function k = k_of_bcv_max(bcv)
 end
 
 function bcv = between_class_variance(mg, p1, m)
-  bcv = zeros(256, 1)
+  bcv = zeros(256, 1);
   for intensity_value=0:255
-    k = intensity_value + 1
-    a = mg * p1(k) - m(k)
-    b = p1(k) * (1 - p1(k))
-    bcv(k) = a * a / b
+    k = intensity_value + 1;
+    a = mg * p1(k) - m(k);
+    b = p1(k) * (1 - p1(k));
+    bcv(k) = a * a / b;
   end
 end
 
 function cumulative_means(p1)
-  m = zeros(256, 1)
-  for intensity_value=0:255
-    k = intensity_value + 1
-    current_accum = p(k) * intensity_value
+  m = zeros(256, 1);
+  for intensity_value=0:255;
+    k = intensity_value + 1;
+    current_accum = p(k) * intensity_value;
     if (k == 1)
-      m(k) = current_accum
+      m(k) = current_accum;
     else
-      m(k) = m(k - 1) + current_accum
+      m(k) = m(k - 1) + current_accum;
     end
   end
 end
 
 function p1 = cumulative_sums_of_hist_normalized(p)
-  p1 = zeros(256, 1)
+  p1 = zeros(256, 1);
   for intensity_value=0:255
-    k = intensity_value + 1
+    k = intensity_value + 1;
     if (k == 1)
-      p1(k) = p(k)
+      p1(k) = p(k);
     else
-      p1(k) = p1(k - 1) + p(k)
+      p1(k) = p1(k - 1) + p(k);
     end
   end
 end
 
 function p = hist_normalized(img)
-  [height width] = size(img)
-  pixel_count = height * width
-  p = zeros(256, 1)
+  [height width] = size(img);
+  pixel_count = height * width;
+  p = zeros(256, 1);
   for intensity_value=0:255
-    k = intensity_value + 1
-    [intensity_occurrences ~] = img(img==intensity_value)
-    p(k) = intensity_occurrences / pixel_count
+    k = intensity_value + 1;
+    [intensity_occurrences ~] = img(img==intensity_value);
+    p(k) = intensity_occurrences / pixel_count;
   end
 end
 

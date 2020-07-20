@@ -34,9 +34,18 @@ function [k, spb] = otsu_threshold(img)
   m = cumulative_means(p);
   mg = m(256)
   bcv = between_class_variance(mg, p1, m);
-  bcvg = bcv(256)
+  gv = global_variance(mg, p)
   k = k_of_bcv_max(bcv)
   spb = bcv(k+1) / bcvg
+end
+
+function gv = global_variance(mg, p)
+  gv = 0
+  for intensity_value=0:255
+    k = intensity_value + 1;
+    variance = intensity_value - mg
+    gv = variance * variance * p(k)
+  end
 end
 
 function k = k_of_bcv_max(bcv)

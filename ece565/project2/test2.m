@@ -29,21 +29,40 @@ end
 %         and then obtain the separability measure, spb = bcv(k*) / bcvg
 
 function [k, spb] = otsu_threshold(img)
-  p = hist_normalized(img)
-  p1 = cumulative_sums_of_hist_normalized(p)
-  m = cumulative_means(p1)
-  mg = m(255, 1)
-  
+  p = hist_normalized(img);
+  p1 = cumulative_sums_of_hist_normalized(p);
+  m = cumulative_means(p1);
+  mg = m(256)
+  bcv = between_class_variance(mg, p1, m);
+  bcvg = bcv(256)
+  k = k_of_bcv_max(bcv)
+  spb = bcv(k+1) / bcvg
+end
+
+function k = k_of_bcv_max(bcv)
+  [rows, ~] = find(bcv == max(bcv))
+  k = mean(rows) - 1
+end
+
+function bcv = between_class_variance(mg, p1, m)
+  bcv = zeros(256, 1)
+  for intensity_value=0:255
+    k = intensity_value + 1
+    a = mg * p1(k) - m(k)
+    b = p1(k) * (1 - p1(k))
+    bcv(k) = a * a / b
+  end
 end
 
 function cumulative_means(p1)
   m = zeros(256, 1)
   for intensity_value=0:255
-    current_accum = p(intensity_value+1, 1) * intensity_value
-    if (intensity_value == 0)
-      m(intensity_value+1, 1) = current_accum
+    k = intensity_value + 1
+    current_accum = p(k) * intensity_value
+    if (k == 1)
+      m(k) = current_accum
     else
-      m(intensity_value+1, 1) = m(intensity_value, 1) + current_accum
+      m(k) = m(k - 1) + current_accum
     end
   end
 end
@@ -51,10 +70,11 @@ end
 function p1 = cumulative_sums_of_hist_normalized(p)
   p1 = zeros(256, 1)
   for intensity_value=0:255
-    if (intensity_value == 0)
-      p1(intensity_value+1, 1) = p(intensity_value+1, 1)
+    k = intensity_value + 1
+    if (k == 1)
+      p1(k) = p(k)
     else
-      p1(intensity_value+1, 1) = p1(intensity_value, 1) + p(intensity_value+1, 1)
+      p1(k) = p1(k - 1) + p(k)
     end
   end
 end
@@ -64,24 +84,9 @@ function p = hist_normalized(img)
   pixel_count = height * width
   p = zeros(256, 1)
   for intensity_value=0:255
+    k = intensity_value + 1
     [intensity_occurrences ~] = img(img==intensity_value)
-    p(intensity_value+1, 1) = intensity_occurrences / pixel_count
-  end
-end
-
-function t = find_basic_threshold(img)
-  t = mean(img, 'all');
-  while true
-    m1 = mean(img(img > t), 'all');
-    m2 = mean(img(img <= t), 'all');
-    new_t = (m1 + m2) / 2;
-
-    if abs(new_t - t) < 1
-      t = new_t;
-      break
-    end
-
-    t = new_t;
+    p(k) = intensity_occurrences / pixel_count
   end
 end
 

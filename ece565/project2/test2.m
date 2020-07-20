@@ -31,7 +31,7 @@ end
 function [k, spb] = otsu_threshold(img)
   p = hist_normalized(img);
   p1 = cumulative_sums_of_hist_normalized(p);
-  m = cumulative_means(p1);
+  m = cumulative_means(p);
   mg = m(256)
   bcv = between_class_variance(mg, p1, m);
   bcvg = bcv(256)
@@ -54,7 +54,7 @@ function bcv = between_class_variance(mg, p1, m)
   end
 end
 
-function cumulative_means(p1)
+function m = cumulative_means(p)
   m = zeros(256, 1);
   for intensity_value=0:255;
     k = intensity_value + 1;
@@ -85,7 +85,7 @@ function p = hist_normalized(img)
   p = zeros(256, 1);
   for intensity_value=0:255
     k = intensity_value + 1;
-    [intensity_occurrences ~] = img(img==intensity_value);
+    [intensity_occurrences ~] = size(img(img==intensity_value));
     p(k) = intensity_occurrences / pixel_count;
   end
 end

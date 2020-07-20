@@ -7,10 +7,10 @@ polymersomes = imread([github_img_host 'polymersomes.tif']);
 size(polymersomes)
 imshow(polymersomes);
 
-polymersomes_bgt = basic_global_thresholding(polymersomes);
-imshow(polymersomes_bgt, []);
+polymersomes_ogt = otsu_global_thresholding(polymersomes);
+imshow(polymersomes_ogt, []);
 
-histogram(polymersomes_bgt);
+histogram(polymersomes_ogt);
 
 function y = otsu_global_thresholding(img)
   [k, spb] = otsu_threshold(img)

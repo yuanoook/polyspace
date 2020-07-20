@@ -18,24 +18,30 @@ function y = otsu_global_thresholding(img)
 end
 
 % Otsu's algorithm may be summarized as follows:
-% step 1: Compute the normalized histogram of the input image. P(i), i = 0,1,2,...L-1
-% step 2: Compute the cumulative sums P1(k), k = 0,1,2,...L-1
-% step 3: Compute the cumulative means, m(k), k = 0,1,2,...L-1
-% step 4: Compute the global mean, mg, mg = m(k), k = L-1
-% step 5: Compute the between-class variance term, bcv(k), k = 0,1,2,...L-1
-% step 6: Obtain the Otsu threshold, k*, as the value of k for which bcv(k) is maximum
-%         if the maximum is not unique, obtain k* by averaging the values of k
-% step 7: Compute the global variance bcvg, bcvg = bcv(k), k = L-1,
-%         and then obtain the separability measure, spb = bcv(k*) / bcvg
-
 function [k, spb] = otsu_threshold(img)
+  % step 1: Compute the normalized histogram of the input image. P(i), i = 0,1,2,...L-1
   p = hist_normalized(img);
+
+  % step 2: Compute the cumulative sums P1(k), k = 0,1,2,...L-1
   p1 = cumulative_sums_of_hist_normalized(p);
+
+  % step 3: Compute the cumulative means, m(k), k = 0,1,2,...L-1
   m = cumulative_means(p);
+
+  % step 4: Compute the global mean, mg, mg = m(k), k = L-1
   mg = m(256)
+
+  % step 5: Compute the between-class variance term, bcv(k), k = 0,1,2,...L-1
   bcv = between_class_variance(mg, p1, m);
-  gv = global_variance(mg, p)
+
+  % step 6: Obtain the Otsu threshold, k*, as the value of k for which bcv(k) is maximum
+  %         if the maximum is not unique, obtain k* by averaging the values of k
+
   k = k_of_bcv_max(bcv)
+
+  % step 7: Compute the global variance bcvg, bcvg = bcv(k), k = L-1,
+  %         and then obtain the separability measure, spb = bcv(k*) / bcvg
+  gv = global_variance(mg, p)
   spb = bcv(k+1) / gv
 end
 

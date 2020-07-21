@@ -25,6 +25,13 @@ outerb_polygon = connectpoly(s(:, 1), s(:, 2));
 outerb_polygon_img = bound2im(outerb_polygon, 570, 570);
 imshow(outerb_polygon_img, []);
 
+function c = fchcode(b, CONN)
+  % c.fcc = chain code (1 × 𝑛𝑝 where 𝑛𝑝 is the number of boundary pixels)
+  % c.diff = First difference of code c.fcc (1 × 𝑛𝑝)
+  % c.mm = Integer of minimum magnitude from c.fcc (1 × 𝑛𝑝)
+  % c.diffmm = First difference of code c.mm (1 × 𝑛𝑝)
+  % c.x0y0 = Coordinates where the code starts (1 × 2)
+end
 
 function c = connectpoly(x, y)
   % CONNECTPOLY Connects vertices of a polygon.

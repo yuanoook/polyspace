@@ -13,7 +13,11 @@ imshow(circular_stroke_smooth, []);
 circular_stroke_smooth_basicthresh = basic_global_thresholding(circular_stroke_smooth);
 imshow(circular_stroke_smooth_basicthresh, []);
 
-B = bwboundaries(circular_stroke_smooth_basicthresh,'noholes');
+B = bwboundaries(circular_stroke_smooth_basicthresh, 'noholes');
 outerb = cell2mat(B(1));
 outerb_img = bound2im(outerb, height, width);
 imshow(outerb_img, []);
+
+[s_50, sUnit] = bsubsamp(outerb, 50)
+outerb_polygon_50 = connectpoly(s_50(:, 1), s_50(:, 2));
+imshow(outerb_polygon_50_img, []);

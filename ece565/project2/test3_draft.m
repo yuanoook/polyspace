@@ -21,9 +21,9 @@ imshow(outerb_img, []);
 
 [s, sUnit] = bsubsamp(outerb, 50)
 
-outerb_polygon_50 = connectpoly(s(:, 1), s(:, 2));
-outerb_polygon_50_img = bound2im(outerb_polygon, 570, 570);
-imshow(outerb_polygon_50_img, []);
+outerb_polygon = connectpoly(s(:, 1), s(:, 2));
+outerb_polygon_img = bound2im(outerb_polygon, 570, 570);
+imshow(outerb_polygon_img, []);
 
 
 function c = connectpoly(x, y)

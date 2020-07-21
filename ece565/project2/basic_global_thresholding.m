@@ -24,9 +24,3 @@ function t = find_basic_threshold(img)
     t = new_t;
   end
 end
-
-function mustBeOdd(x)
-  if ~rem(x,2)
-      error('Second,third inputs must be odd')
-  end
-end

@@ -23,6 +23,7 @@ imshow(outerb_img, []);
 
 outerb_polygon_50 = connectpoly(s(:, 1), s(:, 2));
 outerb_polygon_50_img = bound2im(outerb_polygon, 570, 570);
+imshow(outerb_polygon_50_img, []);
 
 
 function c = connectpoly(x, y)

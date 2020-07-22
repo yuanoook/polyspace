@@ -74,6 +74,15 @@ function m = get_min_chain_code(c)
     return
   end
 
+  rows_candidates = []
+  for row=1:rows
+    if ~is_next_chain_code_min(row, c, c_min)
+    end
+  end
+end
+
+function output = myFun(input)
+  
 end
 
 function icm = is_chain_code_min(row, c, c_min)
@@ -86,6 +95,10 @@ end
 
 function p = get_next_chain_code(row, c)
   p = c(get_next_chain_code_row(row))
+end
+
+function c = get_chain_code_on_row(row, c)
+  c = c(row)
 end
 
 function r = get_next_chain_code_row(row, c)

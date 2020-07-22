@@ -74,31 +74,25 @@ function m = get_min_chain_code(c)
     return
   end
 
-  last_row = 1;
+end
 
-  last_chain_start_row = 1;
-  last_chain_len = 0;
+function icm = is_chain_code_min(row, c, c_min)
+  icm = c(row) == c_min
+end
 
-  max_chain_start_row = 1;
-  max_chain_len = 0;
-  for k=1:rows_len
-    current_row = rows(k);
-    if (k == 1)
-      last_row = 1;
+function incm = is_next_chain_code_min(row, c, c_min)
+  im = get_next_chain_code(row, c) == c_min
+end
 
-      last_chain_start_row = 1;
-      last_chain_len = 0;
-    
-      max_chain_start_row = 1;
-      max_chain_len = 0;
-    else
-      if (current_row == last_row + 1)
-        last_chain_len = last_chain_len + 1;
-      else
-        last_chain_start_row = current_row;
-        last_chain_len = 1;
-      end
-    end
+function p = get_next_chain_code(row, c)
+  p = c(get_next_chain_code_row(row))
+end
+
+function r = get_next_chain_code_row(row, c)
+  if (row == length(c))
+    r = 1
+  else
+    r = row + 1
   end
 end
 

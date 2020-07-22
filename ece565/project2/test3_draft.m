@@ -25,12 +25,49 @@ outerb_polygon = connectpoly(s(:, 1), s(:, 2));
 outerb_polygon_img = bound2im(outerb_polygon, 570, 570);
 imshow(outerb_polygon_img, []);
 
+ccode4 = get_chain_code(sUnit, 4);
+mat2str(ccode4')
+ccode8 = get_chain_code(sUnit, 8);
+mat2str(ccode8')
+
 function c = fchcode(b, CONN)
   % c.fcc = chain code (1 × 𝑛𝑝 where 𝑛𝑝 is the number of boundary pixels)
   % c.diff = First difference of code c.fcc (1 × 𝑛𝑝)
   % c.mm = Integer of minimum magnitude from c.fcc (1 × 𝑛𝑝)
   % c.diffmm = First difference of code c.mm (1 × 𝑛𝑝)
   % c.x0y0 = Coordinates where the code starts (1 × 2)
+  fcc = get_chain_code(b, CONN)
+end
+
+function c = get_chain_code(b, CONN)
+  len = length(b);
+  c = zeros(len, 1);
+  for row = 1:len
+    if (row == 1)
+      c(row) = get_one_chain_code(b(end, :), b(row, :), CONN);
+    else
+      c(row) = get_one_chain_code(b(row - 1, :), b(row, :), CONN);
+    end
+  end
+end
+
+function c = get_one_chain_code(previous_point, current_point, CONN)
+  vector = current_point - previous_point;
+  row_diff = vector(1, 1);
+  col_diff = vector(1, 2);
+  codes = [
+    0 1 0;
+    2 0 0;
+    0 3 0
+  ];
+  if (CONN == 8)
+    codes = [
+      3 2 1;
+      4 0 0;
+      5 6 7
+    ];
+  end
+  c = codes(row_diff + 2, col_diff + 2);
 end
 
 function c = connectpoly(x, y)

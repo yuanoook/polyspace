@@ -11,6 +11,15 @@ imshow(circular_stroke_smooth, []);
 circular_stroke_smooth_basicthresh = basic_global_thresholding(circular_stroke_smooth);
 imshow(circular_stroke_smooth_basicthresh, []);
 
+% There's a mistake in PPT ece565-s20-6.feature-extraction.pdf
+% Chain Codes - Example (8-bit image of a circular stroke) - Picture-c description
+% It's most likely the smoothed image, thresholded using basic global thresholing method,
+% not Otsu's method.
+% TODO: email SA & teacher the mistake in PPT
+
+circular_stroke_smooth_otsu = otsu_global_thresholding(circular_stroke_smooth);
+imshow(circular_stroke_smooth_otsu, []);
+
 B = bwboundaries(circular_stroke_smooth_basicthresh,'noholes');
 
 outerb = cell2mat(B(1));
@@ -27,8 +36,23 @@ imshow(outerb_polygon_img, []);
 
 ccode4 = get_chain_code(sUnit, 4);
 mat2str(ccode4')
+% '[1 1 1 1 0 1 1 0 1 0 0 0 0 3 0 3 3 3 3 3 3 3 3 2 2 2 2 2 2 1 2 1]'
+
 ccode8 = get_chain_code(sUnit, 8);
 mat2str(ccode8')
+% '[2 2 2 2 0 2 2 0 2 0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2]'
+
+ccode8_min = ccode8(:,:)
+ccode8_min = ccode8(ccode8 != min(ccode8)) = 1
+
+ccode4 = get_chain_code(sUnit, 4);
+mat2str(ccode4')
+
+ccode8 = get_chain_code(sUnit, 8);
+mat2str(ccode8')
+c8_min(c8_min != min(c8_min)) = 1;
+mat2str(ccode8')
+mat2str(c8_min')
 
 function c = fchcode(b, CONN)
   % c.fcc = chain code (1 × 𝑛𝑝 where 𝑛𝑝 is the number of boundary pixels)
@@ -37,6 +61,45 @@ function c = fchcode(b, CONN)
   % c.diffmm = First difference of code c.mm (1 × 𝑛𝑝)
   % c.x0y0 = Coordinates where the code starts (1 × 2)
   fcc = get_chain_code(b, CONN)
+end
+
+% TODO: finish this shit
+function m = get_min_chain_code(c)
+  c_min = min(c);
+  len = length(c);
+  [rows ~] = find(c = c_min);
+  rows_len = length(rows)
+  if (rows_len == length(c))
+    m = c;
+    return
+  end
+
+  last_row = 1;
+
+  last_chain_start_row = 1;
+  last_chain_len = 0;
+
+  max_chain_start_row = 1;
+  max_chain_len = 0;
+  for k=1:rows_len
+    current_row = rows(k);
+    if (k == 1)
+      last_row = 1;
+
+      last_chain_start_row = 1;
+      last_chain_len = 0;
+    
+      max_chain_start_row = 1;
+      max_chain_len = 0;
+    else
+      if (current_row == last_row + 1)
+        last_chain_len = last_chain_len + 1;
+      else
+        last_chain_start_row = current_row;
+        last_chain_len = 1;
+      end
+    end
+  end
 end
 
 function c = get_chain_code(b, CONN)

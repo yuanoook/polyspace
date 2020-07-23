@@ -19,7 +19,7 @@ function g = smoothimage(f, m, n)
   g = zeros(height, width);
   for row=1:height
     for col=1:width
-      g(row, col) = mean2(f_pad(row:row+m-1, col:col+n-1));
+      g(row, col) = floor(mean2(f_pad(row:row+m-1, col:col+n-1)));
     end
   end
 end

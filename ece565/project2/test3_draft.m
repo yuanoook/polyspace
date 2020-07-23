@@ -63,49 +63,53 @@ function c = fchcode(b, CONN)
   fcc = get_chain_code(b, CONN)
 end
 
-% TODO: finish this shit
 function m = get_min_chain_code(c)
   c_min = min(c);
   len = length(c);
-  [rows ~] = find(c = c_min);
-  rows_len = length(rows)
-  if (rows_len == length(c))
+  [candidate_rows ~] = find(c = c_min);
+  candidate_rows_len = length(candidate_rows);
+  if (candidate_rows_len == length(c))
     m = c;
     return
   end
 
-  rows_candidates = []
-  for row=1:rows
-    if ~is_next_chain_code_min(row, c, c_min)
+  candidate_chains_len = zeros(candidate_rows_len, 1);
+  next_row = 1;
+  for k=1:candidate_rows_len
+    row = candidate_rows(k);
+    if (row < next_row)
+      break;
     end
+    chain_len = get_length_of_same_follow_chain_code(row, c);
+    candidate_chains_len(k) = chain_len;
+
+    next_row = get_next_row_in_loop(row, c, chain_len);
+  end
+  best_candidate_row_k = find(candidate_chains_len = max(candidate_chains_len), 'first');
+  best_candidate_row = candidate_rows(k);
+
+  if (best_candidate_row == 1)
+    m = c;
+    return
+  end
+
+  m = [c(best_candidate_row:end); c(1:best_candidate_row - 1)];
+end
+
+function l = get_length_of_same_follow_chain_code(row, c)
+  if (c(row) == c_min)
+    next_row = get_next_row_in_loop(row, c, 1);
+    l = 1 + get_length_of_same_follow_chain_code(next_row, c);
+  else
+    l = 1
   end
 end
 
-function output = myFun(input)
-  
-end
-
-function icm = is_chain_code_min(row, c, c_min)
-  icm = c(row) == c_min
-end
-
-function incm = is_next_chain_code_min(row, c, c_min)
-  im = get_next_chain_code(row, c) == c_min
-end
-
-function p = get_next_chain_code(row, c)
-  p = c(get_next_chain_code_row(row))
-end
-
-function c = get_chain_code_on_row(row, c)
-  c = c(row)
-end
-
-function r = get_next_chain_code_row(row, c)
+function r = get_next_row_in_loop(row, c, step)
   if (row == length(c))
-    r = 1
+    r = step;
   else
-    r = row + 1
+    r = row + step;
   end
 end
 

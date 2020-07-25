@@ -2,7 +2,7 @@ github_img_host = 'https://github.com/yuanoook/thruple/raw/master/ece565/project
 
 circular_stroke = imread([github_img_host 'circular_stroke.tif']);
 
-size(circular_stroke)
+[height, width] = size(circular_stroke);
 imshow(circular_stroke);
 
 circular_stroke_smooth = smoothimage(circular_stroke, 9);
@@ -14,13 +14,13 @@ imshow(circular_stroke_smooth_otsu, []);
 % Get outer boundaries
 B = bwboundaries(circular_stroke_smooth_otsu, 'noholes');
 outerb = cell2mat(B(1));
-outerb_img = bound2im(outerb, 570, 570);
+outerb_img = bound2im(outerb, height, width);
 imshow(outerb_img, []);
 
 [s, sUnit] = bsubsamp(outerb, 50)
 
 outerb_polygon = connectpoly(s(:, 1), s(:, 2));
-outerb_polygon_img = bound2im(outerb_polygon, 570, 570);
+outerb_polygon_img = bound2im(outerb_polygon, height, width);
 imshow(outerb_polygon_img, []);
 
 fchc8 = fchcode(sUnit, 8)

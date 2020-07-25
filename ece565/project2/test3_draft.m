@@ -33,25 +33,21 @@ ccode8 = get_chain_code(sUnit, 8);
 mat2str(ccode8')
 % '[2 2 2 2 0 2 2 0 2 0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2]'
 
-ccode8_min = get_min_chain_code(ccode8);
-mat2str(ccode8_min')
-% '[0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2 2 2 2 2 0 2 2 0 2]'
-
 fchcode(sUnit, 8)
 
 function c = fchcode(b, CONN)
-  % c.fcc = chain code (1 × 𝑛𝑝 where 𝑛𝑝 is the number of boundary pixels)
-  % c.diff = First difference of code c.fcc (1 × 𝑛𝑝)
-  % c.mm = Integer of minimum magnitude from c.fcc (1 × 𝑛𝑝)
-  % c.diffmm = First difference of code c.mm (1 × 𝑛𝑝)
-  % c.x0y0 = Coordinates where the code starts (1 × 2)
   c = struct();
-  c.fcc = get_chain_code(b, CONN);
-  c.diff = get_chain_code_diff(c.fcc, CONN);
-  [m start_row] = get_min_chain_code(c.fcc);
-  c.mm = m;
-  c.diffmm = [c.diff(start_row:end), c.diff(1:start_row-1)];
-  c.x0y0 = b(start_row);
+  % c.fcc = chain code (1 × 𝑛𝑝 where 𝑛𝑝 is the number of boundary pixels)
+  c.fcc = get_chain_code(b, CONN)
+  % c.diff = First difference of code c.fcc (1 × 𝑛𝑝)
+  c.diff = get_chain_code_diff(c.fcc, CONN)
+  % c.mm = Integer of minimum magnitude from c.fcc (1 × 𝑛𝑝)
+  start_row = get_min_chain_code_start_row(c.fcc)
+  % c.diffmm = First difference of code c.mm (1 × 𝑛𝑝)
+  c.mm = [c(start_row:end); c(1:start_row - 1)]
+  % c.x0y0 = Coordinates where the code starts (1 × 2)
+  c.diffmm = [c.diff(start_row:end); c.diff(1:start_row-1)]
+  c.x0y0 = b(start_row, :)
 end
 
 function d = get_chain_code_diff(c, CONN)
@@ -73,13 +69,12 @@ function d = get_single_chain_code_diff(current_code, previous_code, CONN)
   end
 end
 
-function [m, start_row] = get_min_chain_code(c)
+function start_row = get_min_chain_code_start_row(c)
   c_min = min(c);
   len = length(c);
   [candidate_rows ~] = find(c == c_min);
   candidate_rows_len = length(candidate_rows);
   if (candidate_rows_len == length(c))
-    m = c;
     start_row = 1;
     return
   end
@@ -93,20 +88,10 @@ function [m, start_row] = get_min_chain_code(c)
     end
     chain_len = get_length_of_same_follow_chain_code(row, c, c_min);
     candidate_chains_len(k) = chain_len;
-
     next_row = get_next_row_in_loop(row, c, chain_len);
   end
   best_candidate_row_k = find(candidate_chains_len == max(candidate_chains_len), 1, 'first');
-  best_candidate_row = candidate_rows(best_candidate_row_k);
-
-  if (best_candidate_row == 1)
-    m = c;
-    start_row = 1;
-    return
-  end
-
-  start_row = best_candidate_row;
-  m = [c(best_candidate_row:end); c(1:best_candidate_row - 1)];
+  start_row = candidate_rows(best_candidate_row_k);
 end
 
 function l = get_length_of_same_follow_chain_code(row, c, c_min)

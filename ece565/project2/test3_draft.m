@@ -8,19 +8,10 @@ imshow(circular_stroke);
 circular_stroke_smooth = smoothimage(circular_stroke, 9);
 imshow(circular_stroke_smooth, []);
 
-circular_stroke_smooth_basicthresh = basic_global_thresholding(circular_stroke_smooth);
-imshow(circular_stroke_smooth_basicthresh, []);
-
-% There's a mistake in PPT ece565-s20-6.feature-extraction.pdf
-% Chain Codes - Example (8-bit image of a circular stroke) - Picture-c description
-% It's most likely the smoothed image, thresholded using basic global thresholing method,
-% not Otsu's method.
-% TODO: email SA & teacher the mistake in PPT
-
 circular_stroke_smooth_otsu = otsu_global_thresholding(circular_stroke_smooth);
 imshow(circular_stroke_smooth_otsu, []);
 
-B = bwboundaries(circular_stroke_smooth_basicthresh,'noholes');
+B = bwboundaries(circular_stroke_smooth_otsu,'noholes');
 
 outerb = cell2mat(B(1));
 size(outerb)
@@ -432,32 +423,5 @@ function p = hist_normalized(img)
     k = intensity_value + 1;
     [intensity_occurrences ~] = size(img(img==intensity_value));
     p(k) = intensity_occurrences / pixel_count;
-  end
-end
-
-%{
-  Function: basic_global_thresholding
-  Author: Huiming Yuan
-  Date: 20th-July-2020
-%}
-
-function y = basic_global_thresholding(img)
-  t = find_basic_threshold(img);
-  y = global_thresholding(img, t);
-end
-
-function t = find_basic_threshold(img)
-  t = mean(img, 'all');
-  while true
-    m1 = mean(img(img > t), 'all');
-    m2 = mean(img(img <= t), 'all');
-    new_t = (m1 + m2) / 2;
-
-    if abs(new_t - t) < 1
-      t = new_t;
-      break
-    end
-
-    t = new_t;
   end
 end

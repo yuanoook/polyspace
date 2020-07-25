@@ -33,17 +33,7 @@ ccode8 = get_chain_code(sUnit, 8);
 mat2str(ccode8')
 % '[2 2 2 2 0 2 2 0 2 0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2]'
 
-ccode8_min = ccode8(:,:)
-ccode8(ccode8 ~= min(ccode8)) = 1
-
-ccode4 = get_chain_code(sUnit, 4);
-mat2str(ccode4')
-
-ccode8 = get_chain_code(sUnit, 8);
-mat2str(ccode8')
-c8_min(c8_min ~= min(c8_min)) = 1;
-mat2str(ccode8')
-mat2str(c8_min')
+get_min_chain_code(ccode8)
 
 function c = fchcode(b, CONN)
   % c.fcc = chain code (1 × 𝑛𝑝 where 𝑛𝑝 is the number of boundary pixels)
@@ -71,7 +61,7 @@ function m = get_min_chain_code(c)
     if (row < next_row)
       break;
     end
-    chain_len = get_length_of_same_follow_chain_code(row, c);
+    chain_len = get_length_of_same_follow_chain_code(row, c, c_min);
     candidate_chains_len(k) = chain_len;
 
     next_row = get_next_row_in_loop(row, c, chain_len);
@@ -87,10 +77,10 @@ function m = get_min_chain_code(c)
   m = [c(best_candidate_row:end); c(1:best_candidate_row - 1)];
 end
 
-function l = get_length_of_same_follow_chain_code(row, c)
+function l = get_length_of_same_follow_chain_code(row, c, c_min)
   if (c(row) == c_min)
     next_row = get_next_row_in_loop(row, c, 1);
-    l = 1 + get_length_of_same_follow_chain_code(next_row, c);
+    l = 1 + get_length_of_same_follow_chain_code(next_row, c, c_min);
   else
     l = 1
   end

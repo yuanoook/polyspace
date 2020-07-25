@@ -23,16 +23,26 @@ outerb_polygon = connectpoly(s(:, 1), s(:, 2));
 outerb_polygon_img = bound2im(outerb_polygon, 570, 570);
 imshow(outerb_polygon_img, []);
 
-fchcode(sUnit, 8)
-% mat2str(fchc.fcc')      '[2 2 2 2 0 2 2 0 2 0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2]'
-% mat2str(fchc.diff')     '[0 0 0 0 6 2 0 6 2 6 0 0 0 6 2 6 0 0 0 0 0 0 0 6 0 0 0 0 0 6 2 6]'
-% mat2str(fchc.mm')       '[0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2 2 2 2 2 0 2 2 0 2]'
-% mat2str(fchc.diffmm')   '[6 0 0 0 6 2 6 0 0 0 0 0 0 0 6 0 0 0 0 0 6 2 6 0 0 0 0 6 2 0 6 2]'
-% mat2str(fchc.x0y0)      '[2 6]'
+fchc8 = fchcode(sUnit, 8)
+mat2str(fchc8.fcc')
+% '[2 2 2 2 0 2 2 0 2 0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2]'
+mat2str(fchc8.diff')     
+% '[0 0 0 0 6 2 0 6 2 6 0 0 0 6 2 6 0 0 0 0 0 0 0 6 0 0 0 0 0 6 2 6]'
+mat2str(fchc8.mm')
+% '[0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2 2 2 2 2 0 2 2 0 2]'
+mat2str(fchc8.diffmm')
+% '[6 0 0 0 6 2 6 0 0 0 0 0 0 0 6 0 0 0 0 0 6 2 6 0 0 0 0 6 2 0 6 2]'
+mat2str(fchc8.x0y0)
+% '[2 6]'
 
-fchcode(sUnit, 4)
-% mat2str(fchc.fcc')      '[1 1 1 1 0 1 1 0 1 0 0 0 0 3 0 3 3 3 3 3 3 3 3 2 2 2 2 2 2 1 2 1]'
-% mat2str(fchc.diff')     '[0 0 0 0 3 1 0 3 1 3 0 0 0 3 1 3 0 0 0 0 0 0 0 3 0 0 0 0 0 3 1 3]'
-% mat2str(fchc.mm')       '[0 0 0 0 3 0 3 3 3 3 3 3 3 3 2 2 2 2 2 2 1 2 1 1 1 1 1 0 1 1 0 1]'
-% mat2str(fchc.diffmm')   '[3 0 0 0 3 1 3 0 0 0 0 0 0 0 3 0 0 0 0 0 3 1 3 0 0 0 0 3 1 0 3 1]'
-% mat2str(fchc.x0y0)      '[2 6]'
+fchc4 = fchcode(sUnit, 4)
+mat2str(fchc4.fcc')
+% '[1 1 1 1 0 1 1 0 1 0 0 0 0 3 0 3 3 3 3 3 3 3 3 2 2 2 2 2 2 1 2 1]'
+mat2str(fchc4.diff')
+% '[0 0 0 0 3 1 0 3 1 3 0 0 0 3 1 3 0 0 0 0 0 0 0 3 0 0 0 0 0 3 1 3]'
+mat2str(fchc4.mm')
+% '[0 0 0 0 3 0 3 3 3 3 3 3 3 3 2 2 2 2 2 2 1 2 1 1 1 1 1 0 1 1 0 1]'
+mat2str(fchc4.diffmm')
+% '[3 0 0 0 3 1 3 0 0 0 0 0 0 0 3 0 0 0 0 0 3 1 3 0 0 0 0 3 1 0 3 1]'
+mat2str(fchc4.x0y0)
+% '[2 6]'

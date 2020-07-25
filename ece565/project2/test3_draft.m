@@ -33,7 +33,9 @@ ccode8 = get_chain_code(sUnit, 8);
 mat2str(ccode8')
 % '[2 2 2 2 0 2 2 0 2 0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2]'
 
-get_min_chain_code(ccode8)
+ccode8_min = get_min_chain_code(ccode8);
+mat2str(ccode8_min')
+% '[0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2 2 2 2 2 0 2 2 0 2]'
 
 function c = fchcode(b, CONN)
   % c.fcc = chain code (1 × 𝑛𝑝 where 𝑛𝑝 is the number of boundary pixels)
@@ -67,7 +69,7 @@ function m = get_min_chain_code(c)
     next_row = get_next_row_in_loop(row, c, chain_len);
   end
   best_candidate_row_k = find(candidate_chains_len == max(candidate_chains_len), 1, 'first');
-  best_candidate_row = candidate_rows(k);
+  best_candidate_row = candidate_rows(best_candidate_row_k);
 
   if (best_candidate_row == 1)
     m = c;

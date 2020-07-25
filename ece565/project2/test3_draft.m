@@ -37,22 +37,50 @@ ccode8_min = get_min_chain_code(ccode8);
 mat2str(ccode8_min')
 % '[0 0 0 0 6 0 6 6 6 6 6 6 6 6 4 4 4 4 4 4 2 4 2 2 2 2 2 0 2 2 0 2]'
 
+fchcode(sUnit, 8)
+
 function c = fchcode(b, CONN)
   % c.fcc = chain code (1 × 𝑛𝑝 where 𝑛𝑝 is the number of boundary pixels)
   % c.diff = First difference of code c.fcc (1 × 𝑛𝑝)
   % c.mm = Integer of minimum magnitude from c.fcc (1 × 𝑛𝑝)
   % c.diffmm = First difference of code c.mm (1 × 𝑛𝑝)
   % c.x0y0 = Coordinates where the code starts (1 × 2)
-  fcc = get_chain_code(b, CONN)
+  c = struct();
+  c.fcc = get_chain_code(b, CONN);
+  c.diff = get_chain_code_diff(c.fcc, CONN);
+  [m start_row] = get_min_chain_code(c.fcc, CONN);
+  c.mm = m;
+  c.diffmm = [c.diff(start_row:end), c.diff(1:start_row-1)]
+  c.x0y0 = b(start_row);
 end
 
-function m = get_min_chain_code(c)
+function d = get_chain_code_diff(c, CONN)
+  len = length(c)
+  d = zeros(len, 1)
+  for k=1:len
+    if (k == 1)
+      d(k) = get_single_chain_code_diff(c(k), c(end))
+    else
+      d(k) = get_single_chain_code_diff(c(k), c(k-1))
+    end
+  end
+end
+
+function d = get_single_chain_code_diff(current_code, previous_code, CONN)
+  d = current_code - previous_code
+  if (d < 0)
+    d = d + CONN
+  end
+end
+
+function [m, start_row] = get_min_chain_code(c)
   c_min = min(c);
   len = length(c);
   [candidate_rows ~] = find(c == c_min);
   candidate_rows_len = length(candidate_rows);
   if (candidate_rows_len == length(c))
     m = c;
+    start_row = 1;
     return
   end
 
@@ -73,9 +101,11 @@ function m = get_min_chain_code(c)
 
   if (best_candidate_row == 1)
     m = c;
+    start_row = 1;
     return
   end
 
+  start_row = best_candidate_row;
   m = [c(best_candidate_row:end); c(1:best_candidate_row - 1)];
 end
 

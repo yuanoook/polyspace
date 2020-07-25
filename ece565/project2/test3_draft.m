@@ -66,7 +66,7 @@ function m = get_min_chain_code(c)
 
     next_row = get_next_row_in_loop(row, c, chain_len);
   end
-  best_candidate_row_k = find(candidate_chains_len == max(candidate_chains_len), 'first');
+  best_candidate_row_k = find(candidate_chains_len == max(candidate_chains_len), 1, 'first');
   best_candidate_row = candidate_rows(k);
 
   if (best_candidate_row == 1)
@@ -82,7 +82,7 @@ function l = get_length_of_same_follow_chain_code(row, c, c_min)
     next_row = get_next_row_in_loop(row, c, 1);
     l = 1 + get_length_of_same_follow_chain_code(next_row, c, c_min);
   else
-    l = 1
+    l = 1;
   end
 end
 

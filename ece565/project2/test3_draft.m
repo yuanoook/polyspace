@@ -48,28 +48,28 @@ function c = fchcode(b, CONN)
   c = struct();
   c.fcc = get_chain_code(b, CONN);
   c.diff = get_chain_code_diff(c.fcc, CONN);
-  [m start_row] = get_min_chain_code(c.fcc, CONN);
+  [m start_row] = get_min_chain_code(c.fcc);
   c.mm = m;
-  c.diffmm = [c.diff(start_row:end), c.diff(1:start_row-1)]
+  c.diffmm = [c.diff(start_row:end), c.diff(1:start_row-1)];
   c.x0y0 = b(start_row);
 end
 
 function d = get_chain_code_diff(c, CONN)
-  len = length(c)
-  d = zeros(len, 1)
+  len = length(c);
+  d = zeros(len, 1);
   for k=1:len
     if (k == 1)
-      d(k) = get_single_chain_code_diff(c(k), c(end))
+      d(k) = get_single_chain_code_diff(c(k), c(end), CONN);
     else
-      d(k) = get_single_chain_code_diff(c(k), c(k-1))
+      d(k) = get_single_chain_code_diff(c(k), c(k-1), CONN);
     end
   end
 end
 
 function d = get_single_chain_code_diff(current_code, previous_code, CONN)
-  d = current_code - previous_code
+  d = current_code - previous_code;
   if (d < 0)
-    d = d + CONN
+    d = d + CONN;
   end
 end
 

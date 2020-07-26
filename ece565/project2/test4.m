@@ -14,19 +14,30 @@ imshow(outerb_img, []);
 outerb_fdesc = fourierdescp(outerb);
 fftplot(outerb_fdesc);
 
-ifourierdescp_show_n(outerb_fdesc, 10, height, width);
+ifourierdescp_show(outerb_fdesc, 1, height, width);
+ifourierdescp_show(outerb_fdesc, length(outerb) * 0.01, height, width);
+ifourierdescp_show(outerb_fdesc, length(outerb) * 0.5, height, width);
 
 function ifourierdescp_show_n(outerb_fdesc, n, height, width)
-  for k=1:20
-    figure;
-    outerb_k = ifourierdescp(outerb_fdesc, k);
-    outerb_k_img = bound2im(outerb_k, height, width);
-    imshow(outerb_k_img, []);
+  for k=1:n
+    ifourierdescp_show(outerb_fdesc, k, height, width);
   end
 end
 
+function ifourierdescp_show(outerb_fdesc, n, height, width)
+  figure;
+  outerb_k = ifourierdescp(outerb_fdesc, n*2);
+  outerb_k_img = bound2im(outerb_k, height, width);
+  imshow(outerb_k_img, []);
+  title(n*2);
+end
+
 function s = ifourierdescp(z, nd)
+  if rem(nd,2)
+    error('Second,third inputs must be even')
+  end
   z_nd = z;
+  nd = floor(nd/2);
   z_nd(nd+1:end-nd) = 0;
   z_nd_ifft = ifft(z_nd);
   s = zeros(length(z_nd), 2);

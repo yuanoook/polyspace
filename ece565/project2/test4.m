@@ -14,9 +14,9 @@ imshow(outerb_img, []);
 outerb_fdesc = fourierdescp(outerb);
 fftplot(outerb_fdesc);
 
-ifourierdescp_show_n(outerb_fdesc, 10);
+ifourierdescp_show_n(outerb_fdesc, 10, height, width);
 
-function ifourierdescp_show_n(outerb_fdesc, n)
+function ifourierdescp_show_n(outerb_fdesc, n, height, width)
   for k=1:20
     figure;
     outerb_k = ifourierdescp(outerb_fdesc, k);

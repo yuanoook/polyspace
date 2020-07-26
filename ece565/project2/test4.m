@@ -14,9 +14,16 @@ imshow(outerb_img, []);
 outerb_fdesc = fourierdescp(outerb);
 fftplot(outerb_fdesc);
 
-outerb_4 = ifourierdescp(outerb_fdesc, 2);
-outerb_4_img = bound2im(outerb_4, height, width);
-imshow(outerb_4_img, []);
+ifourierdescp_show_n(outerb_fdesc, 10);
+
+function ifourierdescp_show_n(outerb_fdesc, n)
+  for k=1:20
+    figure;
+    outerb_k = ifourierdescp(outerb_fdesc, k);
+    outerb_k_img = bound2im(outerb_k, height, width);
+    imshow(outerb_k_img, []);
+  end
+end
 
 function s = ifourierdescp(z, nd)
   z_nd = z;

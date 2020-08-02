@@ -15,8 +15,9 @@ outerb_fdesc = fourierdescp(outerb);
 fftplot(outerb_fdesc);
 
 ifourierdescp_show(outerb_fdesc, 1, height, width);
-ifourierdescp_show(outerb_fdesc, length(outerb) * 0.01, height, width);
-ifourierdescp_show(outerb_fdesc, length(outerb) * 0.5, height, width);
+
+ifourierdescp_show(outerb_fdesc, 2 * floor(length(outerb) * 0.01 / 4), height, width);
+ifourierdescp_show(outerb_fdesc, 2 * floor(length(outerb) * 0.5 / 4), height, width);
 
 function ifourierdescp_show_n(outerb_fdesc, n, height, width)
   for k=1:n

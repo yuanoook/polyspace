@@ -1,19 +1,14 @@
-const solutions = [
-  input => input,
-  input => input + 0.999,
-  input => input + 1
-];
-let solutionIndex = 0;
+const math = require('./math')
+
+const currentPolyNumbers = [-100, 1]
+const makeSolution = polyNum => x => math.poly(polyNum, x)
 
 function update() {
-  solutionIndex ++
-  while (solutionIndex >= solutions.length) {
-    solutionIndex -= solutions.length
-  }
+  currentPolyNumbers[0] = math.add(currentPolyNumbers[0], 0.1)
 }
 
 function get () {
-  return solutions[solutionIndex]
+  return makeSolution(currentPolyNumbers)
 }
 
 function solve(input) {

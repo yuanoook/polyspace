@@ -1,12 +1,21 @@
 const solution = require('./solution')
-const threshold = 0.00000001;
+const threshold = {
+  gap: 0.00000001,
+  patience: 1000
+}
 
 function fitExpectation(input, expectation) {
+  let trial = 0
   while (true) {
     const currentExpectation = solution.solve(input)
     let gap = expectation - currentExpectation
     const error = gap * gap
     if (error <= threshold) break;
+
+    if (++trial > threshold.patience) {
+      console.error('Run out of patience!')
+      break;
+    }
 
     solution.update(input, expectation)
   }

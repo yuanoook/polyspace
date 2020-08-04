@@ -1,6 +1,6 @@
 const math = require('./math')
 
-const currentPolyNumbers = [-100, 1]
+const currentPolyNumbers = [-10, 1]
 const makeSolution = polyNum => x => math.poly(polyNum, x)
 
 function update() {

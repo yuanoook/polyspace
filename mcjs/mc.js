@@ -1,40 +1,20 @@
-const solutions = [
-  input => input,
-  input => input + 1
-];
-
-const threshold = 0;
-let solutionIndex = 0;
-
-function updateSolution() {
-  solutionIndex ++
-  while (solutionIndex >= solutions.length) {
-    solutionIndex -= solutions.length
-  }
-}
-
-function getCurrentSolution () {
-  return solutions[solutionIndex]
-}
-
-function predict(input) {
-  return getCurrentSolution()(input)
-}
+const solution = require('./solution')
+const threshold = 0.00000001;
 
 function fitExpectation(input, expectation) {
   while (true) {
-    const currentExpectation = predict(input)
+    const currentExpectation = solution.solve(input)
     let gap = expectation - currentExpectation
     const error = gap * gap
     if (error <= threshold) break;
 
-    updateSolution(input, expectation)
+    solution.update(input, expectation)
   }
 }
 
 function mc (input, expectation) {
   if (expectation === undefined) {
-    expectation = predict(input)
+    expectation = solution.solve(input)
   } else {
     fitExpectation(input, expectation)
   }

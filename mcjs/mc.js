@@ -14,7 +14,6 @@ function fitExpectation(input, expectation) {
 
     if (++trial > threshold.patience) {
       console.error('Run out of patience!')
-      console.error(gap, error, expectation, currentExpectation)
       break;
     }
 

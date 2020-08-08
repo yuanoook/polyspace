@@ -1,7 +1,7 @@
 const solution = require('./solution')
-solution.init()
+const { trace } = require('mathjs')
 
-const patience = 10000000
+const patience = 1000
 
 function lossFn (expectation, prediction) {
   return (expectation - prediction) ** 2
@@ -12,20 +12,25 @@ function fitExpectation(input, expectation) {
   while (true) {
     const prediction = solution.solve(input)
     const loss = lossFn(expectation, prediction)
-    const improvability = solution.feedback(loss)
-    if (!improvability) {
-      console.log('Total trial: ', trial)
-      console.log(solution.getCurrentPolyNumbers())
+    const yes = solution.canYouDoBetter(loss)
+    if (!yes) {
+      report(trial)
       break
     }
 
     if (++trial > patience) {
       console.error('Run out of patience!')
-      break;
+      report(trial)
+      break
     }
 
     solution.update(input, expectation)
   }
+}
+
+function report (trial) {
+  console.log('Total trial: ', trial)
+  console.log(solution.getCurrentPolyNumbers())
 }
 
 function mc (input, expectation) {

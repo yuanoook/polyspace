@@ -6,8 +6,6 @@ it('Machine choosing', () => {
 
   equal(mc(0, 1), 1)
   equal(mc(0),    1)
-  mc(1, 2)
-  mc(2, 3)
   mc(3, 4)
   equal(mc(4),    5)
 })

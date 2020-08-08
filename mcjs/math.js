@@ -1,28 +1,38 @@
-const PRECISION = 10
-const threshold = 0.00001
+const mathjs = require('mathjs')
 
-const fix = (v, precision = PRECISION) => + (v).toFixed(precision)
-const add = (a, b) => fix(a + b)
-const pow = (base, exponents) => fix(Math.pow(base, exponents))
-const multiply = (base, times) => fix(base * times)
-const divide = (base, divisor) => fix(base / divisor)
-const almostEqual = (a, b) => Math.abs(a - b) <= threshold
-const random = (a = 100000000) => fix(a * (Math.random() - 0.5))
+const sum = (...items) => items.reduce((a, b) => a + b, 0)
+const pow = (base, exponents) => base ** exponents
+const multiply = (base, times) => base * times
+const divide = (base, divisor) => base / divisor
+const almostEqual = (a, b, threshold = 0.00001) =>
+  Math.abs(a - b) <= threshold
+
+const random = (a = 100000000) => a * (Math.random() - 0.5)
+const mean = a => divide(sum(a), a.length)
+const stickAbs = function (a, b = 1, threshold = 0.000001) {
+  a = Math.abs(a)
+  if (almostEqual(a % b, 0, threshold)) return (a - a % b)
+  if (almostEqual(a % b, b, threshold)) return (a - a % b) + b
+  return a
+}
+const stick = function (a, b = 1, threshold = 0.000001) {
+  return a >= 0 ? stickAbs(a, b, threshold) : -stickAbs(a, b, threshold)
+}
 
 // https://www.youtube.com/watch?v=-Ad6pYjCAmg
 const poly = (polyNum, x) => polyNum.reduce(
-  (r, n, i) => add(r, multiply(pow(x, i), n)),
-  0
+  (r, n, i) => sum(r, multiply(pow(x, i), n)), 0
 )
 
 module.exports = {
-  PRECISION,
-  fix,
-  add,
+  ...mathjs,
+  sum,
   pow,
   multiply,
   divide,
   poly,
-  almostEqual,
-  random
+  random,
+  mean,
+  stick,
+  almostEqual
 }

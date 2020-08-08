@@ -19,5 +19,8 @@
   "homepage": "https://github.com/yuanoook/thruple#readme",
   "devDependencies": {
     "jest": "^26.0.1"
+  },
+  "dependencies": {
+    "mathjs": "^7.1.0"
   }
 }

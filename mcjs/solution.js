@@ -22,8 +22,12 @@ function update() {
     currentPolyNumbers[1]
   ])
 }
+let adjustIndex = 0
 function getDeltaX () {
-  return math.add(modelMemory[modelMemory.length - 1][0], - modelMemory[modelMemory.length - 2][0])
+  return math.add(
+    modelMemory[modelMemory.length - 1][adjustIndex],
+    - modelMemory[modelMemory.length - 2][adjustIndex]
+  )
 }
 function getUpdateDirection () {
   if (modelMemory.length === 1) return 1

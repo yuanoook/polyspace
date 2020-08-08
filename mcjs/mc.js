@@ -18,6 +18,7 @@ function fitExpectation(input, expectation) {
     const prediction = solution.solve(input)
     const loss = lossFn(expectation, prediction)
     solution.feedback(loss)
+    // if loss does not reduce anymore, stop
     if (!loss) {
       console.log(solution.getCurrentPolyNumbers())
       break

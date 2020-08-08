@@ -1,24 +1,30 @@
 const solution = require('./solution')
-const { trace } = require('mathjs')
-
-const patience = 1000
+const PATIENCE = 100000
 
 function lossFn (expectation, prediction) {
   return (expectation - prediction) ** 2
 }
 
+function overallLossFn (inputs_expectations) {
+  return inputs_expectations.reduce((r, [input, expectation]) => {
+    return r + lossFn(expectation, solution.predict(input))
+  }, 0) / inputs_expectations.length
+}
+
+const inputs_expectations_memory = []
 function fitExpectation(input, expectation) {
+  inputs_expectations_memory.push([input, expectation])
+
   let trial = 0
   while (true) {
-    const prediction = solution.solve(input)
-    const loss = lossFn(expectation, prediction)
+    const loss = overallLossFn(inputs_expectations_memory)
     const yes = solution.canYouDoBetter(loss)
     if (!yes) {
       report(trial)
       break
     }
 
-    if (++trial > patience) {
+    if (++trial > PATIENCE) {
       console.error('Run out of patience!')
       report(trial)
       break
@@ -30,12 +36,14 @@ function fitExpectation(input, expectation) {
 
 function report (trial) {
   console.log('Total trial: ', trial)
-  console.log(solution.getCurrentPolyNumbers())
+  console.log('Models: ', solution.modelMemory.splice(-5))
+  console.log('Loss: ', solution.lossMemory.splice(-5))
+  console.log('I_Es: ', inputs_expectations_memory)
 }
 
 function mc (input, expectation) {
   if (expectation === undefined) {
-    expectation = solution.solve(input)
+    expectation = solution.predict(input)
   } else {
     fitExpectation(input, expectation)
   }

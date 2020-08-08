@@ -1,7 +1,7 @@
 const math = require('./math')
 
 const makeSolution = polyNum => x => math.poly(polyNum, x)
-const learningRate = 0.2
+const learningRate = 0.1
 
 let adjustIndex = 0
 const improveThreshold = 0.00000000001
@@ -31,24 +31,36 @@ function getDeltaLoss () {
   )
 }
 
-const modelMemory = [[]]
+let modelMemory = [[]]
+const directionMemory = []
+let directRate = 1
+const downgradeDirectRate = () => directRate /= 2
+const adjustDirectRate = () => {
+  if (directionMemory.length <= 4) return
+  if (directionMemory > 10) directionMemory = directionMemory.slice(-2)
+
+  const currentDirection = directionMemory[directionMemory.length - 1]
+  const prevDirection = directionMemory[directionMemory.length - 2]
+  if (currentDirection * prevDirection >= 0) downgradeDirectRate()
+}
+
 function update() {
   const direction = getSlope()
+  directionMemory.push(direction)
+  adjustDirectRate()
+
   const currentPolyNumbers = getCurrentPolyNumbers()
   const newPolyNum = [...currentPolyNumbers]
   if (adjustIndex >= newPolyNum.length) {
     newPolyNum[adjustIndex] = math.random()
   }
 
-  // newPolyNum[adjustIndex] = math.add(
-  //   typeof newPolyNum[adjustIndex] === 'number' || math.random(),
-  //   learningRate * direction
-  // )
   newPolyNum[adjustIndex] = math.add(
     newPolyNum[adjustIndex],
-    learningRate * direction
+    learningRate * directRate * direction
   )
-  modelMemory.push(newPolyNum)
+
+  modelMemory = [currentPolyNumbers, newPolyNum]
 }
 
 function getDeltaX () {
@@ -73,7 +85,7 @@ function get () {
   return makeSolution(getCurrentPolyNumbers())
 }
 
-function solve(input) {
+function predict(input) {
   return get()(input)
 }
 
@@ -81,7 +93,7 @@ module.exports = {
   modelMemory,
   lossMemory,
   update,
-  solve,
+  predict,
   canYouDoBetter,
   getCurrentPolyNumbers
 }

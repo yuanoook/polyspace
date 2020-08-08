@@ -1,5 +1,5 @@
 const solution = require('./solution')
-const PATIENCE = 100000
+const PATIENCE = 1000
 
 function lossFn (expectation, prediction) {
   return (expectation - prediction) ** 2

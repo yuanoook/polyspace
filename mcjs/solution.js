@@ -1,6 +1,7 @@
 const math = require('./math')
 
 const makeSolution = polyNum => x => math.poly(polyNum, x)
+const learningRate = 0.2
 
 const lossMemory = [0, 0]
 function feedback (loss) {
@@ -27,7 +28,7 @@ function update() {
   const direction = getSlope()
   const currentPolyNumbers = getCurrentPolyNumbers()
   modelMemory.push([
-    math.add(currentPolyNumbers[0], 0.1 * direction),
+    math.add(currentPolyNumbers[0], learningRate * direction),
     currentPolyNumbers[1]
   ])
 }

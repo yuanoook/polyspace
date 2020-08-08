@@ -14,6 +14,7 @@ function fitExpectation(input, expectation) {
     const loss = lossFn(expectation, prediction)
     const improvability = solution.feedback(loss)
     if (!improvability) {
+      console.log('Total trial: ', trial)
       console.log(solution.getCurrentPolyNumbers())
       break
     }

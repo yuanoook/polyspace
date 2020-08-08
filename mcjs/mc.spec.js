@@ -1,11 +1,13 @@
+math = require('./math')
 mc = require('./mc')
 
 it('Machine choosing', () => {
-  expect(mc(0, 1)).toBe(1)
-  expect(mc(0)).toBe(1)
+  const equal = (a, b) => expect(math.almostEqual(a, b)).toBe(true)
 
+  equal(mc(0, 1), 1)
+  equal(mc(0),    1)
   mc(1, 2)
   mc(2, 3)
   mc(3, 4)
-  expect(mc(4)).toBe(5)
+  equal(mc(4),    5)
 })

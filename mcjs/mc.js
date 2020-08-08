@@ -1,16 +1,27 @@
 const solution = require('./solution')
+solution.init()
+
 const threshold = {
-  gap: 0.00000001,
+  gap: 0.0000000001,
   patience: 10000000
+}
+
+function lossFn (expectation, prediction) {
+  let gap = expectation - prediction
+  let error = gap * gap
+  return error <= threshold.gap ? 0 : error
 }
 
 function fitExpectation(input, expectation) {
   let trial = 0
   while (true) {
-    const currentExpectation = solution.solve(input)
-    let gap = expectation - currentExpectation
-    const error = gap * gap
-    if (error <= threshold.gap) break;
+    const prediction = solution.solve(input)
+    const loss = lossFn(expectation, prediction)
+    solution.feedback(loss)
+    if (!loss) {
+      console.log(solution.getCurrentPolyNumbers())
+      break
+    }
 
     if (++trial > threshold.patience) {
       console.error('Run out of patience!')

@@ -1,5 +1,22 @@
 const math = require('./math')
 
+const solutionList = [
+  {
+    polyNum: [],
+  }
+]
+
+
+
+
+
+
+
+
+
+
+
+
 const makeSolution = polyNum => x => math.poly(polyNum, x)
 const learningRate = 0.1
 

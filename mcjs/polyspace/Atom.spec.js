@@ -50,8 +50,18 @@ it('[PolySpace] [Atom] [Basics]', () => {
 it('[PolySpace] [Atom] [addNeighbor]', () => {
   const atom = new Atom(3)
   expect(atom.getValue()).toBe(3)
+
   let left = atom.addNeighbor(-0.1)
   expect(atom.left).toBe(left)
+
+  let right = atom.addNeighbor(0.2)
+  expect(atom.right).toBe(right)
+
+  expect(atom.getConnectedValues()).toEqual([
+    atom.getValue() * 0.9 + Atom.LEFT_SAFE_INTEGER * 0.1,
+    3,
+    atom.getValue() * 0.8 + Atom.RIGHT_SAFE_INTEGER * 0.2,
+  ])
 })
 
 it('[PolySpace] [Atom] [addConnected]', () => {

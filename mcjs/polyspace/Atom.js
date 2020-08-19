@@ -141,17 +141,11 @@ class Atom {
   getConnectedValues () {
     const results = [this.getValue()]
 
-    let left = this.left
-    while (left) {
-      results.unshift(left.getValue())
-      left = left.left
-    }
+    let left = this
+    while (left = left.left) results.unshift(left.getValue())
 
-    let right = this.right
-    while (right) {
-      results.push(right.getValue())
-      right = right.right
-    }
+    let right = this
+    while (right = right.right) results.push(right.getValue())
 
     return results
   }

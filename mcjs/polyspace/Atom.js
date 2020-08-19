@@ -137,6 +137,24 @@ class Atom {
       ? this.addRightConnected(distance)
       : this.addLeftConnected(Math.abs(distance))
   }
+
+  getConnectedValues () {
+    const results = [this.getValue()]
+
+    let left = this.left
+    while (left) {
+      results.unshift(left.getValue())
+      left = left.left
+    }
+
+    let right = this.right
+    while (right) {
+      results.push(right.getValue())
+      right = right.right
+    }
+
+    return results
+  }
 }
 
 module.exports = Atom

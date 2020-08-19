@@ -85,3 +85,4 @@ Right(+) adjacent point is bigger than the point numerically.
 # 11 Spins in space
 
 
+

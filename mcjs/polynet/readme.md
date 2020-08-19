@@ -54,6 +54,9 @@ A linked point is connected with it's adjacent neighbors.
 From any 1 dimension view,
 a linked point can only have two adjacent neighbors at most.
 
+From global view,
+2 adjacent points can only have difference in 1 dimension
+
 # 7 Sides
 
 From any 1 dimension view,
@@ -70,5 +73,15 @@ From any 1 dimension view,
 Right(+) adjacent point is bigger than the point numerically.
 
 
+# 10 Linked point examples
+
+[
+  (val1, left1-, right1+),
+  (val2, left2-, right2+),
+  (val3, left3-, right3+)
+  ...
+]
+
+# 11 Spins in space
 
 

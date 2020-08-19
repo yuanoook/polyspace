@@ -47,39 +47,34 @@ it('[PolySpace] [Atom] [Basics]', () => {
   )
 })
 
-it('[PolySpace] [Atom] [Advanced]', () => {
+it('[PolySpace] [Atom] [addNeighbor]', () => {
   const atom = new Atom(3)
   expect(atom.getValue()).toEqual(3)
   let left = atom.addNeighbor(-0.1)
-
-  const left = atom.addLeftConnected(3)
-  expect(left.getValue()).toBe(0)
-
-  const right = atom.addRightConnected(3)
-  expect(right.getValue()).toBe(6)
+  expect(atom.left).toBe(left)
 })
 
-it('[PolySpace] [Atom] [Advanced]', () => {
+it('[PolySpace] [Atom] [addConnected]', () => {
   const atom = new Atom(3)
   expect(atom.getValue()).toEqual(3)
-  let left = atom.addNeighbor(-0.1)
 
   const left = atom.addLeftConnected(3)
   expect(left.getValue()).toBe(0)
 
-  const right = atom.addRightConnected(3)
-  expect(right.getValue()).toBe(6)
-})
+  const exLeft = atom.left
+  atom.addConnected(-1.5)
+  expect(atom.left).not.toBe(exLeft)
+  expect(atom.left.left).toBe(exLeft)
+  expect(atom.left.getValue()).toBe(1.5)
 
-it('[PolySpace] [Atom] [Advanced]', () => {
-  const atom = new Atom(3)
-  expect(atom.getValue()).toEqual(3)
-  let left = atom.addNeighbor(-0.1)
-
-  const left = atom.addLeftConnected(3)
-  expect(left.getValue()).toBe(0)
 
   const right = atom.addRightConnected(3)
   expect(right.getValue()).toBe(6)
+
+  const exRight = atom.right
+  atom.addConnected(1.5)
+  expect(atom.right).not.toBe(exRight)
+  expect(atom.right.right).toBe(exRight)
+  expect(atom.right.getValue()).toBe(4.5)
 })
 

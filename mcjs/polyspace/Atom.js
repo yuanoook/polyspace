@@ -1,3 +1,8 @@
+const {
+  generateRandomDistanceRatio,
+  generateRandomNatureNumber
+} = require('./utils')
+
 class Atom {
   static LEFT_INFINITY = -Infinity
   static RIGHT_INFINITY = Infinity
@@ -7,13 +12,24 @@ class Atom {
   static DISTANCE_STEP_ONE = 1
 
   constructor (value = 0) {
-    this.value = value
+    this.setValue(value)
     this.left = null
     this.right = null
   }
 
   setValue (value) {
+    this.validateValue(value)
     this.value = value
+  }
+
+  validateValue (value) {
+    if (value < Atom.LEFT_SAFE_INTEGER ||
+      value > Atom.RIGHT_SAFE_INTEGER
+    ) throw new Error(`Atom.LEFT_SAFE_INTEGER(${
+      Atom.LEFT_SAFE_INTEGER
+    }) < value < Atom.RIGHT_SAFE_INTEGER(${
+      Atom.RIGHT_SAFE_INTEGER
+    }). We get ${value}`)
   }
 
   getValue () {
@@ -69,6 +85,14 @@ class Atom {
     return distanceRatio > 0
       ? this.addRightNeighbor(distanceRatio)
       : this.addLeftNeighbor(Math.abs(distanceRatio))
+  }
+
+  addNeighborRandom () {
+    return this.addNeighbor(generateRandomDistanceRatio())
+  }
+
+  gotoNeighborRandom () {
+    return Math.random() < 0.5 ? this.left : this.right
   }
 
   validateDistanceRatio (distanceRatio) {
@@ -138,16 +162,34 @@ class Atom {
       : this.addLeftConnected(Math.abs(distance))
   }
 
-  getConnectedValues () {
-    const results = [this.getValue()]
+  addConnectedAt (value) {
+    this.validateValue(value)
+    this.addConnected(value - this.getValue())
+  }
+
+  addConnectedRandom () {
+
+  }
+
+  gotoConnectedRandom () {
+    const chainAtoms = this.getChainAtoms()
+    return chainAtoms[generateRandomNatureNumber(chainAtoms.length)]
+  }
+
+  getChainAtoms () {
+    const results = [this]
 
     let left = this
-    while (left = left.left) results.unshift(left.getValue())
+    while (left = left.left) results.unshift(left)
 
     let right = this
-    while (right = right.right) results.push(right.getValue())
+    while (right = right.right) results.push(right)
 
     return results
+  }
+
+  getChainValues () {
+    return this.getChainAtoms().map(atom => atom.getValue())
   }
 }
 

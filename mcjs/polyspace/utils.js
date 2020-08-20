@@ -1,4 +1,3 @@
-
 function generateRandomDistanceRatio () {
   while (true) {
     const ratio = Math.random() * 2 - 1
@@ -6,11 +5,16 @@ function generateRandomDistanceRatio () {
   }
 }
 
-function generateRandomNatureNumber (upperLimit = Number.MAX_SAFE_INTEGER) {
+function generateRandomNaturalNumber (upperLimit = Number.MAX_SAFE_INTEGER) {
   return Math.floor(Math.random() * upperLimit)
+}
+
+function generateRandomSafeNumber (limit = Number.MAX_SAFE_INTEGER) {
+  return generateRandomDistanceRatio() * limit
 }
 
 module.exports = {
   generateRandomDistanceRatio,
-  generateRandomNatureNumber
+  generateRandomNaturalNumber,
+  generateRandomSafeNumber
 }

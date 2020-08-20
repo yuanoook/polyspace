@@ -127,6 +127,13 @@ it('[PolySpace] [Atom] [random] [gotoConnectedRandom]', () => {
   expect(left === neighbor || right === neighbor).toBe(true)
 })
 
+it('[PolySpace] [Atom] [random] [addConnectedRandom]', () => {
+  const atom = new Atom()
+  expect(
+    atom.validateValue(atom.addConnectedRandom().getValue())
+  ).toBe(true)
+})
+
 it('[PolySpace] [Atom] [validateValue]', () => {
   const atom = new Atom()
   expect(() => atom.validateValue(Infinity)).toThrow()
@@ -140,7 +147,7 @@ it('[PolySpace] [Atom] [validateValue]', () => {
   expect(() => new Atom(-Infinity)).toThrow()
 })
 
-it('[PolySpace] [Atom] [random] [addConnectedAt]', () => {
+it('[PolySpace] [Atom] [addConnectedAt]', () => {
   const atom = new Atom()
   let newValue = (Math.random() - 0.5) * 10000000
 
@@ -152,4 +159,5 @@ it('[PolySpace] [Atom] [random] [addConnectedAt]', () => {
 
   expect(() => atom.addConnectedAt(0)).toThrow()
 })
+
 

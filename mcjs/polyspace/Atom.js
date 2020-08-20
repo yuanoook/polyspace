@@ -1,6 +1,7 @@
 const {
   generateRandomDistanceRatio,
-  generateRandomNatureNumber
+  generateRandomNaturalNumber,
+  generateRandomSafeNumber
 } = require('./utils')
 
 class Atom {
@@ -30,6 +31,7 @@ class Atom {
     }) < value < Atom.RIGHT_SAFE_INTEGER(${
       Atom.RIGHT_SAFE_INTEGER
     }). We get ${value}`)
+    return true
   }
 
   getValue () {
@@ -168,12 +170,12 @@ class Atom {
   }
 
   addConnectedRandom () {
-
+    return this.addConnectedAt(generateRandomSafeNumber())
   }
 
   gotoConnectedRandom () {
     const chainAtoms = this.getChainAtoms()
-    return chainAtoms[generateRandomNatureNumber(chainAtoms.length)]
+    return chainAtoms[generateRandomNaturalNumber(chainAtoms.length)]
   }
 
   getChainAtoms () {

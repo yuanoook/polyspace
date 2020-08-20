@@ -71,6 +71,36 @@ class Point {
     return repeat(i => this.copyWithAtomAt(index, atomNeighbors[i]), count)
   }
 
+  // TODO: finish and add test
+  findRandomLeftNeighbor () {
+
+  }
+
+  // TODO: finish and add test
+  findRandomRightNeighbor () {
+
+  }
+
+  // TODO: finish and add test
+  findRandomNeighbor () {
+
+  }
+
+  // TODO: finish and add test
+  findRandomLeftNeighbors (count = 1) {
+
+  }
+
+  // TODO: finish and add test
+  findRandomRightNeighbors (count = 1) {
+
+  }
+
+  // TODO: finish and add test
+  findRandomNeighbors (count = 1) {
+
+  }
+
   // TODO: add test
   findLeftConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
     const atomConnected = this.getAtom(index).findLeftConnected(distance)

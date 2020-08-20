@@ -178,6 +178,52 @@ class Atom {
     return chainAtoms[generateRandomNaturalNumber(chainAtoms.length)]
   }
 
+  // TODO: add test
+  gotoLeftMost () {
+    let left = this
+    while (left.left) left = left.left
+    return left
+  }
+
+  // TODO: add test
+  gotoRightMost () {
+    let right = this
+    while (right.right) right = right.right
+    return right
+  }
+
+  // TODO: add test
+  walkToLeftMost (call) {
+    let left = this
+    let results = []
+    while (left) {
+      results.push(call(left))
+      left = left.left
+    }
+    return results
+  }
+
+  // TODO: add test
+  walkToRightMost (call) {
+    let right = this
+    let results = []
+    while (right) {
+      results.push(call(right))
+      right = right.right
+    }
+    return results
+  }
+
+  // TODO: add test
+  walkAllFromLeft (call) {
+    return this.gotoLeftMost().walkToRightMost(call)
+  }
+
+  // TODO: add test
+  walkAllFromRight (call) {
+    return this.gotoRightMost().walkToLeftMost(call)
+  }
+
   getChainAtoms () {
     const results = [this]
 

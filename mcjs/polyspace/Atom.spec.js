@@ -202,7 +202,7 @@ it('[PolySpace] [Atom] [isConnected]', () => {
   expect(connected.isConnected(neighbor)).toBe(true)
 })
 
-it('[PolySpace] [Atom] [gotoLeftMost/gotoRightMost]', () => {
+it('[PolySpace] [Atom] [gotoLeftMost / gotoRightMost]', () => {
   const atom = new Atom()
   const newNeighbors = atom.addRandomNeighbors(5)
   const newConnecteds = atom.addRandomConnecteds(5)
@@ -217,4 +217,35 @@ it('[PolySpace] [Atom] [gotoLeftMost/gotoRightMost]', () => {
   expect(rightMost.gotoLeftMost()).toBe(leftMost)
 })
 
+it('[PolySpace] [Atom] [walkLeftUntil / walkRightUntil]', () => {
+  const atom = new Atom()
+  const newNeighbors = atom.addRandomNeighbors(5)
+  const newConnecteds = atom.addRandomConnecteds(5)
+  const chainLength = atom.getChainAtoms().length
+  const leftMost = atom.gotoLeftMost()
+  const rightMost = atom.gotoRightMost()
 
+  const callFalse = jest.fn(x => false)
+  expect(atom.walkLeftUntil(callFalse)).not.toBe(true)
+  expect(atom.walkRightUntil(callFalse)).not.toBe(true)
+  expect(callFalse.mock.calls.length).toBe(chainLength - 1)
+  expect(callFalse.mock.calls.find(([x]) => x === atom)).not.toBe(atom)
+
+  const callTrue = jest.fn(x => true)
+  expect(atom.walkLeftUntil(callTrue)).toBe(true)
+  expect(atom.walkRightUntil(callTrue)).toBe(true)
+  expect(callTrue.mock.calls.length).toBe(2)
+  expect(callTrue.mock.calls.find(([x]) => x === atom)).not.toBe(atom)
+
+  const callX = jest.fn(x => x)
+  expect(atom.walkLeftUntil(callX)).toBe(atom.left)
+  expect(atom.walkRightUntil(callX)).toBe(atom.right)
+  expect(callX.mock.calls.length).toBe(2)
+  expect(callX.mock.calls).toEqual([[atom.left], [atom.right]])
+
+  const callY = jest.fn(y => y)
+  expect(atom.walkLeftUntil(callY, true)).toBe(atom)
+  expect(atom.walkRightUntil(callY, true)).toBe(atom)
+  expect(callY.mock.calls.length).toBe(2)
+  expect(callY.mock.calls).toEqual([[atom], [atom]])
+})

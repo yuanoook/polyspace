@@ -8,12 +8,12 @@ it('[PolySpace] [Atom] [Basics]', () => {
   expect(atom.right).toBe(null)
   expect(Atom.DISTANCE_RATIO_HALF).toBe(.5)
 
-  atom.addLeftNeighbor()
+  atom.findLeftNeighbor()
   expect(atom.left).not.toBe(null)
   expect(atom.left.getValue()).toBe(Atom.LEFT_SAFE_INTEGER / 2)
   expect(atom.right).toBe(null)
 
-  atom.addRightNeighbor()
+  atom.findRightNeighbor()
   expect(atom.right).not.toBe(null)
   expect(atom.right.getValue()).toBe(Atom.RIGHT_SAFE_INTEGER / 2)
 
@@ -23,7 +23,7 @@ it('[PolySpace] [Atom] [Basics]', () => {
   expect(atom.right.right).toBe(null)
 
   let exLeft = atom.left
-  let newLeft = atom.addLeftNeighbor()
+  let newLeft = atom.findLeftNeighbor()
   expect(atom.left).not.toBe(exLeft)
   expect(atom.left).toBe(newLeft)
   expect(atom.left.left).toBe(exLeft)
@@ -35,7 +35,7 @@ it('[PolySpace] [Atom] [Basics]', () => {
   )
 
   let exRight = atom.right
-  let newRight = atom.addRightNeighbor()
+  let newRight = atom.findRightNeighbor()
   expect(atom.right).not.toBe(exRight)
   expect(atom.right).toBe(newRight)
   expect(atom.right.right).toBe(exRight)
@@ -47,14 +47,14 @@ it('[PolySpace] [Atom] [Basics]', () => {
   )
 })
 
-it('[PolySpace] [Atom] [addNeighbor]', () => {
+it('[PolySpace] [Atom] [findNeighbor]', () => {
   const atom = new Atom(3)
   expect(atom.getValue()).toBe(3)
 
-  let left = atom.addNeighbor(-0.1)
+  let left = atom.findNeighbor(-0.1)
   expect(atom.left).toBe(left)
 
-  let right = atom.addNeighbor(0.2)
+  let right = atom.findNeighbor(0.2)
   expect(atom.right).toBe(right)
 
   expect(atom.getChainValues()).toEqual([
@@ -64,74 +64,74 @@ it('[PolySpace] [Atom] [addNeighbor]', () => {
   ])
 })
 
-it('[PolySpace] [Atom] [addConnected]', () => {
+it('[PolySpace] [Atom] [findConnected]', () => {
   const atom = new Atom(3)
   expect(atom.getValue()).toBe(3)
   expect(atom.getChainValues()).toEqual([3])
 
-  const left = atom.addLeftConnected(3)
+  const left = atom.findLeftConnected(3)
   expect(left.getValue()).toBe(0)
   expect(atom.getChainValues()).toEqual([0, 3])
 
   const exLeft = atom.left
-  atom.addConnected(-1.5)
+  atom.findConnected(-1.5)
   expect(atom.left).not.toBe(exLeft)
   expect(atom.left.left).toBe(exLeft)
   expect(atom.left.getValue()).toBe(1.5)
   expect(atom.getChainValues()).toEqual([0, 1.5, 3])
 
 
-  const right = atom.addRightConnected(3)
+  const right = atom.findRightConnected(3)
   expect(right.getValue()).toBe(6)
   expect(atom.getChainValues()).toEqual([0, 1.5, 3, 6])
 
   const exRight = atom.right
-  atom.addConnected(1.5)
+  atom.findConnected(1.5)
   expect(atom.right).not.toBe(exRight)
   expect(atom.right.right).toBe(exRight)
   expect(atom.right.getValue()).toBe(4.5)
   expect(atom.getChainValues()).toEqual([0, 1.5, 3, 4.5, 6])
 
-  const leftMost = atom.addConnected(-10)
+  const leftMost = atom.findConnected(-10)
   expect(leftMost.getValue()).toBe(-7)
   expect(leftMost.left).toBe(null)
   expect(leftMost.getLeftNeighborValue()).toBe(Atom.LEFT_INFINITY)
   expect(atom.getChainValues()).toEqual([-7, 0, 1.5, 3, 4.5, 6])
 
-  const rightMost = atom.addConnected(10)
+  const rightMost = atom.findConnected(10)
   expect(rightMost.getValue()).toBe(13)
   expect(rightMost.right).toBe(null)
   expect(rightMost.getRightNeighborValue()).toBe(Atom.RIGHT_INFINITY)
   expect(atom.getChainValues()).toEqual([-7, 0, 1.5, 3, 4.5, 6, 13])
 })
 
-it('[PolySpace] [Atom] [random] [addRandomNeighbor]', () => {
+it('[PolySpace] [Atom] [random] [findRandomNeighbor]', () => {
   const atom = new Atom()
-  let neighbor = atom.addRandomNeighbor()
+  let neighbor = atom.findRandomNeighbor()
   expect(atom.left === neighbor || atom.right === neighbor).toBe(true)
 })
 
 it('[PolySpace] [Atom] [random] [gotoRandomNeighbor]', () => {
   const atom = new Atom()
-  let left = atom.addLeftNeighbor()
-  let right = atom.addRightNeighbor()
+  let left = atom.findLeftNeighbor()
+  let right = atom.findRightNeighbor()
   neighbor = atom.gotoRandomNeighbor()
   expect(left === neighbor || right === neighbor).toBe(true)
 })
 
 it('[PolySpace] [Atom] [random] [gotoRandomConnected]', () => {
   const atom = new Atom()
-  atom.addRandomConnected()
-  atom.addRandomConnected()
-  atom.addRandomConnected()
+  atom.findRandomConnected()
+  atom.findRandomConnected()
+  atom.findRandomConnected()
   neighbor = atom.gotoRandomConnected()
   expect(atom.getChainAtoms().indexOf(neighbor) > -1).toBe(true)
 })
 
-it('[PolySpace] [Atom] [random] [addRandomConnected]', () => {
+it('[PolySpace] [Atom] [random] [findRandomConnected]', () => {
   const atom = new Atom()
   expect(
-    atom.validateValue(atom.addRandomConnected().getValue())
+    atom.validateValue(atom.findRandomConnected().getValue())
   ).toBe(true)
 })
 
@@ -148,22 +148,22 @@ it('[PolySpace] [Atom] [validateValue]', () => {
   expect(() => new Atom(-Infinity)).toThrow()
 })
 
-it('[PolySpace] [Atom] [addConnectedAt]', () => {
+it('[PolySpace] [Atom] [findConnectedAt]', () => {
   const atom = new Atom()
   let newValue = (Math.random() - 0.5) * 10000000
 
   if (newValue === 0) {
-    expect(() => atom.addConnectedAt(newValue)).toThrow()
+    expect(() => atom.findConnectedAt(newValue)).toThrow()
   } else {
-    expect(atom.addConnectedAt(newValue).getValue()).toBe(newValue)
+    expect(atom.findConnectedAt(newValue).getValue()).toBe(newValue)
   }
 
-  expect(() => atom.addConnectedAt(0)).toThrow()
+  expect(() => atom.findConnectedAt(0)).toThrow()
 })
 
 it('[PolySpace] [Atom] [randomNeighbor]', () => {
   const atom = new Atom()
-  const newNeighbors = atom.addRandomNeighbors(5)
+  const newNeighbors = atom.findRandomNeighbors(5)
   expect(newNeighbors.length).toBe(5)
 
   const newNeighbor = newNeighbors[newNeighbors.length - 1]
@@ -179,7 +179,7 @@ it('[PolySpace] [Atom] [randomConnected]', () => {
   const atom = new Atom()
   expect(() => atom.gotoRandomConnected()).toThrow()
 
-  const newConnecteds = atom.addRandomConnecteds(5)
+  const newConnecteds = atom.findRandomConnecteds(5)
   expect(newConnecteds.length).toBe(5)
 
   const newConnected = newConnecteds[newConnecteds.length - 1]
@@ -193,8 +193,8 @@ it('[PolySpace] [Atom] [randomConnected]', () => {
 
 it('[PolySpace] [Atom] [isConnected]', () => {
   const atom = new Atom()
-  const newNeighbors = atom.addRandomNeighbors(5)
-  const newConnecteds = atom.addRandomConnecteds(5)
+  const newNeighbors = atom.findRandomNeighbors(5)
+  const newConnecteds = atom.findRandomConnecteds(5)
   const neighbor = newNeighbors[0]
   const connected = newConnecteds[0]
 
@@ -204,8 +204,8 @@ it('[PolySpace] [Atom] [isConnected]', () => {
 
 it('[PolySpace] [Atom] [gotoLeftMost / gotoRightMost]', () => {
   const atom = new Atom()
-  const newNeighbors = atom.addRandomNeighbors(5)
-  const newConnecteds = atom.addRandomConnecteds(5)
+  const newNeighbors = atom.findRandomNeighbors(5)
+  const newConnecteds = atom.findRandomConnecteds(5)
   const leftMost = atom.gotoLeftMost()
   const rightMost = atom.gotoRightMost()
 
@@ -219,8 +219,8 @@ it('[PolySpace] [Atom] [gotoLeftMost / gotoRightMost]', () => {
 
 it('[PolySpace] [Atom] [walkLeftUntil / walkRightUntil]', () => {
   const atom = new Atom()
-  const newNeighbors = atom.addRandomNeighbors(5)
-  const newConnecteds = atom.addRandomConnecteds(5)
+  const newNeighbors = atom.findRandomNeighbors(5)
+  const newConnecteds = atom.findRandomConnecteds(5)
   const chainLength = atom.getChainAtoms().length
   const leftMost = atom.gotoLeftMost()
   const rightMost = atom.gotoRightMost()
@@ -252,8 +252,8 @@ it('[PolySpace] [Atom] [walkLeftUntil / walkRightUntil]', () => {
 
 it('[PolySpace] [Atom] [walkToLeftMost / walkToRightMost]', () => {
   const atom = new Atom()
-  const newNeighbors = atom.addRandomNeighbors(5)
-  const newConnecteds = atom.addRandomConnecteds(5)
+  const newNeighbors = atom.findRandomNeighbors(5)
+  const newConnecteds = atom.findRandomConnecteds(5)
   const chainAtoms = atom.getChainAtoms()
   const leftMost = atom.gotoLeftMost()
   const rightMost = atom.gotoRightMost()

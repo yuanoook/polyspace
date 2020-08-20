@@ -37,16 +37,16 @@ class Point {
     this.atoms[index] = this.atoms[index] || new Atom()
   }
 
-  // TODO: finish this and add test
-  addLeftNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+  // TODO: finish this and find test
+  findLeftNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     this.checkIndex(index)
   }
 
-  addRightNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+  findRightNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     this.checkIndex(index)
   }
 
-  addNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+  findNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     this.checkIndex(index)
   }
 }

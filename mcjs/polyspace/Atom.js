@@ -67,31 +67,31 @@ class Atom {
       this.getValue() * (1 - distanceRatio) 
   }
 
-  addLeftNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+  findLeftNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     this.validateDistanceRatio(distanceRatio)
     const leftHalfwayValue = this.getLeftHalfwayValue(distanceRatio)
     return this.connectLeftNeighbor(new Atom(leftHalfwayValue))
   }
 
-  addRightNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+  findRightNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     this.validateDistanceRatio(distanceRatio)
     const rightHalfwayValue = this.getRightHalfwayValue(distanceRatio)
     return this.connectRightNeighbor(new Atom(rightHalfwayValue))
   }
 
-  addNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+  findNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     this.validateDistanceRatio(distanceRatio)
     return distanceRatio > 0
-      ? this.addRightNeighbor(distanceRatio)
-      : this.addLeftNeighbor(Math.abs(distanceRatio))
+      ? this.findRightNeighbor(distanceRatio)
+      : this.findLeftNeighbor(Math.abs(distanceRatio))
   }
 
-  addRandomNeighbor () {
-    return this.addNeighbor(generateRandomDistanceRatio())
+  findRandomNeighbor () {
+    return this.findNeighbor(generateRandomDistanceRatio())
   }
 
-  addRandomNeighbors (count = 1) {
-    return repeat(() => this.addRandomNeighbor(), count)
+  findRandomNeighbors (count = 1) {
+    return repeat(() => this.findRandomNeighbor(), count)
   }
 
   isLeftNeighbor (atom) {
@@ -141,8 +141,8 @@ class Atom {
     return newNeighbor
   }
 
-  addLeftConnected (distance = Atom.DISTANCE_STEP_ONE) {
-    if (distance < 0) throw new Error(`AddLeftConnected ${distance}`)
+  findLeftConnected (distance = Atom.DISTANCE_STEP_ONE) {
+    if (distance < 0) throw new Error(`findLeftConnected ${distance}`)
 
     const newValue = this.value - distance
     let atom = this
@@ -152,11 +152,11 @@ class Atom {
       if (leftValue < newValue) return atom.connectLeftNeighbor(new Atom(newValue))
       atom = atom.left
     }
-    throw new Error(`AddLeftConnected ${distance}`)
+    throw new Error(`findLeftConnected ${distance}`)
   }
 
-  addRightConnected (distance = Atom.DISTANCE_STEP_ONE) {
-    if (distance < 0) throw new Error(`addRightConnected ${distance}`)
+  findRightConnected (distance = Atom.DISTANCE_STEP_ONE) {
+    if (distance < 0) throw new Error(`findRightConnected ${distance}`)
 
     const newValue = this.value + distance
     let atom = this
@@ -166,20 +166,20 @@ class Atom {
       if (rightValue > newValue) return atom.connectRightNeighbor(new Atom(newValue))
       atom = atom.right
     }
-    throw new Error(`AddRightConnected ${distance}`)
+    throw new Error(`findRightConnected ${distance}`)
   }
 
-  addConnected (distance = Atom.DISTANCE_STEP_ONE) {
-    if (distance === 0) throw new Error(`addConnected ${distance}`)
+  findConnected (distance = Atom.DISTANCE_STEP_ONE) {
+    if (distance === 0) throw new Error(`findConnected ${distance}`)
 
     return distance > 0
-      ? this.addRightConnected(distance)
-      : this.addLeftConnected(Math.abs(distance))
+      ? this.findRightConnected(distance)
+      : this.findLeftConnected(Math.abs(distance))
   }
 
-  addConnectedAt (value) {
+  findConnectedAt (value) {
     this.validateValue(value)
-    return this.addConnected(value - this.getValue())
+    return this.findConnected(value - this.getValue())
   }
 
   isLeftConnected (atom) {
@@ -194,12 +194,12 @@ class Atom {
     return this.isLeftConnected(atom) || this.isRightConnected(atom)
   }
 
-  addRandomConnected () {
-    return this.addConnectedAt(generateRandomSafeNumber())
+  findRandomConnected () {
+    return this.findConnectedAt(generateRandomSafeNumber())
   }
 
-  addRandomConnecteds (count = 1) {
-    return repeat(() => this.addRandomConnected(), count)
+  findRandomConnecteds (count = 1) {
+    return repeat(() => this.findRandomConnected(), count)
   }
 
   gotoRandomConnected () {

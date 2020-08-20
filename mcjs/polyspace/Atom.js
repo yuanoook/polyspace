@@ -1,7 +1,8 @@
 const {
   generateRandomDistanceRatio,
   generateRandomNaturalNumber,
-  generateRandomSafeNumber
+  generateRandomSafeNumber,
+  repeat
 } = require('./utils')
 
 class Atom {
@@ -91,6 +92,11 @@ class Atom {
 
   addNeighborRandom () {
     return this.addNeighbor(generateRandomDistanceRatio())
+  }
+
+  // TODO: ADD TEST
+  addNeighborsRandom (count = 1) {
+    return repeat(() => this.addNeighborRandom(), count)
   }
 
   gotoNeighborRandom () {

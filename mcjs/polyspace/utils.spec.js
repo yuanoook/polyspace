@@ -1,7 +1,8 @@
 const {
   generateRandomDistanceRatio,
   generateRandomNaturalNumber,
-  generateRandomSafeNumber
+  generateRandomSafeNumber,
+  repeat
 } = require('./utils')
 
 it('[PolySpace] [utils] [generateRandomDistanceRatio]', () => {
@@ -34,4 +35,11 @@ it('[PolySpace] [utils] [generateRandomSafeNumber]', () => {
     expect(safeNumber).toBeLessThan(limit)
     expect(safeNumber).toBeGreaterThan(-limit)
   }
+})
+
+it('[PolySpace] [utils] [repeat]', () => {
+  expect(repeat(() => 0)).toEqual([0])
+  expect(repeat(() => 0, 3)).toEqual([0, 0, 0])
+  let count = 0
+  expect(repeat(() => count++, 3)).toEqual([0, 1, 2])
 })

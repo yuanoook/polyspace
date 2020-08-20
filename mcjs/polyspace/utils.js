@@ -13,8 +13,18 @@ function generateRandomSafeNumber (limit = Number.MAX_SAFE_INTEGER) {
   return generateRandomDistanceRatio() * limit
 }
 
+function repeat (call, count = 1) {
+  const results = []
+  while (count > 0) {
+    results.push(call())
+    count --
+  }
+  return results
+}
+
 module.exports = {
   generateRandomDistanceRatio,
   generateRandomNaturalNumber,
-  generateRandomSafeNumber
+  generateRandomSafeNumber,
+  repeat
 }

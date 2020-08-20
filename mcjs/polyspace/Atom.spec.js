@@ -177,6 +177,8 @@ it('[PolySpace] [Atom] [randomNeighbor]', () => {
 
 it('[PolySpace] [Atom] [randomConnected]', () => {
   const atom = new Atom()
+  expect(() => atom.gotoRandomConnected()).toThrow()
+
   const newConnecteds = atom.addRandomConnecteds(5)
   expect(newConnecteds.length).toBe(5)
 
@@ -198,6 +200,21 @@ it('[PolySpace] [Atom] [isConnected]', () => {
 
   expect(neighbor.isConnected(connected)).toBe(true)
   expect(connected.isConnected(neighbor)).toBe(true)
+})
+
+it('[PolySpace] [Atom] [gotoLeftMost/gotoRightMost]', () => {
+  const atom = new Atom()
+  const newNeighbors = atom.addRandomNeighbors(5)
+  const newConnecteds = atom.addRandomConnecteds(5)
+  const leftMost = atom.gotoLeftMost()
+  const rightMost = atom.gotoRightMost()
+
+  expect(leftMost.isConnected(rightMost)).toBe(true)
+  expect(rightMost.isConnected(leftMost)).toBe(true)
+  expect(leftMost.gotoLeftMost()).toBe(leftMost)
+  expect(rightMost.gotoRightMost()).toBe(rightMost)
+  expect(leftMost.gotoRightMost()).toBe(rightMost)
+  expect(rightMost.gotoLeftMost()).toBe(leftMost)
 })
 
 

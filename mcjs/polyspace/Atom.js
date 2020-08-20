@@ -208,25 +208,28 @@ class Atom {
 
   gotoRandomConnected () {
     const chainAtoms = this.getChainAtoms()
-    return chainAtoms[generateRandomNaturalNumber(chainAtoms.length)]
+    if (chainAtoms.length === 1) throw new Error(`gotoRandomConnected: There's only one atom!`)
+    while (true) {
+      const result = chainAtoms[generateRandomNaturalNumber(chainAtoms.length)]
+      if (result !== this) return result
+    }
   }
 
-  // TODO: add test
   gotoLeftMost () {
     let left = this
     while (left.left) left = left.left
     return left
   }
 
-  // TODO: add test
   gotoRightMost () {
     let right = this
     while (right.right) right = right.right
     return right
   }
 
-  walkLeftUntil (call) {
-    let left = this.left
+  // TODO: add test
+  walkLeftUntil (call, includeThis = false) {
+    let left = includeThis ? this : this.left
     while (left) {
       const result = call(left)
       if (result) return result
@@ -235,8 +238,8 @@ class Atom {
   }
 
   // TODO: add test
-  walkLeftMost (call) {
-    let left = this
+  walkToLeftMost (call, includeThis = false) {
+    let left = includeThis ? this : this.left
     let results = []
     while (left) {
       results.push(call(left))
@@ -245,8 +248,8 @@ class Atom {
     return results
   }
 
-  walkRightUntil (call) {
-    let right = this.right
+  walkRightUntil (call, includeThis = false) {
+    let right = includeThis ? this : this.right
     while (right) {
       const result = call(right)
       if (result) return result
@@ -255,8 +258,8 @@ class Atom {
   }
 
   // TODO: add test
-  walkToRightMost (call) {
-    let right = this
+  walkToRightMost (call, includeThis = false) {
+    let right = includeThis ? this : this.right
     let results = []
     while (right) {
       results.push(call(right))

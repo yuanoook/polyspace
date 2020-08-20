@@ -8,14 +8,14 @@ class Point {
     this.atoms = nomials.map(value => new Atom(value))
   }
   getAtom (index) {
-    this.checkDimension(index)
+    this.checkIndex(index)
     return this.atoms[index]
   }
   getAtoms () {
     return this.atoms
   }
   getNomial (index) {
-    this.checkDimension(index)
+    this.checkIndex(index)
     return this.atoms[index].getValue()
   }
   getNomials () {
@@ -24,8 +24,10 @@ class Point {
   getDimensions () {
     return this.atoms.length
   }
-  checkDimension (index) {
-    const dimension = index + 1
+  checkIndex (index) {
+    return this.checkDimension(index + 1)
+  }
+  checkDimension (dimension) {
     if (this.getDimensions() < dimension) this.extendDimension(dimension)
   }
   extendDimension (dimension) {
@@ -35,14 +37,17 @@ class Point {
     this.atoms[index] = this.atoms[index] || new Atom()
   }
 
+  // TODO: finish this and add test
   addLeftNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    this.atoms[index]
+    this.checkIndex(index)
   }
 
   addRightNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+    this.checkIndex(index)
   }
 
   addNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+    this.checkIndex(index)
   }
 }
 

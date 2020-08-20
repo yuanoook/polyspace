@@ -18,4 +18,12 @@ it('[PolySpace] [Point] [Basics]', () => {
   expect(point.getNomial(6)).toBe(0)
   expect(point.getNomials()).toEqual([1, 2, 3, 4, 0, 0, 0])
   expect(point.getDimensions()).toBe(7)
+
+  point.checkIndex(8)
+  expect(point.getNomials()).toEqual([1, 2, 3, 4, 0, 0, 0, 0, 0])
+  expect(point.getDimensions()).toBe(9)
+
+  point.checkDimension(10)
+  expect(point.getNomials()).toEqual([1, 2, 3, 4, 0, 0, 0, 0, 0, 0])
+  expect(point.getDimensions()).toBe(10)
 })

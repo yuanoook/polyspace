@@ -16,7 +16,7 @@ function generateRandomSafeNumber (limit = Number.MAX_SAFE_INTEGER) {
 function repeat (call, count = 1) {
   const results = []
   while (count > 0) {
-    results.push(call())
+    results.push(call(results.length))
     count --
   }
   return results

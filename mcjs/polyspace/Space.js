@@ -25,7 +25,7 @@ class Space {
     this.atoms[index] = new Atom(value)
   }
 
-  getIndex (index) {
+  getAtom (index) {
     const atom = this.atoms[index]
     return atom ? atom.getValue() : 0
   }

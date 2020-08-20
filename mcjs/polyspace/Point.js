@@ -1,33 +1,48 @@
 const Atom = require('./Atom')
+const {
+  repeat
+} = require('./utils')
 
 class Point {
-  constructor (value = []) {
-    this.atoms = []
-    this.__setAtoms (value)
+  constructor (nomials = []) {
+    this.atoms = nomials.map(value => new Atom(value))
   }
-
-  // @private
-  __setAtoms (scalars) {
-    this.atoms.length = 0
-    for (let index in scalars)
-      this.setIndex(index, scalars[index])
+  getAtom (index) {
+    this.checkDimension(index)
+    return this.atoms[index]
   }
-
-  setValue (value) {
-    this.__setAtoms(value)
+  getAtoms () {
+    return this.atoms
   }
-
-  getValue () {
+  getNomial (index) {
+    this.checkDimension(index)
+    return this.atoms[index].getValue()
+  }
+  getNomials () {
     return this.atoms.map(atom => atom.getValue())
   }
-
-  setIndex (index, value) {
-    this.atoms[index] = new Atom(value)
+  getDimensions () {
+    return this.atoms.length
+  }
+  checkDimension (index) {
+    const dimension = index + 1
+    if (this.getDimensions() < dimension) this.extendDimension(dimension)
+  }
+  extendDimension (dimension) {
+    repeat(index => this.fillIndexWithZeroAtom(index), dimension)
+  }
+  fillIndexWithZeroAtom (index) {
+    this.atoms[index] = this.atoms[index] || new Atom()
   }
 
-  getIndex (index) {
-    const atom = this.atoms[index]
-    return atom ? atom.getValue() : 0
+  addLeftNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+    this.atoms[index]
+  }
+
+  addRightNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+  }
+
+  addNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
   }
 }
 

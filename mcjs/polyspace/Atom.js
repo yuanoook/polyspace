@@ -227,9 +227,8 @@ class Atom {
     return right
   }
 
-  // TODO: add test
-  walkLeftUntil (call, includeThis = false) {
-    let left = includeThis ? this : this.left
+  walkLeftUntil (call, includeSelf = false) {
+    let left = includeSelf ? this : this.left
     while (left) {
       const result = call(left)
       if (result) return result
@@ -237,19 +236,16 @@ class Atom {
     }
   }
 
-  // TODO: add test
-  walkToLeftMost (call, includeThis = false) {
-    let left = includeThis ? this : this.left
+  walkToLeftMost (call, includeSelf = false) {
     let results = []
-    while (left) {
+    this.walkLeftUntil(left => {
       results.push(call(left))
-      left = left.left
-    }
+    }, includeSelf)
     return results
   }
 
-  walkRightUntil (call, includeThis = false) {
-    let right = includeThis ? this : this.right
+  walkRightUntil (call, includeSelf = false) {
+    let right = includeSelf ? this : this.right
     while (right) {
       const result = call(right)
       if (result) return result
@@ -257,25 +253,20 @@ class Atom {
     }
   }
 
-  // TODO: add test
-  walkToRightMost (call, includeThis = false) {
-    let right = includeThis ? this : this.right
+  walkToRightMost (call, includeSelf = false) {
     let results = []
-    while (right) {
+    this.walkRightUntil(right => {
       results.push(call(right))
-      right = right.right
-    }
+    }, includeSelf)
     return results
   }
 
-  // TODO: add test
   walkAllFromLeft (call) {
-    return this.gotoLeftMost().walkToRightMost(call)
+    return this.gotoLeftMost().walkToRightMost(call, true)
   }
 
-  // TODO: add test
   walkAllFromRight (call) {
-    return this.gotoRightMost().walkToLeftMost(call)
+    return this.gotoRightMost().walkToLeftMost(call, true)
   }
 
   getChainAtoms () {

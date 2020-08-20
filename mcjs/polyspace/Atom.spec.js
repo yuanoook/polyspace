@@ -249,3 +249,25 @@ it('[PolySpace] [Atom] [walkLeftUntil / walkRightUntil]', () => {
   expect(callY.mock.calls.length).toBe(2)
   expect(callY.mock.calls).toEqual([[atom], [atom]])
 })
+
+it('[PolySpace] [Atom] [walkToLeftMost / walkToRightMost]', () => {
+  const atom = new Atom()
+  const newNeighbors = atom.addRandomNeighbors(5)
+  const newConnecteds = atom.addRandomConnecteds(5)
+  const chainAtoms = atom.getChainAtoms()
+  const leftMost = atom.gotoLeftMost()
+  const rightMost = atom.gotoRightMost()
+
+  const callX = jest.fn(x => x)
+  atom.walkToLeftMost(callX, true)
+  atom.walkToRightMost(callX)
+  const sortedCalledAtoms = callX.mock.calls
+    .map(([a]) => a)
+    .sort(({value: a}, {value: b}) => a - b)
+
+  expect(sortedCalledAtoms).toEqual(chainAtoms)
+
+  const callY = jest.fn(y => y)
+  expect(atom.walkAllFromLeft(callY)).toEqual(chainAtoms)
+  expect(atom.walkAllFromRight(callY)).toEqual(chainAtoms.reverse())
+})

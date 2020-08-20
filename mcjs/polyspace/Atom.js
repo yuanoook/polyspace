@@ -164,7 +164,7 @@ class Atom {
 
   addConnectedAt (value) {
     this.validateValue(value)
-    this.addConnected(value - this.getValue())
+    return this.addConnected(value - this.getValue())
   }
 
   addConnectedRandom () {

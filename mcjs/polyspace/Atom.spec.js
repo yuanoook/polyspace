@@ -105,33 +105,33 @@ it('[PolySpace] [Atom] [addConnected]', () => {
   expect(atom.getChainValues()).toEqual([-7, 0, 1.5, 3, 4.5, 6, 13])
 })
 
-it('[PolySpace] [Atom] [random] [addNeighborRandom]', () => {
+it('[PolySpace] [Atom] [random] [addRandomNeighbor]', () => {
   const atom = new Atom()
-  let neighbor = atom.addNeighborRandom()
+  let neighbor = atom.addRandomNeighbor()
   expect(atom.left === neighbor || atom.right === neighbor).toBe(true)
 })
 
-it('[PolySpace] [Atom] [random] [gotoNeighborRandom]', () => {
+it('[PolySpace] [Atom] [random] [gotoRandomNeighbor]', () => {
   const atom = new Atom()
   let left = atom.addLeftNeighbor()
   let right = atom.addRightNeighbor()
-  neighbor = atom.gotoNeighborRandom()
+  neighbor = atom.gotoRandomNeighbor()
   expect(left === neighbor || right === neighbor).toBe(true)
 })
 
-it('[PolySpace] [Atom] [random] [gotoConnectedRandom]', () => {
+it('[PolySpace] [Atom] [random] [gotoRandomConnected]', () => {
   const atom = new Atom()
-  atom.addConnectedRandom()
-  atom.addConnectedRandom()
-  atom.addConnectedRandom()
-  neighbor = atom.gotoConnectedRandom()
+  atom.addRandomConnected()
+  atom.addRandomConnected()
+  atom.addRandomConnected()
+  neighbor = atom.gotoRandomConnected()
   expect(atom.getChainAtoms().indexOf(neighbor) > -1).toBe(true)
 })
 
-it('[PolySpace] [Atom] [random] [addConnectedRandom]', () => {
+it('[PolySpace] [Atom] [random] [addRandomConnected]', () => {
   const atom = new Atom()
   expect(
-    atom.validateValue(atom.addConnectedRandom().getValue())
+    atom.validateValue(atom.addRandomConnected().getValue())
   ).toBe(true)
 })
 
@@ -149,6 +149,33 @@ it('[PolySpace] [Atom] [validateValue]', () => {
 })
 
 it('[PolySpace] [Atom] [addConnectedAt]', () => {
+  const atom = new Atom()
+  let newValue = (Math.random() - 0.5) * 10000000
+
+  if (newValue === 0) {
+    expect(() => atom.addConnectedAt(newValue)).toThrow()
+  } else {
+    expect(atom.addConnectedAt(newValue).getValue()).toBe(newValue)
+  }
+
+  expect(() => atom.addConnectedAt(0)).toThrow()
+})
+
+it('[PolySpace] [Atom] [randomNeighbor]', () => {
+  const atom = new Atom()
+  const newNeighbors = atom.addRandomNeighbors(10)
+  expect(newNeighbors.length).toBe(10)
+
+  const newNeighbor = newNeighbors[newNeighbors.length - 1]
+  expect(atom.isNeighbor(newNeighbor)).toBe(true)
+  expect(newNeighbor.isNeighbor(atom)).toBe(true)
+
+  const neighbor = atom.gotoRandomNeighbor()
+  expect(atom.isNeighbor(neighbor)).toBe(true)
+  expect(neighbor.isNeighbor(atom)).toBe(true)
+})
+
+it('[PolySpace] [Atom] [Walk]', () => {
   const atom = new Atom()
   let newValue = (Math.random() - 0.5) * 10000000
 

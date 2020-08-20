@@ -90,19 +90,31 @@ class Atom {
       : this.addLeftNeighbor(Math.abs(distanceRatio))
   }
 
-  addNeighborRandom () {
+  addRandomNeighbor () {
     return this.addNeighbor(generateRandomDistanceRatio())
   }
 
-  // TODO: ADD TEST
-  addNeighborsRandom (count = 1) {
-    return repeat(() => this.addNeighborRandom(), count)
+  addRandomNeighbors (count = 1) {
+    return repeat(() => this.addRandomNeighbor(), count)
   }
 
-  gotoNeighborRandom () {
+  isLeftNeighbor (atom) {
+    return this.left === atom && atom.right === this
+  }
+
+  isRightNeighbor (atom) {
+    return this.right === atom && atom.left === this
+  }
+
+  isNeighbor (atom) {
+    return this.isLeftNeighbor(atom) || this.isRightNeighbor(atom)
+  }
+
+  gotoRandomNeighbor () {
     return Math.random() < 0.5 ? this.left : this.right
   }
 
+  // TODO: ADD TEST
   validateDistanceRatio (distanceRatio) {
     if (distanceRatio === 0 ||
       distanceRatio <= -1 ||
@@ -175,11 +187,11 @@ class Atom {
     return this.addConnected(value - this.getValue())
   }
 
-  addConnectedRandom () {
+  addRandomConnected () {
     return this.addConnectedAt(generateRandomSafeNumber())
   }
 
-  gotoConnectedRandom () {
+  gotoRandomConnected () {
     const chainAtoms = this.getChainAtoms()
     return chainAtoms[generateRandomNaturalNumber(chainAtoms.length)]
   }

@@ -76,11 +76,25 @@ class Point {
     if (neighborAtoms.length > 1)
       throw new Error(`checkNeighborInfo: neighborAtoms are more than 2 - ${neighborAtoms.length}`)
 
-    return neighborAtoms
+    return neighborAtoms[0]
+  }
+
+  isLeftNeighbor (point) {
+    const neighborInfo = this.checkNeighborInfo(point)
+    if (!neighborInfo) return false
+    const [atom, index] = neighborInfo
+    return atom.isLeftNeighbor(point.atoms[index])
+  }
+
+  isRightNeighbor (point) {
+    const neighborInfo = this.checkNeighborInfo(point)
+    if (!neighborInfo) return false
+    const [atom, index] = neighborInfo
+    return atom.isRightNeighbor(point.atoms[index])
   }
 
   isNeighbor (point) {
-    return this.checkNeighborInfo(point).length === 1
+    return !!this.checkNeighborInfo(point)
   }
 
   isSame (point) {

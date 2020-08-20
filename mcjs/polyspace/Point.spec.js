@@ -29,6 +29,12 @@ it('[PolySpace] [Point] [Basics]', () => {
   expect(point.getDimensions()).toBe(10)
 })
 
+it('[PolySpace] [Point] [isSame]', () => {
+  expect(new Point([1, 2, 3, 4]).isSame(new Point([1, 2, 3, 4]))).toBe(true)
+  expect(new Point([1, 2]).isSame(new Point([1, 2, 3, 4]))).toBe(false)
+  expect(new Point([1, 2]).isSame(new Point([1, 2, 0, 0]))).toBe(true)
+})
+
 it('[PolySpace] [Point] [copyWithAtomAtIndex]', () => {
   const point = new Point([1, 2, 3, 4])
   const newPoint = point.copyWithAtomAtIndex(0, new Atom())
@@ -37,8 +43,30 @@ it('[PolySpace] [Point] [copyWithAtomAtIndex]', () => {
 
 it('[PolySpace] [Point] [findNeighbor]', () => {
   const point = new Point([1, 2, 3, 4])
-  const neighbor = point.findNeighbor(0)
-
+  let neighbor = point.findNeighbor(0)
   expect(point.isSame(neighbor)).toBe(false)
   expect(point.isNeighbor(neighbor)).toBe(true)
+  expect(point.isLeftNeighbor(neighbor) ||
+    point.isRightNeighbor(neighbor)
+  ).toBe(true)
+
+  let leftNeighbor = point.findLeftNeighbor(1)
+  expect(point.isSame(leftNeighbor)).toBe(false)
+  expect(point.isNeighbor(leftNeighbor)).toBe(true)
+  expect(point.isLeftNeighbor(leftNeighbor)).toBe(true)
+  expect(point.isRightNeighbor(leftNeighbor)).toBe(false)
+  expect(neighbor.isNeighbor(leftNeighbor)).toBe(false)
+
+  let rightNeighbor = point.findRightNeighbor(2)
+  expect(point.isSame(rightNeighbor)).toBe(false)
+  expect(point.isNeighbor(rightNeighbor)).toBe(true)
+  expect(point.isRightNeighbor(rightNeighbor)).toBe(true)
+  expect(point.isLeftNeighbor(rightNeighbor)).toBe(false)
+  expect(neighbor.isNeighbor(rightNeighbor)).toBe(false)
+
+  let exLeft = leftNeighbor
+  let newLeft = point.findLeftNeighbor(1)
+  expect(exLeft.isSame(newLeft)).toBe(false)
+  expect(exLeft.isNeighbor(newLeft)).toBe(true)
+  expect(exLeft.isRightNeighbor(newLeft)).toBe(true)
 })

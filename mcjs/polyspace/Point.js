@@ -71,6 +71,42 @@ class Point {
     return repeat(i => this.copyWithAtomAt(index, atomNeighbors[i]), count)
   }
 
+  // TODO: add test
+  findLeftConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
+    const atomConnected = this.getAtom(index).findLeftConnected(distance)
+    return this.copyWithAtomAt(index, atomConnected)
+  }
+
+  // TODO: add test
+  findRightConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
+    const atomConnected = this.getAtom(index).findRightConnected(distance)
+    return this.copyWithAtomAt(index, atomConnected)
+  }
+
+  // TODO: add test
+  findConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
+    const atomConnected = this.getAtom(index).findConnected(distance)
+    return this.copyWithAtomAt(index, atomConnected)
+  }
+
+  // TODO: add test
+  findConnectedAtValue (index, value) {
+    const atomConnected = this.getAtom(index).findConnectedAtValue(value)
+    return this.copyWithAtomAt(index, atomConnected)
+  }
+
+  // TODO: add test
+  findRandomConnectedAt (index) {
+    const atomConnected = this.getAtom(index).findRandomConnected()
+    return this.copyWithAtomAt(index, atomConnected)
+  }
+
+  // TODO: add test
+  findRandomConnectedsAt (index, count = 1) {
+    const atomConnecteds = this.getAtom(index).findRandomConnecteds(count)
+    return repeat(i => this.copyWithAtomAt(index, atomConnecteds[i]), count)
+  }
+
   checkoutMatchAtoms (point, func) {
     return repeat(
       i => {
@@ -114,6 +150,20 @@ class Point {
 
   isNeighbor (point) {
     return !!this.checkNeighbor(point)
+  }
+
+  isLeftConnected (point) {
+    const connectedInfo = this.checkConnected(point)
+    if (!connectedInfo) return false
+    const [atom, index] = connectedInfo
+    return atom.isLeftConnected(point.atoms[index])
+  }
+
+  isRightConnected (point) {
+    const connectedInfo = this.checkConnected(point)
+    if (!connectedInfo) return false
+    const [atom, index] = connectedInfo
+    return atom.isRightConnected(point.atoms[index])
   }
 
   isConnected (point) {

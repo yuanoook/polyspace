@@ -94,4 +94,16 @@ it('[PolySpace] [Point] [findRandomNeighborAt]', () => {
   expect(point.isConnected(neighbors[2])).toBe(true)
   expect(neighbors[0].isConnected(neighbors[4])).toBe(true)
   expect(neighbors[2].isConnected(neighbors[3])).toBe(true)
+
+  let neighborsAt0 = point.findRandomNeighborsAt(0, 5)
+  expect(point.isLeftConnected(neighbor) ||
+    point.isRightConnected(neighbor)
+  ).toBe(true)
+  expect(point.isLeftConnected(neighborsAt0[0]) ||
+    point.isRightConnected(neighborsAt0[0])
+  ).toBe(true)
+  expect(neighbor.isLeftConnected(neighborsAt0[1]) ||
+    neighbor.isRightConnected(neighborsAt0[1])
+  ).toBe(true)
+
 })

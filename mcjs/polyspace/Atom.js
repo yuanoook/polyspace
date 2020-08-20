@@ -107,6 +107,10 @@ class Atom {
   }
 
   gotoRandomNeighbor () {
+    if (this.left === null && this.right === null)
+      throw new Error(`gotoRandomNeighbor: no neighbor!`)
+    if (this.left === null) return this.right
+    if (this.right === null) return this.left
     return Math.random() < 0.5 ? this.left : this.right
   }
 

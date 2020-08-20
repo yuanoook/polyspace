@@ -22,9 +22,23 @@ function repeat (call, count = 1) {
   return results
 }
 
+function diffNomials (n1, n2) {
+  return repeat(i => {
+    const n1i = n1[i] === undefined ? 0 : n1[i]
+    const n2i = n2[i] === undefined ? 0 : n2[i]
+    return n2i - n1i
+  }, Math.max(n1.length, n2.length))
+}
+
+function isSameNomials (n1, n2) {
+  return !diffNomials(n1, n2).find(diff => diff !== 0)
+}
+
 module.exports = {
   generateRandomDistanceRatio,
   generateRandomNaturalNumber,
   generateRandomSafeNumber,
-  repeat
+  repeat,
+  diffNomials,
+  isSameNomials
 }

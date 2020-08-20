@@ -1,4 +1,5 @@
 const Point = require('./Point')
+const Atom = require('./Atom')
 
 it('[PolySpace] [Point] [Basics]', () => {
   const point = new Point([1, 2, 3, 4])
@@ -26,4 +27,18 @@ it('[PolySpace] [Point] [Basics]', () => {
   point.checkDimension(10)
   expect(point.getNomials()).toEqual([1, 2, 3, 4, 0, 0, 0, 0, 0, 0])
   expect(point.getDimensions()).toBe(10)
+})
+
+it('[PolySpace] [Point] [copyWithAtomAtIndex]', () => {
+  const point = new Point([1, 2, 3, 4])
+  const newPoint = point.copyWithAtomAtIndex(0, new Atom())
+  expect(newPoint.getNomials()).toEqual([0, 2, 3, 4])
+})
+
+it('[PolySpace] [Point] [findNeighbor]', () => {
+  const point = new Point([1, 2, 3, 4])
+  const neighbor = point.findNeighbor(0)
+
+  expect(point.isSame(neighbor)).toBe(false)
+  expect(point.isNeighbor(neighbor)).toBe(true)
 })

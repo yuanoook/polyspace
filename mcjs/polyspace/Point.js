@@ -1,6 +1,7 @@
 const Atom = require('./Atom')
 const {
-  repeat
+  repeat,
+  isSameNomials
 } = require('./utils')
 
 class Point {
@@ -36,18 +37,54 @@ class Point {
   fillIndexWithZeroAtom (index) {
     this.atoms[index] = this.atoms[index] || new Atom()
   }
-
-  // TODO: finish this and find test
-  findLeftNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+  copyWithAtomAtIndex (index, atom) {
     this.checkIndex(index)
+    const newPoint = new Point()
+    for (let i in this.atoms) newPoint.atoms[i] = +i === +index
+      ? atom
+      : new Atom(this.atoms[i].getValue())
+    return newPoint
+  }
+
+  findLeftNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+    const atomNeighbor = this.getAtom(index).findLeftNeighbor(distanceRatio)
+    return this.copyWithAtomAtIndex(index, atomNeighbor)
   }
 
   findRightNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    this.checkIndex(index)
+    const atomNeighbor = this.getAtom(index).findRightNeighbor(distanceRatio)
+    return this.copyWithAtomAtIndex(index, atomNeighbor)
   }
 
   findNeighbor (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    this.checkIndex(index)
+    const atomNeighbor = this.getAtom(index).findNeighbor(distanceRatio)
+    return this.copyWithAtomAtIndex(index, atomNeighbor)
+  }
+
+  checkNeighborInfo (point) {
+    const neighborAtoms = repeat(
+      i => {
+        const thisAtom = this.atoms[i]
+        const pointAtom = point.atoms[i]
+        return thisAtom && pointAtom && thisAtom.isNeighbor(pointAtom)
+          ? [thisAtom, i]
+          : []
+      },
+      Math.max(this.atoms.length, point.atoms.length)
+    ).filter(([x]) => x)
+
+    if (neighborAtoms.length > 1)
+      throw new Error(`checkNeighborInfo: neighborAtoms are more than 2 - ${neighborAtoms.length}`)
+
+    return neighborAtoms
+  }
+
+  isNeighbor (point) {
+    return this.checkNeighborInfo(point).length === 1
+  }
+
+  isSame (point) {
+    return isSameNomials(this.getNomials(), point.getNomials())
   }
 }
 

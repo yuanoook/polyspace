@@ -163,8 +163,8 @@ it('[PolySpace] [Atom] [addConnectedAt]', () => {
 
 it('[PolySpace] [Atom] [randomNeighbor]', () => {
   const atom = new Atom()
-  const newNeighbors = atom.addRandomNeighbors(10)
-  expect(newNeighbors.length).toBe(10)
+  const newNeighbors = atom.addRandomNeighbors(5)
+  expect(newNeighbors.length).toBe(5)
 
   const newNeighbor = newNeighbors[newNeighbors.length - 1]
   expect(atom.isNeighbor(newNeighbor)).toBe(true)
@@ -175,17 +175,29 @@ it('[PolySpace] [Atom] [randomNeighbor]', () => {
   expect(neighbor.isNeighbor(atom)).toBe(true)
 })
 
-it('[PolySpace] [Atom] [Walk]', () => {
+it('[PolySpace] [Atom] [randomConnected]', () => {
   const atom = new Atom()
-  let newValue = (Math.random() - 0.5) * 10000000
+  const newConnecteds = atom.addRandomConnecteds(5)
+  expect(newConnecteds.length).toBe(5)
 
-  if (newValue === 0) {
-    expect(() => atom.addConnectedAt(newValue)).toThrow()
-  } else {
-    expect(atom.addConnectedAt(newValue).getValue()).toBe(newValue)
-  }
+  const newConnected = newConnecteds[newConnecteds.length - 1]
+  expect(atom.isConnected(newConnected)).toBe(true)
+  expect(newConnected.isConnected(atom)).toBe(true)
 
-  expect(() => atom.addConnectedAt(0)).toThrow()
+  const connected = atom.gotoRandomConnected()
+  expect(atom.isConnected(connected)).toBe(true)
+  expect(connected.isConnected(atom)).toBe(true)
+})
+
+it('[PolySpace] [Atom] [isConnected]', () => {
+  const atom = new Atom()
+  const newNeighbors = atom.addRandomNeighbors(5)
+  const newConnecteds = atom.addRandomConnecteds(5)
+  const neighbor = newNeighbors[0]
+  const connected = newConnecteds[0]
+
+  expect(neighbor.isConnected(connected)).toBe(true)
+  expect(connected.isConnected(neighbor)).toBe(true)
 })
 
 

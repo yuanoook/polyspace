@@ -114,7 +114,6 @@ class Atom {
     return Math.random() < 0.5 ? this.left : this.right
   }
 
-  // TODO: ADD TEST
   validateDistanceRatio (distanceRatio) {
     if (distanceRatio === 0 ||
       distanceRatio <= -1 ||
@@ -187,8 +186,24 @@ class Atom {
     return this.addConnected(value - this.getValue())
   }
 
+  isLeftConnected (atom) {
+    return this.walkLeftUntil(left => left === atom)
+  }
+
+  isRightConnected (atom) {
+    return this.walkRightUntil(right => right === atom)
+  }
+
+  isConnected (atom) {
+    return this.isLeftConnected(atom) || this.isRightConnected(atom)
+  }
+
   addRandomConnected () {
     return this.addConnectedAt(generateRandomSafeNumber())
+  }
+
+  addRandomConnecteds (count = 1) {
+    return repeat(() => this.addRandomConnected(), count)
   }
 
   gotoRandomConnected () {
@@ -210,8 +225,17 @@ class Atom {
     return right
   }
 
+  walkLeftUntil (call) {
+    let left = this.left
+    while (left) {
+      const result = call(left)
+      if (result) return result
+      left = left.left
+    }
+  }
+
   // TODO: add test
-  walkToLeftMost (call) {
+  walkLeftMost (call) {
     let left = this
     let results = []
     while (left) {
@@ -219,6 +243,15 @@ class Atom {
       left = left.left
     }
     return results
+  }
+
+  walkRightUntil (call) {
+    let right = this.right
+    while (right) {
+      const result = call(right)
+      if (result) return result
+      right = right.right
+    }
   }
 
   // TODO: add test

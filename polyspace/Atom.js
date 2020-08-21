@@ -1,8 +1,8 @@
 const {
-  generateRandomDistanceRatio,
+  randomDistanceRatio,
   validateDistanceRatio,
-  generateRandomNaturalNumber,
-  generateRandomSafeNumber,
+  randomNaturalNumber,
+  randomSafeNumber,
   repeat
 } = require('./utils')
 
@@ -69,13 +69,13 @@ class Atom {
   }
 
   findLeftNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    validateDistanceRatio(distanceRatio)
+    validateDistanceRatio(distanceRatio, 1)
     const leftHalfwayValue = this.getLeftHalfwayValue(distanceRatio)
     return this.connectLeftNeighbor(new Atom(leftHalfwayValue))
   }
 
   findRightNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    validateDistanceRatio(distanceRatio)
+    validateDistanceRatio(distanceRatio, 1)
     const rightHalfwayValue = this.getRightHalfwayValue(distanceRatio)
     return this.connectRightNeighbor(new Atom(rightHalfwayValue))
   }
@@ -88,7 +88,7 @@ class Atom {
   }
 
   findRandomNeighbor () {
-    return this.findNeighbor(generateRandomDistanceRatio())
+    return this.findNeighbor(randomDistanceRatio())
   }
 
   findRandomNeighbors (count = 1) {
@@ -193,7 +193,7 @@ class Atom {
   }
 
   findRandomConnected () {
-    return this.findConnectedAtScalar(generateRandomSafeNumber())
+    return this.findConnectedAtScalar(randomSafeNumber())
   }
 
   findRandomConnecteds (count = 1) {
@@ -204,7 +204,7 @@ class Atom {
     const chainAtoms = this.getChainAtoms()
     if (chainAtoms.length === 1) throw new Error(`gotoRandomConnected: There's only one atom!`)
     while (true) {
-      const result = chainAtoms[generateRandomNaturalNumber(chainAtoms.length)]
+      const result = chainAtoms[randomNaturalNumber(chainAtoms.length)]
       if (result !== this) return result
     }
   }

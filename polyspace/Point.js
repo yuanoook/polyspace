@@ -2,7 +2,9 @@ const Atom = require('./Atom')
 const {
   repeat,
   isSameNomials,
-  euclideanDistance
+  euclideanDistance,
+  randomDistanceRatio,
+  randomNaturalNumber
 } = require('./utils')
 
 class Point {
@@ -72,9 +74,20 @@ class Point {
     return repeat(i => this.copyWithAtomAt(index, atomNeighbors[i]), count)
   }
 
-  // TODO: finish and add test
-  findRandomLeftNeighbor () {
+  findRandomLeftNeighborWith (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+    return this.findLeftNeighborAt(randomNaturalNumber(this.atoms.length), distanceRatio)
+  }
 
+  findRandomLeftNeighborsWith (distanceRatio = Atom.DISTANCE_RATIO_HALF, count = 1) {
+    return repeat(() => this.findRandomLeftNeighborWith(distanceRatio), count)
+  }
+
+  findRandomLeftNeighbor () {
+    return this.findRandomLeftNeighborWith(randomDistanceRatio())
+  }
+
+  findRandomLeftNeighbors (count = 1) {
+    return repeat(() => this.findRandomLeftNeighbor(), count)
   }
 
   // TODO: finish and add test
@@ -223,7 +236,7 @@ class Point {
     return isSameNomials(this.getNomials(), point.getNomials())
   }
 
-  getEuclideanDistance (point) {
+  euclideanDistance (point) {
     return euclideanDistance(this.getNomials(), point.getNomials())
   }
 }

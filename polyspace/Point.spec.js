@@ -105,16 +105,33 @@ it('[PolySpace] [Point] [findRandomNeighborAt]', () => {
   expect(neighbor.isLeftConnected(neighborsAt0[1]) ||
     neighbor.isRightConnected(neighborsAt0[1])
   ).toBe(true)
-
 })
 
-it('[PolySpace] [Point] [getEuclideanDistance]', () => {
+it('[PolySpace] [Point] [findRandomLeftNeighbor]', () => {
+  const point = new Point([1, 2, 3, 4])
+  let neighbor = point.findRandomLeftNeighborWith(0.5)
+  expect(neighbor.isRightNeighbor(point)).toBe(true)
+
+  let newNeighbor = point.findRandomLeftNeighbor()
+  expect(newNeighbor.isRightNeighbor(point)).toBe(true)
+
+  let rwNeighbors = point.findRandomLeftNeighborsWith(0.5, 5)
+  expect(rwNeighbors.length).toBe(5)
+  expect(point.isLeftNeighbor(rwNeighbors[4]))
+
+  let rNeighbors = point.findRandomLeftNeighbors(5)
+  expect(rNeighbors.length).toBe(5)
+  expect(point.isLeftNeighbor(rNeighbors[4]))
+  console.log(rNeighbors.map(n => n.getNomials()))
+})
+
+it('[PolySpace] [Point] [euclideanDistance]', () => {
   expect(new Point([])
-    .getEuclideanDistance(new Point([]))).toBe(0)
+    .euclideanDistance(new Point([]))).toBe(0)
   expect(new Point([0, 0])
-    .getEuclideanDistance(new Point([]))).toBe(0)
+    .euclideanDistance(new Point([]))).toBe(0)
   expect(new Point([1, 1, 1])
-    .getEuclideanDistance(new Point([]))).toBe(Math.sqrt(3))
+    .euclideanDistance(new Point([]))).toBe(Math.sqrt(3))
   expect(new Point([2, 2, 2])
-    .getEuclideanDistance(new Point([1, 1, 1]))).toBe(Math.sqrt(3))
+    .euclideanDistance(new Point([1, 1, 1]))).toBe(Math.sqrt(3))
 })

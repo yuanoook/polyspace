@@ -1,22 +1,20 @@
 const {
-  generateRandomDistanceRatio,
+  randomDistanceRatio,
   validateDistanceRatio,
-  generateRandomNaturalNumber,
-  generateRandomSafeNumber,
+  randomNaturalNumber,
+  randomSafeNumber,
   repeat,
   diffNomials,
   isSameNomials,
   euclideanDistance
 } = require('./utils')
 
-it('[PolySpace] [utils] [generateRandomDistanceRatio]', () => {
-  let count = 100
-  while (--count > 0) {
-    const ratio = generateRandomDistanceRatio()
-    expect(ratio).not.toBe(0)
-    expect(ratio).toBeLessThan(1)
-    expect(ratio).toBeGreaterThan(-1)
-  }
+it('[PolySpace] [utils] [randomDistanceRatio]', () => {
+  expect(randomDistanceRatio()).not.toBe(0)
+  expect(randomDistanceRatio()).toBeLessThan(1)
+  expect(randomDistanceRatio()).toBeGreaterThan(-1)
+  expect(randomDistanceRatio(1) > 0).toBe(true)
+  expect(randomDistanceRatio(-1) < 0).toBe(true)
 })
 
 it('[PolySpace] [utils] [validateDistanceRatio]', () => {
@@ -26,29 +24,30 @@ it('[PolySpace] [utils] [validateDistanceRatio]', () => {
   expect(() => validateDistanceRatio(2)).toThrow()
   expect(() => validateDistanceRatio(-2)).toThrow()
   expect(() => validateDistanceRatio(0.5)).not.toThrow()
-  expect(() => validateDistanceRatio(-0.5)).toThrow()
-  expect(() => validateDistanceRatio(-0.5, -1)).not.toThrow()
+  expect(() => validateDistanceRatio(-0.5)).not.toThrow()
+  expect(() => validateDistanceRatio(0.5, -1)).toThrow()
+  expect(() => validateDistanceRatio(-0.5, 1)).toThrow()
 })
 
-it('[PolySpace] [utils] [generateRandomNaturalNumber]', () => {
+it('[PolySpace] [utils] [randomNaturalNumber]', () => {
   let count = 100
   while (--count > 0) {
     const upperLimit = Math.random() * Number.MAX_SAFE_INTEGER
-    const ratio = generateRandomNaturalNumber(upperLimit)
+    const ratio = randomNaturalNumber(upperLimit)
     expect(ratio % 1).toBe(0)
     expect(ratio).toBeLessThan(upperLimit)
     expect(ratio).toBeGreaterThan(-1)
   }
 
-  expect(generateRandomNaturalNumber(0)).toBe(0)
-  expect([0, 1, 2, 3].indexOf(generateRandomNaturalNumber(4)) > -1).toBe(true)
+  expect(randomNaturalNumber(0)).toBe(0)
+  expect([0, 1, 2, 3].indexOf(randomNaturalNumber(4)) > -1).toBe(true)
 })
 
-it('[PolySpace] [utils] [generateRandomSafeNumber]', () => {
+it('[PolySpace] [utils] [randomSafeNumber]', () => {
   let count = 100
   while (--count > 0) {
     const limit = Math.random() * Number.MAX_SAFE_INTEGER
-    const safeNumber = generateRandomSafeNumber(limit)
+    const safeNumber = randomSafeNumber(limit)
     expect(safeNumber).not.toBe(0)
     expect(safeNumber).toBeLessThan(limit)
     expect(safeNumber).toBeGreaterThan(-limit)

@@ -1,28 +1,29 @@
-function generateRandomDistanceRatio () {
-  while (true) {
-    const ratio = Math.random() * 2 - 1
-    if (ratio && ratio !== -1) return ratio
-  }
+function randomDistanceRatio (flag = 0) {
+  let ratio
+  while (!ratio || ratio === -1) ratio = Math.random() * 2 - 1
+  if (!flag) return ratio
+  if (flag < 0) return -Math.abs(ratio)
+  if (flag > 0) return Math.abs(ratio)
 }
 
-function generateRandomNaturalNumber (upperLimit = Number.MAX_SAFE_INTEGER) {
+function randomNaturalNumber (upperLimit = Number.MAX_SAFE_INTEGER) {
   return Math.floor(Math.random() * upperLimit)
 }
 
-function generateRandomSafeNumber (limit = Number.MAX_SAFE_INTEGER) {
-  return generateRandomDistanceRatio() * limit
+function randomSafeNumber (limit = Number.MAX_SAFE_INTEGER) {
+  return randomDistanceRatio() * limit
 }
 
-function validateDistanceRatio (distanceRatio, flag = 1) {
+function validateDistanceRatio (distanceRatio, flag = 0) {
   if (distanceRatio === 0 ||
     distanceRatio <= -1 ||
     distanceRatio >= 1
   ) throw new Error(`-1 < DistanceRatio(!==0) < 1. We get ${distanceRatio}`)
 
   if (!flag) return
-  if (flag === -1 && distanceRatio > 0)
+  if (flag < 0 && distanceRatio > 0)
     throw new Error(`DistanceRatio < 0. We get ${distanceRatio}`)
-  if (flag === 1 && distanceRatio < 0)
+  if (flag > 0 && distanceRatio < 0)
     throw new Error(`DistanceRatio > 0. We get ${distanceRatio}`)
 }
 
@@ -58,10 +59,10 @@ function euclideanDistance (n1, n2) {
 }
 
 module.exports = {
-  generateRandomDistanceRatio,
+  randomDistanceRatio,
   validateDistanceRatio,
-  generateRandomNaturalNumber,
-  generateRandomSafeNumber,
+  randomNaturalNumber,
+  randomSafeNumber,
   repeat,
   diffNomials,
   isSameNomials,

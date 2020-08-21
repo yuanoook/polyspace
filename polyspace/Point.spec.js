@@ -122,7 +122,27 @@ it('[PolySpace] [Point] [findRandomLeftNeighbor]', () => {
   let rNeighbors = point.findRandomLeftNeighbors(5)
   expect(rNeighbors.length).toBe(5)
   expect(point.isLeftNeighbor(rNeighbors[4]))
-  console.log(rNeighbors.map(n => n.getNomials()))
+
+  expect(() => point.findRandomLeftNeighborWith(-0.5)).toThrow()
+})
+
+it('[PolySpace] [Point] [findRandomRightNeighbor]', () => {
+  const point = new Point([1, 2, 3, 4])
+  let neighbor = point.findRandomRightNeighborWith(0.5)
+  expect(neighbor.isLeftNeighbor(point)).toBe(true)
+
+  let newNeighbor = point.findRandomRightNeighbor()
+  expect(newNeighbor.isLeftNeighbor(point)).toBe(true)
+
+  let rwNeighbors = point.findRandomRightNeighborsWith(0.5, 5)
+  expect(rwNeighbors.length).toBe(5)
+  expect(point.isRightNeighbor(rwNeighbors[4]))
+
+  let rNeighbors = point.findRandomRightNeighbors(5)
+  expect(rNeighbors.length).toBe(5)
+  expect(point.isRightNeighbor(rNeighbors[4]))
+
+  expect(() => point.findRandomRightNeighborWith(-0.5)).toThrow()
 })
 
 it('[PolySpace] [Point] [euclideanDistance]', () => {

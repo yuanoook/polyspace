@@ -83,30 +83,31 @@ class Point {
   }
 
   findRandomLeftNeighbor () {
-    return this.findRandomLeftNeighborWith(randomDistanceRatio())
+    return this.findRandomLeftNeighborWith(randomDistanceRatio(1))
   }
 
   findRandomLeftNeighbors (count = 1) {
     return repeat(() => this.findRandomLeftNeighbor(), count)
   }
 
-  // TODO: finish and add test
-  findRandomRightNeighbor () {
+  findRandomRightNeighborWith (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+    return this.findRightNeighborAt(randomNaturalNumber(this.atoms.length), distanceRatio)
+  }
 
+  findRandomRightNeighborsWith (distanceRatio = Atom.DISTANCE_RATIO_HALF, count = 1) {
+    return repeat(() => this.findRandomRightNeighborWith(distanceRatio), count)
+  }
+
+  findRandomRightNeighbor () {
+    return this.findRandomRightNeighborWith(randomDistanceRatio(1))
+  }
+
+  findRandomRightNeighbors (count = 1) {
+    return repeat(() => this.findRandomRightNeighbor(), count)
   }
 
   // TODO: finish and add test
   findRandomNeighbor () {
-
-  }
-
-  // TODO: finish and add test
-  findRandomLeftNeighbors (count = 1) {
-
-  }
-
-  // TODO: finish and add test
-  findRandomRightNeighbors (count = 1) {
 
   }
 

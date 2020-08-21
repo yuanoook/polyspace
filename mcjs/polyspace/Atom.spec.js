@@ -148,17 +148,17 @@ it('[PolySpace] [Atom] [validateValue]', () => {
   expect(() => new Atom(-Infinity)).toThrow()
 })
 
-it('[PolySpace] [Atom] [findConnectedAtValue]', () => {
+it('[PolySpace] [Atom] [findConnectedAtScalar]', () => {
   const atom = new Atom()
   let newValue = (Math.random() - 0.5) * 10000000
 
   if (newValue === 0) {
-    expect(() => atom.findConnectedAtValue(newValue)).toThrow()
+    expect(() => atom.findConnectedAtScalar(newValue)).toThrow()
   } else {
-    expect(atom.findConnectedAtValue(newValue).getValue()).toBe(newValue)
+    expect(atom.findConnectedAtScalar(newValue).getValue()).toBe(newValue)
   }
 
-  expect(() => atom.findConnectedAtValue(0)).toThrow()
+  expect(() => atom.findConnectedAtScalar(0)).toThrow()
 })
 
 it('[PolySpace] [Atom] [randomNeighbor]', () => {

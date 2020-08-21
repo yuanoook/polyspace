@@ -120,8 +120,8 @@ class Point {
   }
 
   // TODO: add test
-  findConnectedAtValue (index, value) {
-    const atomConnected = this.getAtom(index).findConnectedAtValue(value)
+  findConnectedAtScalar (index, value) {
+    const atomConnected = this.getAtom(index).findConnectedAtScalar(value)
     return this.copyWithAtomAt(index, atomConnected)
   }
 
@@ -136,6 +136,24 @@ class Point {
     const atomConnecteds = this.getAtom(index).findRandomConnecteds(count)
     return repeat(i => this.copyWithAtomAt(index, atomConnecteds[i]), count)
   }
+
+  // TODO: finish and add test
+  findRandomConnected (count = 1) {
+    
+  }
+
+  // TODO: finish and add test
+  findRandomConnecteds (count = 1) {
+    
+  }
+
+  // TODO: finish and add test
+  getLeftConnectedsAt
+  getRightConnectedsAt
+  getConnectedsAt
+  getConnedteds
+  getInNetworkPoints
+  isInNetwork
 
   checkoutMatchAtoms (point, func) {
     return repeat(
@@ -202,6 +220,11 @@ class Point {
 
   isSame (point) {
     return isSameNomials(this.getNomials(), point.getNomials())
+  }
+
+  // TODO: finish and test
+  getEuclideanDistance (point) {
+    
   }
 }
 

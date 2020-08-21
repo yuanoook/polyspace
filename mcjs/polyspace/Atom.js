@@ -181,7 +181,7 @@ class Atom {
       : this.findLeftConnected(Math.abs(distance))
   }
 
-  findConnectedAtValue (value) {
+  findConnectedAtScalar (value) {
     this.validateValue(value)
     return this.findConnected(value - this.getValue())
   }
@@ -199,7 +199,7 @@ class Atom {
   }
 
   findRandomConnected () {
-    return this.findConnectedAtValue(generateRandomSafeNumber())
+    return this.findConnectedAtScalar(generateRandomSafeNumber())
   }
 
   findRandomConnecteds (count = 1) {

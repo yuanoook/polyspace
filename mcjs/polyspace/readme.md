@@ -1,6 +1,9 @@
 # Poly numbers network
 
-## 0 When the question is ready
+## 0 Everything is already set.
+
+Motion in lower dimensional space,
+is static in higher dimensional space.
 
 When the question is ready,
 the answers are set.

@@ -31,7 +31,17 @@ function diffNomials (n1, n2) {
 }
 
 function isSameNomials (n1, n2) {
-  return !diffNomials(n1, n2).find(diff => diff !== 0)
+  return euclideanDistance (n1, n2) === 0
+}
+
+function euclideanDistance (n1, n2) {
+  let sum = 0
+  repeat(i => {
+    const n1i = n1[i] === undefined ? 0 : n1[i]
+    const n2i = n2[i] === undefined ? 0 : n2[i]
+    return sum += (n2i - n1i) ** 2
+  }, Math.max(n1.length, n2.length))
+  return Math.sqrt(sum)
 }
 
 module.exports = {
@@ -40,5 +50,6 @@ module.exports = {
   generateRandomSafeNumber,
   repeat,
   diffNomials,
-  isSameNomials
+  isSameNomials,
+  euclideanDistance
 }

@@ -4,7 +4,8 @@ const {
   generateRandomSafeNumber,
   repeat,
   diffNomials,
-  isSameNomials
+  isSameNomials,
+  euclideanDistance
 } = require('./utils')
 
 it('[PolySpace] [utils] [generateRandomDistanceRatio]', () => {
@@ -60,4 +61,14 @@ it('[PolySpace] [utils] [diffNomials / isSameNomials]', () => {
   expect(isSameNomials([0], [0, 0, 0, 0])).toBe(true)
   expect(isSameNomials([0], [1])).toBe(false)
   expect(isSameNomials([2], [1])).toBe(false)
+})
+
+it('[PolySpace] [utils]  [euclideanDistance]', () => {
+  expect(euclideanDistance([], [])).toBe(0)
+  expect(euclideanDistance([0, 0], [])).toBe(0)
+  expect(euclideanDistance([1, 1, 1], [])).toBe(Math.sqrt(3))
+  expect(euclideanDistance([2, 2, 2], [1, 1, 1])).toBe(Math.sqrt(3))
+  
+  const diffs = diffNomials([0, 0, 3], [1, -1, 2])
+  expect(euclideanDistance(diffs, [])).toBe(Math.sqrt(3))
 })

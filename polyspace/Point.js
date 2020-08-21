@@ -1,7 +1,8 @@
 const Atom = require('./Atom')
 const {
   repeat,
-  isSameNomials
+  isSameNomials,
+  euclideanDistance
 } = require('./utils')
 
 class Point {
@@ -224,7 +225,7 @@ class Point {
 
   // TODO: finish and test
   getEuclideanDistance (point) {
-    
+    return euclideanDistance(this.getNomials(), point.getNomials())
   }
 }
 

@@ -107,3 +107,14 @@ it('[PolySpace] [Point] [findRandomNeighborAt]', () => {
   ).toBe(true)
 
 })
+
+it('[PolySpace] [Point] [getEuclideanDistance]', () => {
+  expect(new Point([])
+    .getEuclideanDistance(new Point([]))).toBe(0)
+  expect(new Point([0, 0])
+    .getEuclideanDistance(new Point([]))).toBe(0)
+  expect(new Point([1, 1, 1])
+    .getEuclideanDistance(new Point([]))).toBe(Math.sqrt(3))
+  expect(new Point([2, 2, 2])
+    .getEuclideanDistance(new Point([1, 1, 1]))).toBe(Math.sqrt(3))
+})

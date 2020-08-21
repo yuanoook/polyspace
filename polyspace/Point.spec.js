@@ -176,7 +176,7 @@ it('[PolySpace] [Point] [findConnectedAt]', () => {
   expect(lConnected.isRightNeighbor(connected)).toBe(true)
   expect(lConnected.euclideanDistance(connected)).toBe(9)
 
-  expect(point.isConnected(lConnected)).toBe(true)
+  expect(point.isLeftConnected(lConnected)).toBe(true)
   expect(lConnected.isConnected(point)).toBe(true)
 
   let rConnected = point.findRightConnectedAt(0, 4)
@@ -184,12 +184,12 @@ it('[PolySpace] [Point] [findConnectedAt]', () => {
   expect(rConnected.isLeftConnected(connected)).toBe(true)
   expect(rConnected.euclideanDistance(connected)).toBe(5)
 
-  expect(point.isConnected(rConnected)).toBe(true)
+  expect(point.isRightConnected(rConnected)).toBe(true)
   expect(rConnected.isConnected(point)).toBe(true)
 
   let sConnected = point.findConnectedAtWithScalar(0, 5)
-  expect(rConnected.euclideanDistance(lConnected)).toBe(14)
-  expect(rConnected.isConnected(lConnected)).toBe(true)
+  expect(sConnected.euclideanDistance(lConnected)).toBe(14)
+  expect(sConnected.isLeftConnected(lConnected)).toBe(true)
 
   expect(rConnected.euclideanDistance(sConnected)).toBe(0)
   expect(rConnected.isSame(sConnected)).toBe(true)

@@ -223,7 +223,6 @@ class Point {
     return isSameNomials(this.getNomials(), point.getNomials())
   }
 
-  // TODO: finish and test
   getEuclideanDistance (point) {
     return euclideanDistance(this.getNomials(), point.getNomials())
   }

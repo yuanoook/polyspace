@@ -13,6 +13,19 @@ function generateRandomSafeNumber (limit = Number.MAX_SAFE_INTEGER) {
   return generateRandomDistanceRatio() * limit
 }
 
+function validateDistanceRatio (distanceRatio, flag = 1) {
+  if (distanceRatio === 0 ||
+    distanceRatio <= -1 ||
+    distanceRatio >= 1
+  ) throw new Error(`-1 < DistanceRatio(!==0) < 1. We get ${distanceRatio}`)
+
+  if (!flag) return
+  if (flag === -1 && distanceRatio > 0)
+    throw new Error(`DistanceRatio < 0. We get ${distanceRatio}`)
+  if (flag === 1 && distanceRatio < 0)
+    throw new Error(`DistanceRatio > 0. We get ${distanceRatio}`)
+}
+
 function repeat (call, count = 1) {
   const results = []
   while (count > 0) {
@@ -46,6 +59,7 @@ function euclideanDistance (n1, n2) {
 
 module.exports = {
   generateRandomDistanceRatio,
+  validateDistanceRatio,
   generateRandomNaturalNumber,
   generateRandomSafeNumber,
   repeat,

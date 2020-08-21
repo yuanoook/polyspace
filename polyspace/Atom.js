@@ -1,5 +1,6 @@
 const {
   generateRandomDistanceRatio,
+  validateDistanceRatio,
   generateRandomNaturalNumber,
   generateRandomSafeNumber,
   repeat
@@ -68,19 +69,19 @@ class Atom {
   }
 
   findLeftNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    this.validateDistanceRatio(distanceRatio)
+    validateDistanceRatio(distanceRatio)
     const leftHalfwayValue = this.getLeftHalfwayValue(distanceRatio)
     return this.connectLeftNeighbor(new Atom(leftHalfwayValue))
   }
 
   findRightNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    this.validateDistanceRatio(distanceRatio)
+    validateDistanceRatio(distanceRatio)
     const rightHalfwayValue = this.getRightHalfwayValue(distanceRatio)
     return this.connectRightNeighbor(new Atom(rightHalfwayValue))
   }
 
   findNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    this.validateDistanceRatio(distanceRatio)
+    validateDistanceRatio(distanceRatio, 0)
     return distanceRatio > 0
       ? this.findRightNeighbor(distanceRatio)
       : this.findLeftNeighbor(Math.abs(distanceRatio))
@@ -112,13 +113,6 @@ class Atom {
     if (this.left === null) return this.right
     if (this.right === null) return this.left
     return Math.random() < 0.5 ? this.left : this.right
-  }
-
-  validateDistanceRatio (distanceRatio) {
-    if (distanceRatio === 0 ||
-      distanceRatio <= -1 ||
-      distanceRatio >= 1
-    ) throw new Error(`-1 < DistanceRatio(!==0) < 1. We get ${distanceRatio}`)
   }
 
   connectLeftNeighbor (newNeighbor) {

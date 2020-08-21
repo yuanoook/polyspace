@@ -1,5 +1,6 @@
 const {
   generateRandomDistanceRatio,
+  validateDistanceRatio,
   generateRandomNaturalNumber,
   generateRandomSafeNumber,
   repeat,
@@ -18,6 +19,17 @@ it('[PolySpace] [utils] [generateRandomDistanceRatio]', () => {
   }
 })
 
+it('[PolySpace] [utils] [validateDistanceRatio]', () => {
+  expect(() => validateDistanceRatio(0)).toThrow()
+  expect(() => validateDistanceRatio(1)).toThrow()
+  expect(() => validateDistanceRatio(-1)).toThrow()
+  expect(() => validateDistanceRatio(2)).toThrow()
+  expect(() => validateDistanceRatio(-2)).toThrow()
+  expect(() => validateDistanceRatio(0.5)).not.toThrow()
+  expect(() => validateDistanceRatio(-0.5)).toThrow()
+  expect(() => validateDistanceRatio(-0.5, -1)).not.toThrow()
+})
+
 it('[PolySpace] [utils] [generateRandomNaturalNumber]', () => {
   let count = 100
   while (--count > 0) {
@@ -27,6 +39,9 @@ it('[PolySpace] [utils] [generateRandomNaturalNumber]', () => {
     expect(ratio).toBeLessThan(upperLimit)
     expect(ratio).toBeGreaterThan(-1)
   }
+
+  expect(generateRandomNaturalNumber(0)).toBe(0)
+  expect([0, 1, 2, 3].indexOf(generateRandomNaturalNumber(4)) > -1).toBe(true)
 })
 
 it('[PolySpace] [utils] [generateRandomSafeNumber]', () => {

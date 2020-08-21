@@ -195,6 +195,25 @@ it('[PolySpace] [Point] [findConnectedAt]', () => {
   expect(rConnected.isSame(sConnected)).toBe(true)
 })
 
+it('[PolySpace] [Point] [findRandomConnected]', () => {
+  const point = new Point([1, 2, 3, 4])
+  let connected = point.findRandomConnected()
+  expect(connected.isNeighbor(point)).toBe(true)
+  expect(point.isNeighbor(connected)).toBe(true)
+
+  let lConnected = point.findRandomLeftConnected()
+  expect(point.isLeftConnected(lConnected)).toBe(true)
+  expect(lConnected.isConnected(point)).toBe(true)
+
+  let rConnected = point.findRandomRightConnected()
+  expect(point.isRightConnected(rConnected)).toBe(true)
+  expect(rConnected.isConnected(point)).toBe(true)
+
+  let sConnected = point.findRandomConnectedWithScalar(5)
+  expect([4, 3, 2, 1].indexOf(point.euclideanDistance(sConnected)) > -1).toBe(true)
+  expect(sConnected.isConnected(point)).toBe(true)
+})
+
 it('[PolySpace] [Point] [euclideanDistance]', () => {
   expect(new Point([])
     .euclideanDistance(new Point([]))).toBe(0)

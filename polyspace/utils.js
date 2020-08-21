@@ -6,12 +6,26 @@ function randomDistanceRatio (flag = 0) {
   if (flag > 0) return Math.abs(ratio)
 }
 
+function randomPositiveDistanceRatio () {
+  return randomDistanceRatio(1)
+}
+
 function randomNaturalNumber (upperLimit = Number.MAX_SAFE_INTEGER) {
   return Math.floor(Math.random() * upperLimit)
 }
 
 function randomSafeNumber (limit = Number.MAX_SAFE_INTEGER) {
+  validatePositive(limit)
   return randomDistanceRatio() * limit
+}
+
+function randomPositiveSafeNumber (limit = Number.MAX_SAFE_INTEGER) {
+  validatePositive(limit)
+  return randomPositiveDistanceRatio() * limit
+}
+
+function validatePositive (value) {
+  if (value <= 0) throw new Error(`Must be positive - ${value}`)
 }
 
 function validateDistanceRatio (distanceRatio, flag = 0) {
@@ -60,9 +74,12 @@ function euclideanDistance (n1, n2) {
 
 module.exports = {
   randomDistanceRatio,
+  randomPositiveDistanceRatio,
   validateDistanceRatio,
   randomNaturalNumber,
   randomSafeNumber,
+  randomPositiveSafeNumber,
+  validatePositive,
   repeat,
   diffNomials,
   isSameNomials,

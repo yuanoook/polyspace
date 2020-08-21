@@ -1,10 +1,13 @@
 const Atom = require('./Atom')
 const {
+  randomDistanceRatio,
+  randomPositiveDistanceRatio,
+  randomNaturalNumber,
+  randomSafeNumber,
+  randomPositiveSafeNumber,
   repeat,
   isSameNomials,
-  euclideanDistance,
-  randomDistanceRatio,
-  randomNaturalNumber
+  euclideanDistance
 } = require('./utils')
 
 class Point {
@@ -30,6 +33,9 @@ class Point {
   }
   checkIndex (index) {
     return this.checkDimension(index + 1)
+  }
+  getRandomIndex() {
+    return randomNaturalNumber(this.atoms.length)
   }
   checkDimension (dimension) {
     if (this.getDimensions() < dimension) this.extendDimension(dimension)
@@ -75,7 +81,7 @@ class Point {
   }
 
   findRandomLeftNeighborWith (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    return this.findLeftNeighborAt(randomNaturalNumber(this.atoms.length), distanceRatio)
+    return this.findLeftNeighborAt(this.getRandomIndex(), distanceRatio)
   }
 
   findRandomLeftNeighborsWith (distanceRatio = Atom.DISTANCE_RATIO_HALF, count = 1) {
@@ -83,7 +89,7 @@ class Point {
   }
 
   findRandomLeftNeighbor () {
-    return this.findRandomLeftNeighborWith(randomDistanceRatio(1))
+    return this.findRandomLeftNeighborWith(randomPositiveDistanceRatio())
   }
 
   findRandomLeftNeighbors (count = 1) {
@@ -91,7 +97,7 @@ class Point {
   }
 
   findRandomRightNeighborWith (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    return this.findRightNeighborAt(randomNaturalNumber(this.atoms.length), distanceRatio)
+    return this.findRightNeighborAt(this.getRandomIndex(), distanceRatio)
   }
 
   findRandomRightNeighborsWith (distanceRatio = Atom.DISTANCE_RATIO_HALF, count = 1) {
@@ -99,7 +105,7 @@ class Point {
   }
 
   findRandomRightNeighbor () {
-    return this.findRandomRightNeighborWith(randomDistanceRatio(1))
+    return this.findRandomRightNeighborWith(randomPositiveDistanceRatio())
   }
 
   findRandomRightNeighbors (count = 1) {
@@ -107,7 +113,7 @@ class Point {
   }
 
   findRandomNeighborWith (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    return this.findNeighborAt(randomNaturalNumber(this.atoms.length), distanceRatio)
+    return this.findNeighborAt(this.getRandomIndex(), distanceRatio)
   }
 
   findRandomNeighborsWith (distanceRatio = Atom.DISTANCE_RATIO_HALF, count = 1) {
@@ -142,35 +148,65 @@ class Point {
     return this.copyWithAtomAt(index, atomConnected)
   }
 
-  // TODO: add test
-  findRandomConnectedAt (index) {
-    const atomConnected = this.getAtom(index).findRandomConnected()
-    return this.copyWithAtomAt(index, atomConnected)
+  findRandomLeftConnectedWith (distance = Atom.DISTANCE_STEP_ONE) {
+    return this.findLeftConnectedAt(this.getRandomIndex(), distance)
   }
 
-  // TODO: add test
-  findRandomConnectedsAt (index, count = 1) {
-    const atomConnecteds = this.getAtom(index).findRandomConnecteds(count)
-    return repeat(i => this.copyWithAtomAt(index, atomConnecteds[i]), count)
+  findRandomLeftConnectedsWith (distance = Atom.DISTANCE_STEP_ONE, count = 1) {
+    return repeat(() => this.findRandomLeftConnectedWith(distance), count)
   }
 
-  // TODO: finish and add test
-  findRandomConnected (count = 1) {
-    
+  findRandomLeftConnected () {
+    return this.findRandomLeftConnectedWith(randomPositiveSafeNumber())
   }
 
-  // TODO: finish and add test
+  findRandomLeftConnecteds (count = 1) {
+    return repeat(() => this.findRandomLeftConnected(), count)
+  }
+
+  findRandomRightConnectedWith (distance = Atom.DISTANCE_STEP_ONE) {
+    return this.findRightConnectedAt(this.getRandomIndex(), distance)
+  }
+
+  findRandomRightConnectedsWith (distance = Atom.DISTANCE_STEP_ONE, count = 1) {
+    return repeat(() => this.findRandomRightConnectedWith(distance), count)
+  }
+
+  findRandomRightConnected () {
+    return this.findRandomRightConnectedWith(randomPositiveSafeNumber())
+  }
+
+  findRandomRightConnecteds (count = 1) {
+    return repeat(() => this.findRandomRightConnected(), count)
+  }
+
+  findRandomConnectedWith (distance = Atom.DISTANCE_STEP_ONE) {
+    return this.findConnectedAt(this.getRandomIndex(), distance)
+  }
+
+  findRandomConnectedsWith (distance = Atom.DISTANCE_STEP_ONE, count = 1) {
+    return repeat(() => this.findRandomConnectedWith(distance), count)
+  }
+
+  findRandomConnected () {
+    return this.findRandomConnectedWith(randomSafeNumber())
+  }
+
   findRandomConnecteds (count = 1) {
-    
+    return repeat(() => this.findRandomConnected(), count)
+  }
+
+  findRandomConnectedWithScalar (value) {
+    return this.findConnectedAtWithScalar(this.getRandomIndex(), value)
   }
 
   // TODO: finish and add test
-  getLeftConnectedsAt
-  getRightConnectedsAt
-  getConnectedsAt
-  getConnedteds
-  getInNetworkPoints
-  isInNetwork
+  getLeftConnectedsAt () {}
+  getRightConnectedsAt () {}
+  getConnectedsAt () {}
+  getConnedteds () {}
+  getNetworkPoints () {}
+  isInNetwork () {}
 
   checkoutMatchAtoms (point, func) {
     return repeat(

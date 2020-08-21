@@ -1,8 +1,11 @@
 const {
   randomDistanceRatio,
+  randomPositiveDistanceRatio,
   validateDistanceRatio,
   randomNaturalNumber,
   randomSafeNumber,
+  randomPositiveSafeNumber,
+  validatePositive,
   repeat,
   diffNomials,
   isSameNomials,
@@ -13,7 +16,7 @@ it('[PolySpace] [utils] [randomDistanceRatio]', () => {
   expect(randomDistanceRatio()).not.toBe(0)
   expect(randomDistanceRatio()).toBeLessThan(1)
   expect(randomDistanceRatio()).toBeGreaterThan(-1)
-  expect(randomDistanceRatio(1) > 0).toBe(true)
+  expect(randomPositiveDistanceRatio() > 0).toBe(true)
   expect(randomDistanceRatio(-1) < 0).toBe(true)
 })
 
@@ -44,14 +47,17 @@ it('[PolySpace] [utils] [randomNaturalNumber]', () => {
 })
 
 it('[PolySpace] [utils] [randomSafeNumber]', () => {
-  let count = 100
-  while (--count > 0) {
-    const limit = Math.random() * Number.MAX_SAFE_INTEGER
-    const safeNumber = randomSafeNumber(limit)
-    expect(safeNumber).not.toBe(0)
-    expect(safeNumber).toBeLessThan(limit)
-    expect(safeNumber).toBeGreaterThan(-limit)
-  }
+  let limit
+  expect(randomSafeNumber(limit = randomPositiveSafeNumber())).not.toBe(0)
+  expect(randomSafeNumber(limit = randomPositiveSafeNumber())).toBeLessThan(limit)
+  expect(randomSafeNumber(limit = randomPositiveSafeNumber())).toBeGreaterThan(-limit)
+  expect(randomPositiveSafeNumber())
+})
+
+it('[PolySpace] [utils] [validatePositive]', () => {
+  expect(() => validatePositive(-1)).toThrow()
+  expect(() => validatePositive(0)).toThrow()
+  expect(() => validatePositive(1)).not.toThrow()
 })
 
 it('[PolySpace] [utils] [repeat]', () => {

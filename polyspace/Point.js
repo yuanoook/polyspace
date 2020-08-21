@@ -106,36 +106,38 @@ class Point {
     return repeat(() => this.findRandomRightNeighbor(), count)
   }
 
-  // TODO: finish and add test
+  findRandomNeighborWith (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
+    return this.findNeighborAt(randomNaturalNumber(this.atoms.length), distanceRatio)
+  }
+
+  findRandomNeighborsWith (distanceRatio = Atom.DISTANCE_RATIO_HALF, count = 1) {
+    return repeat(() => this.findRandomNeighborWith(distanceRatio), count)
+  }
+
   findRandomNeighbor () {
-
+    return this.findRandomNeighborWith(randomDistanceRatio())
   }
 
-  // TODO: finish and add test
   findRandomNeighbors (count = 1) {
-
+    return repeat(() => this.findRandomNeighbor(), count)
   }
 
-  // TODO: add test
   findLeftConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
     const atomConnected = this.getAtom(index).findLeftConnected(distance)
     return this.copyWithAtomAt(index, atomConnected)
   }
 
-  // TODO: add test
   findRightConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
     const atomConnected = this.getAtom(index).findRightConnected(distance)
     return this.copyWithAtomAt(index, atomConnected)
   }
 
-  // TODO: add test
   findConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
     const atomConnected = this.getAtom(index).findConnected(distance)
     return this.copyWithAtomAt(index, atomConnected)
   }
 
-  // TODO: add test
-  findConnectedAtScalar (index, value) {
+  findConnectedAtWithScalar (index, value) {
     const atomConnected = this.getAtom(index).findConnectedAtScalar(value)
     return this.copyWithAtomAt(index, atomConnected)
   }

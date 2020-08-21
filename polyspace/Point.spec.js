@@ -145,6 +145,56 @@ it('[PolySpace] [Point] [findRandomRightNeighbor]', () => {
   expect(() => point.findRandomRightNeighborWith(-0.5)).toThrow()
 })
 
+it('[PolySpace] [Point] [findRandomNeighbor]', () => {
+  const point = new Point([1, 2, 3, 4])
+  let neighbor = point.findRandomNeighborWith(0.5)
+  expect(neighbor.isNeighbor(point)).toBe(true)
+
+  let newNeighbor = point.findRandomNeighbor()
+  expect(newNeighbor.isNeighbor(point)).toBe(true)
+
+  let rwNeighbors = point.findRandomNeighborsWith(0.5, 5)
+  expect(rwNeighbors.length).toBe(5)
+  expect(point.isNeighbor(rwNeighbors[4]))
+
+  let rNeighbors = point.findRandomNeighbors(5)
+  expect(rNeighbors.length).toBe(5)
+  expect(point.isNeighbor(rNeighbors[4]))
+
+  expect(() => point.findRandomNeighborWith(-0.5)).not.toThrow()
+})
+
+it('[PolySpace] [Point] [findConnectedAt]', () => {
+  const point = new Point([1, 2, 3, 4])
+  let connected = point.findConnectedAt(0, -1)
+  expect(connected.isRightNeighbor(point)).toBe(true)
+  expect(point.isLeftNeighbor(connected)).toBe(true)
+  expect(point.euclideanDistance(connected)).toBe(1)
+
+  let lConnected = point.findLeftConnectedAt(0, 10)
+  expect(connected.isLeftNeighbor(lConnected)).toBe(true)
+  expect(lConnected.isRightNeighbor(connected)).toBe(true)
+  expect(lConnected.euclideanDistance(connected)).toBe(9)
+
+  expect(point.isConnected(lConnected)).toBe(true)
+  expect(lConnected.isConnected(point)).toBe(true)
+
+  let rConnected = point.findRightConnectedAt(0, 4)
+  expect(connected.isRightConnected(rConnected)).toBe(true)
+  expect(rConnected.isLeftConnected(connected)).toBe(true)
+  expect(rConnected.euclideanDistance(connected)).toBe(5)
+
+  expect(point.isConnected(rConnected)).toBe(true)
+  expect(rConnected.isConnected(point)).toBe(true)
+
+  let sConnected = point.findConnectedAtWithScalar(0, 5)
+  expect(rConnected.euclideanDistance(lConnected)).toBe(14)
+  expect(rConnected.isConnected(lConnected)).toBe(true)
+
+  expect(rConnected.euclideanDistance(sConnected)).toBe(0)
+  expect(rConnected.isSame(sConnected)).toBe(true)
+})
+
 it('[PolySpace] [Point] [euclideanDistance]', () => {
   expect(new Point([])
     .euclideanDistance(new Point([]))).toBe(0)

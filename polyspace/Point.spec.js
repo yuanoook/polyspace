@@ -201,13 +201,25 @@ it('[PolySpace] [Point] [findRandomConnected]', () => {
   expect(connected.isNeighbor(point)).toBe(true)
   expect(point.isNeighbor(connected)).toBe(true)
 
+  let connecteds = point.findRandomConnecteds(5)
+  expect(connecteds.length).toBe(5)
+  validatePythagorasTheorem(connecteds[1], connecteds[2], point)
+
   let lConnected = point.findRandomLeftConnected()
   expect(point.isLeftConnected(lConnected)).toBe(true)
   expect(lConnected.isConnected(point)).toBe(true)
 
+  let lConnecteds = point.findRandomLeftConnecteds(5)
+  expect(lConnecteds.length).toBe(5)
+  validatePythagorasTheorem(lConnecteds[1], lConnecteds[2], point)
+
   let rConnected = point.findRandomRightConnected()
   expect(point.isRightConnected(rConnected)).toBe(true)
   expect(rConnected.isConnected(point)).toBe(true)
+
+  let rConnecteds = point.findRandomRightConnecteds(5)
+  expect(rConnecteds.length).toBe(5)
+  validatePythagorasTheorem(rConnecteds[1], rConnecteds[2], point)
 
   let sConnected = point.findRandomConnectedWithScalar(5)
   expect([4, 3, 2, 1].indexOf(point.euclideanDistance(sConnected)) > -1).toBe(true)
@@ -223,4 +235,21 @@ it('[PolySpace] [Point] [euclideanDistance]', () => {
     .euclideanDistance(new Point([]))).toBe(Math.sqrt(3))
   expect(new Point([2, 2, 2])
     .euclideanDistance(new Point([1, 1, 1]))).toBe(Math.sqrt(3))
+
+  const point = new Point([1, 1, 1, 1])
+  const connected1 = point.findRandomConnectedWithScalar(4)
+  const connected2 = point.findRandomConnectedWithScalar(5)
+  validatePythagorasTheorem(connected1, connected2, point)
+
+  const neighbors = point.findRandomNeighbors(5)
+  validatePythagorasTheorem(neighbors[1], neighbors[2], point)
 })
+
+function validatePythagorasTheorem (A, B, C) {
+  const a = B.euclideanDistance(C)
+  const b = A.euclideanDistance(C)
+  const c = A.euclideanDistance(B)
+  const a2b2_over_c2 = (a ** 2 + b ** 2) / (c ** 2)
+  const expectation = A.isConnected(B) ? a2b2_over_c2 : 1
+  expect(a2b2_over_c2).toBeCloseTo(expectation, 6)
+}

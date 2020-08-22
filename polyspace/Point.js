@@ -202,8 +202,6 @@ class Point {
 
   // TODO: finish and add test
   // Let's call it the morning
-  // Let's call it the morning
-  // Let's call it the morning
   getLeftConnectedsAt () {}
   getRightConnectedsAt () {}
   getConnectedsAt () {}

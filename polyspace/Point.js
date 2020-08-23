@@ -12,7 +12,10 @@ const {
 
 class Point {
   constructor (nomials = []) {
-    this.atoms = nomials.map(value => new Atom(value))
+    this.atoms = nomials.map(value => this.makeAtom(value))
+  }
+  makeAtom (value = 0) {
+    return new Atom(value, {parent: this})
   }
   getAtom (index) {
     this.checkIndex(index)
@@ -44,14 +47,14 @@ class Point {
     repeat(index => this.fillZeroAtomAt(index), dimension)
   }
   fillZeroAtomAt (index) {
-    this.atoms[index] = this.atoms[index] || new Atom()
+    this.atoms[index] = this.atoms[index] || this.makeAtom()
   }
   copyWithAtomAt (index, atom) {
     this.checkIndex(index)
     const newPoint = new Point()
     for (let i in this.atoms) newPoint.atoms[i] = +i === +index
       ? atom
-      : new Atom(this.atoms[i].getValue())
+      : newPoint.makeAtom(this.atoms[i].getValue())
     return newPoint
   }
 

@@ -45,6 +45,9 @@ it('[PolySpace] [Atom] [Basics]', () => {
     exRight.getValue() * Atom.DISTANCE_RATIO_HALF +
     atom.getValue() * Atom.DISTANCE_RATIO_HALF
   )
+
+  let configuredAtom = new Atom(0, {parent: ':D'})
+  expect(configuredAtom.parent).toBe(':D')
 })
 
 it('[PolySpace] [Atom] [findNeighbor]', () => {

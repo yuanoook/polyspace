@@ -14,11 +14,12 @@ class Atom {
   static DISTANCE_RATIO_HALF = 0.5
   static DISTANCE_STEP_ONE = 1
 
-  constructor (value = 0) {
+  constructor (value = 0, config = {}) {
     this.validateValue(value)
     this.value = value
     this.left = null
     this.right = null
+    Object.assign(this, config)
   }
 
   validateValue (value) {

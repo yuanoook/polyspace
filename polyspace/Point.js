@@ -203,13 +203,50 @@ class Point {
     return this.findConnectedAtWithScalar(this.getRandomIndex(), value)
   }
 
-  // TODO: finish and add test
-  getLeftConnectedsAt () {}
-  getRightConnectedsAt () {}
-  getConnectedsAt () {}
-  getConnedteds () {}
-  getNetworkPoints () {}
-  isInNetwork () {}
+  // add test
+  map (call) {
+    return this.atoms.map(call)
+  }
+
+  reduce (call, init) {
+    return this.atoms.reduceAtoms(call, init)
+  }
+
+  getLeftChainPointsAt (index, includeSelf = false) {
+    return this.getAtom(index).getLeftChainAtoms(includeSelf).map(atom => atom.parent)
+  }
+
+  getRightChainPointsAt (index, includeSelf = false) {
+    return this.getAtom(index).getLeftChainAtoms(includeSelf).map(atom => atom.parent)
+  }
+
+  getChainPointsAt (index, includeSelf = true) {
+    return [...this.getLeftChainPointsAt(index, includeSelf), ...this.getRightChainPointsAt(index)]
+  }
+
+  getChainPoints (includeSelf = true) {
+    return this.reduce(
+      (points, _, index) => [...points, ...this.getChainPointsAt(index, false)],
+      includeSelf ? [this] : []
+    )
+  }
+
+  getInNetworkPoints (includeSelf = true) {
+    const results = this.getChainPoints()
+    const index = 0
+    while (results[index]) {
+      const point = results[index]
+      point.getChainPoints().forEach(point => {
+        if (results.indexOf(point) < 0) results.push(point)
+      })
+    }
+    if (!includeSelf) results.shift()
+    return results
+  }
+
+  isInNetwork (point) {
+    return this.getInNetworkPoints().indexOf(point) > -1
+  }
 
   checkoutMatchAtoms (point, func) {
     return repeat(

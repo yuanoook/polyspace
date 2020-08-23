@@ -22,6 +22,7 @@ class Space {
   }
 
   setup () {
+    this.checkCount = 0
     this.dimension = 1
     this.origin = new Point([0])
     this.zeroDistancePoints = []
@@ -31,8 +32,8 @@ class Space {
   }
 
   print () {
-    console.log(`==============================`)
     console.log(`
+    checkCount: ${this.checkCount}
     dimension: ${this.dimension}
     minDistance: ${this.minDistance}
     minDistancePoints: ${this.getRandomMinDistancePoint().getNomials()}
@@ -40,6 +41,7 @@ class Space {
   }
 
   check (point) {
+    this.checkCount ++
     point.distance = this.meanSquaredError(point)
     this.updateMinDistance(point)
   }
@@ -72,12 +74,15 @@ class Space {
   }
 
   getAllPoints () {
-    return this.origin.getChainPoints()
+    return this.origin.getInNetworkPoints()
   }
 
+  // TODO - While try to extendDimension, remove all
   extendDimension () {
     this.dimension ++
-    this.getAllPoints().map(point => point.extendDimension(this.dimension))
+    // TODO - Shake points to save computing
+    // this.getAllPoints().map(point => point.extendDimension(this.dimension))
+    this.minDistancePoints.map(point => point.extendDimension(this.dimension))
   }
 
   squaredError (point, input, expectation) {
@@ -103,17 +108,24 @@ class Space {
   }
 
   exploreLocalMinimum (timeLimit = 1) {
-    const timeLimitMilliseconds = timeLimit * 1000
+    const timePlaned = timeLimit * 1000
     const startAt = +new Date()
-    while (new Date() - startAt < timeLimitMilliseconds) {
+    // This is tricky, need to fix this
+    let lastExtendAt = startAt
+    while (true) {
+      const timeUsed = new Date() - startAt
+      const timeRemaining = timePlaned - timeUsed
+      if (timeRemaining < 0) return
       if (this.zeroDistancePoints.length) return
+
       try {
         this.check(this.findRandomMinNeighbor())
       } catch (error) {
-        if (error === Atom.NEIGHBOR_COLLISION_ERROR) {
-          if (this.dimension < 2) this.extendDimension()
-        } else {
-          throw error
+        if (error !== Atom.NEIGHBOR_COLLISION_ERROR) throw error
+        const lastExtendPassed = new Date() - lastExtendAt
+        if (lastExtendPassed > (2 * timeRemaining)) {
+          this.extendDimension()
+          lastExtendAt = +new Date()
         }
       }
     }

@@ -6,13 +6,16 @@ const {
   randomSafeNumber,
   randomPositiveSafeNumber,
   repeat,
+  isCloseTo,
   isSameNomials,
   euclideanDistance
 } = require('./utils')
 
 class Point {
-  constructor (nomials = []) {
+  static PRECISION = 6
+  constructor (nomials = [], config = {}) {
     this.atoms = nomials.map(value => this.makeAtom(value))
+    Object.assign(this, config)
   }
   makeAtom (value = 0) {
     return new Atom(value, {parent: this})
@@ -43,14 +46,18 @@ class Point {
   checkIndex (index) {
     return this.checkDimension(index + 1)
   }
-  getRandomIndex() {
+  getRandomIndex () {
     return randomNaturalNumber(this.atoms.length)
   }
   checkDimension (dimension) {
     if (this.getDimensions() < dimension) this.extendDimension(dimension)
   }
   extendDimension (dimension) {
-    repeat(index => this.fillZeroAtomAt(index), dimension)
+    return repeat(index => this.fillZeroAtomAt(index), dimension)
+  }
+  // TODO: add test
+  isCloseTo (point, precision = Point.PRECISION) {
+    return isCloseTo(this.euclideanDistance(point), 0, precision) 
   }
   fillZeroAtomAt (index) {
     this.atoms[index] = this.atoms[index] || this.makeAtom()

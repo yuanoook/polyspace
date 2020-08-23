@@ -14,6 +14,8 @@ class Atom {
   static DISTANCE_RATIO_HALF = 0.5
   static DISTANCE_STEP_ONE = 1
 
+  static NEIGHBOR_COLLISION_ERROR = new Error(`Neighbor collision!`)
+
   constructor (value = 0, config = {}) {
     this.validateValue(value)
     this.value = value
@@ -116,7 +118,13 @@ class Atom {
     return Math.random() < 0.5 ? this.left : this.right
   }
 
+  // TODO: test this
+  neighborCollisionCheck (atom) {
+    if (this.value === atom.value) throw Atom.NEIGHBOR_COLLISION_ERROR
+  }
+
   connectLeftNeighbor (newNeighbor) {
+    this.neighborCollisionCheck(newNeighbor)
     const exLeftNeighbor = this.left
 
     this.left = newNeighbor
@@ -129,6 +137,7 @@ class Atom {
   }
 
   connectRightNeighbor (newNeighbor) {
+    this.neighborCollisionCheck(newNeighbor)
     const exRightNeighbor = this.right
 
     this.right = newNeighbor

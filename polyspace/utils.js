@@ -72,6 +72,46 @@ function euclideanDistance (n1, n2) {
   return Math.sqrt(sum)
 }
 
+// TODO: add test
+
+// This is from facebook/jest - toBeCloseTo
+// https://github.com/facebook/jest/blob/2a92e7f49fa35b219e5099d56b0179bccc1bf53e/packages/expect/src/matchers.ts#L125
+function isCloseTo (received, expected, precision = 6) {
+  let expectedDiff = 0
+  let receivedDiff = 0
+  if (received === Infinity && expected === Infinity) return true
+  if (received === -Infinity && expected === -Infinity) return true
+
+  expectedDiff = Math.pow(10, -precision) / 2
+  receivedDiff = Math.abs(expected - received)
+  return receivedDiff < expectedDiff
+}
+
+// TODO: this should be moved out from the file
+// This is just a very basic example of translation function
+// 
+// A translation takes a point, and outputs a system
+// eg. f(x) = a0 + a1x
+//
+// A system takes inputs, and gives out outputs
+// This is an example of translation
+// which the system is
+//   f(x) = a0 + a1 * x + a2 * x^2 ...
+//
+// For more information about poly numbers,
+// please follow the video by Norman J. Wildberger
+// https://www.youtube.com/watch?v=-Ad6pYjCAmg
+
+function calculatePolyNumbers (coefficients, variable) {
+  return coefficients.reduce((sum, coefficient, exponent) =>
+    sum + coefficient * (variable ** exponent), 0
+  )
+}
+
+function polyNumbersTranslation (nomials) {
+  return input => calculatePolyNumbers(nomials, input)
+}
+
 module.exports = {
   randomDistanceRatio,
   randomPositiveDistanceRatio,
@@ -83,5 +123,8 @@ module.exports = {
   repeat,
   diffNomials,
   isSameNomials,
-  euclideanDistance
+  euclideanDistance,
+  isCloseTo,
+  calculatePolyNumbers,
+  polyNumbersTranslation
 }

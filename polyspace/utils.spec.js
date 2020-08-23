@@ -9,7 +9,9 @@ const {
   repeat,
   diffNomials,
   isSameNomials,
-  euclideanDistance
+  euclideanDistance,
+  calculatePolyNumbers,
+  polyNumbersTranslation
 } = require('./utils')
 
 it('[PolySpace] [utils] [randomDistanceRatio]', () => {
@@ -83,7 +85,7 @@ it('[PolySpace] [utils] [diffNomials / isSameNomials]', () => {
   expect(isSameNomials([2], [1])).toBe(false)
 })
 
-it('[PolySpace] [utils]  [euclideanDistance]', () => {
+it('[PolySpace] [utils] [euclideanDistance]', () => {
   expect(euclideanDistance([], [])).toBe(0)
   expect(euclideanDistance([0, 0], [])).toBe(0)
   expect(euclideanDistance([1, 1, 1], [])).toBe(Math.sqrt(3))
@@ -91,4 +93,34 @@ it('[PolySpace] [utils]  [euclideanDistance]', () => {
   
   const diffs = diffNomials([0, 0, 3], [1, -1, 2])
   expect(euclideanDistance(diffs, [])).toBe(Math.sqrt(3))
+})
+
+
+it('[PolySpace] [utils] [calculatePolyNumbers]', () => {
+  expect(calculatePolyNumbers([], 0)).toBe(0)
+
+  expect(calculatePolyNumbers([1], 0)).toBe(1)
+  expect(calculatePolyNumbers([1], 1)).toBe(1)
+  expect(calculatePolyNumbers([1], 2)).toBe(1)
+  expect(calculatePolyNumbers([1], 3)).toBe(1)
+
+  expect(calculatePolyNumbers([0, 1], 2)).toBe(2)
+  expect(calculatePolyNumbers([1, 1], 2)).toBe(3)
+
+  expect(calculatePolyNumbers([0, 0, 1], 2)).toBe(4)
+  expect(calculatePolyNumbers([0, 0, 1], 3)).toBe(9)
+  expect(calculatePolyNumbers([0, 0, 1], 4)).toBe(16)
+  expect(calculatePolyNumbers([0, 0, 1], 5)).toBe(25)
+
+  expect(calculatePolyNumbers([0, 1, 1], 2)).toBe(0*2**0 + 2**1 + 2**2)
+  expect(calculatePolyNumbers([0, 1, 1], 3)).toBe(0*3**0 + 3**1 + 3**2)
+  expect(calculatePolyNumbers([0, 1, 1], 4)).toBe(0*4**0 + 4**1 + 4**2)
+
+  expect(calculatePolyNumbers([5, 1, 1], 2)).toBe(5*2**0 + 2**1 + 2**2)
+  expect(calculatePolyNumbers([6, 1, 1], 3)).toBe(6*3**0 + 3**1 + 3**2)
+  expect(calculatePolyNumbers([7, 1, 1], 4)).toBe(7*4**0 + 4**1 + 4**2)
+
+  expect(polyNumbersTranslation([5, 1, 1])(2)).toBe(calculatePolyNumbers([5, 1, 1], 2))
+  expect(polyNumbersTranslation([6, 1, 1])(3)).toBe(calculatePolyNumbers([6, 1, 1], 3))
+  expect(polyNumbersTranslation([7, 1, 1])(4)).toBe(calculatePolyNumbers([7, 1, 1], 4))
 })

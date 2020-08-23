@@ -7,10 +7,10 @@ it('[PolySpace] [Space] [Basics]', () => {
   expect(space.translation).toBe(polyNumbersTranslation)
 
   const inputs = [1, 2, 5]
-  const expectations = [1, 2, 5]
+  const expectations = [1, 2, -10]
   space.take(inputs, expectations)
 
-  const theBestPoint = space.findThePoint()
+  const theBestPoint = space.findThePoint(30)
   space.print()
   expect(theBestPoint.isCloseTo(new Point([0, 1]), 3)).toBe(true)
 })

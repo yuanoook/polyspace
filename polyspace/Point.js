@@ -28,8 +28,14 @@ class Point {
     this.checkIndex(index)
     return this.atoms[index].getValue()
   }
+  map (call) {
+    return this.atoms.map(call)
+  }
+  reduce (call, init) {
+    return this.atoms.reduce(call, init)
+  }
   getNomials () {
-    return this.atoms.map(atom => atom.getValue())
+    return this.map(atom => atom.getValue())
   }
   getDimensions () {
     return this.atoms.length
@@ -52,6 +58,7 @@ class Point {
   copyWithAtomAt (index, atom) {
     this.checkIndex(index)
     const newPoint = new Point()
+    atom.parent = newPoint
     for (let i in this.atoms) newPoint.atoms[i] = +i === +index
       ? atom
       : newPoint.makeAtom(this.atoms[i].getValue())
@@ -202,28 +209,17 @@ class Point {
   findRandomConnectedWithScalar (value) {
     return this.findConnectedAtWithScalar(this.getRandomIndex(), value)
   }
-
-  // add test
-  map (call) {
-    return this.atoms.map(call)
-  }
-
-  reduce (call, init) {
-    return this.atoms.reduceAtoms(call, init)
-  }
-
   getLeftChainPointsAt (index, includeSelf = false) {
     return this.getAtom(index).getLeftChainAtoms(includeSelf).map(atom => atom.parent)
   }
-
   getRightChainPointsAt (index, includeSelf = false) {
-    return this.getAtom(index).getLeftChainAtoms(includeSelf).map(atom => atom.parent)
+    return this.getAtom(index).getRightChainAtoms(includeSelf).map(atom => atom.parent)
   }
-
   getChainPointsAt (index, includeSelf = true) {
     return [...this.getLeftChainPointsAt(index, includeSelf), ...this.getRightChainPointsAt(index)]
   }
 
+  // TODO: return new Points() object, add convenient methods
   getChainPoints (includeSelf = true) {
     return this.reduce(
       (points, _, index) => [...points, ...this.getChainPointsAt(index, false)],
@@ -233,12 +229,13 @@ class Point {
 
   getInNetworkPoints (includeSelf = true) {
     const results = this.getChainPoints()
-    const index = 0
+    let index = 0
     while (results[index]) {
       const point = results[index]
-      point.getChainPoints().forEach(point => {
+      point.getChainPoints(false).forEach(point => {
         if (results.indexOf(point) < 0) results.push(point)
       })
+      index ++
     }
     if (!includeSelf) results.shift()
     return results

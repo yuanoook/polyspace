@@ -254,3 +254,83 @@ function validatePythagorasTheorem (A, B, C) {
   const expectation = A.isConnected(B) ? a2b2_over_c2 : 1
   expect(a2b2_over_c2).toBeCloseTo(expectation, 6)
 }
+
+it('[PolySpace] [Point] [makeAtom]', () => {
+  const point = new Point()
+  expect(point.makeAtom(3).parent).toBe(point)
+})
+
+it('[PolySpace] [Point] [map / reduce]', () => {
+  const point = new Point([1, 2, 3, 4])
+  expect(point.map(a => a.getValue())).toEqual([1 ,2 ,3, 4])
+  expect(point.reduce((p, a) => p + a.getValue(), 0)).toEqual(10)
+})
+
+it('[PolySpace] [Point] [getChainPoints]', () => {
+  const point = new Point([1, 2, 3, 4])
+  expect(point.getChainPoints().length).toBe(1)
+  point.findConnectedAtWithScalar(0, 2)
+  point.findConnectedAtWithScalar(0, 3)
+  expect(point.getLeftChainPointsAt(0)).toEqual([])
+  expect(point.getLeftChainPointsAt(0, true)).toEqual([point])
+  expect(
+    point.getRightChainPointsAt(0).map(point => point.getNomials())
+  ).toEqual([
+      [2, 2, 3, 4],
+      [3, 2, 3, 4]
+  ])
+  expect(
+    point.getRightChainPointsAt(0, true).map(point => point.getNomials())
+  ).toEqual([
+    [1, 2, 3, 4],
+    [2, 2, 3, 4],
+    [3, 2, 3, 4]
+  ])
+  point.findConnectedAtWithScalar(0, 0)
+  point.findConnectedAtWithScalar(0, -1)
+  expect(point.getChainPointsAt(0)[2]).toEqual(point)
+  expect(
+    point.getChainPointsAt(0).map(point => point.getNomials())
+  ).toEqual([
+    [-1, 2, 3, 4],
+    [0, 2, 3, 4],
+    [1, 2, 3, 4],
+    [2, 2, 3, 4],
+    [3, 2, 3, 4]
+  ])
+
+  expect(point.getChainPoints().length).toBe(5)
+  point.findRandomNeighbors(5)
+  expect(point.getChainPoints().length).toBe(10)
+  expect(point.getChainPoints(false).length).toBe(9)
+  expect(point.getChainPoints()[0]).toBe(point)
+  expect(point.getChainPoints(false)[0]).not.toBe(point)
+})
+
+it('[PolySpace] [Point] [getInNetworkPoints / isInNetwork]', () => {
+  const point = new Point([1, 2, 3, 4])
+  const rNeighbors9 = point.findRandomNeighbors(9)
+  expect(point.getInNetworkPoints().length).toBe(10)
+  expect(point.getInNetworkPoints(false).length).toBe(9)
+  expect(point.getInNetworkPoints()[0]).toBe(point)
+  expect(point.getInNetworkPoints(false)[0]).not.toBe(point)
+
+  const rNeighbors5 = point.findRandomNeighbors(5)
+  expect(point.getInNetworkPoints().length).toBe(15)
+  expect(point.getInNetworkPoints(false).length).toBe(14)
+  expect(point.getInNetworkPoints()[0]).toBe(point)
+  expect(point.getInNetworkPoints(false)[0]).not.toBe(point)
+
+  pointsInNetwork = point.getInNetworkPoints()
+  expect(pointsInNetwork[3].isInNetwork(pointsInNetwork[10])).toBe(true)
+
+  const sum59 = sumPointsNomials(rNeighbors9) + sumPointsNomials(rNeighbors5)
+  const sumExcludeSelf = sumPointsNomials(point.getInNetworkPoints(false))
+  expect(sum59 / sumExcludeSelf).toBeCloseTo(1, 6)
+})
+
+function sumPointsNomials (points) {
+  return points.reduce((sum, p) =>
+    sum + p.atoms.reduce((s, a) => s + a.getValue(), 0)
+  , 0)
+}

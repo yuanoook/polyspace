@@ -8,7 +8,8 @@ it('[PolySpace] [Point] [Basics]', () => {
   expect(point.getAtom(1).getValue()).toBe(2)
   expect(point.getAtom(2).getValue()).toBe(3)
   expect(point.getAtom(3).getValue()).toBe(4)
-  expect(point.getAtoms().map(atom => atom.getValue())).toEqual([1, 2, 3, 4])
+  expect(point.getAtoms().map(atom => atom.parent))
+    .toEqual([point, point, point, point])
   expect(point.getDimensions()).toBe(4)
 
   expect(point.getNomial(0)).toBe(1)

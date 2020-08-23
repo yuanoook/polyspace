@@ -50,6 +50,16 @@ it('[PolySpace] [Atom] [Basics]', () => {
   expect(configuredAtom.parent).toBe(':D')
 })
 
+it('[PolySpace] [Atom] [getChainAtoms]', () => {
+  const atom = new Atom(3)
+  atom.findConnectedsAtScalars([1, 2, 4, 5])
+  expect(atom.getLeftChainValues()).toEqual([1, 2])
+  expect(atom.getLeftChainValues(true)).toEqual([1, 2, 3])
+  expect(atom.getRightChainValues()).toEqual([4, 5])
+  expect(atom.getRightChainValues(true)).toEqual([3, 4, 5])
+  expect(atom.getChainValues()).toEqual([1, 2, 3, 4, 5])
+})
+
 it('[PolySpace] [Atom] [findNeighbor]', () => {
   const atom = new Atom(3)
   expect(atom.getValue()).toBe(3)
@@ -258,6 +268,8 @@ it('[PolySpace] [Atom] [walkToLeftMost / walkToRightMost]', () => {
   const newNeighbors = atom.findRandomNeighbors(5)
   const newConnecteds = atom.findRandomConnecteds(5)
   const chainAtoms = atom.getChainAtoms()
+  expect(chainAtoms.length).toBe(11)
+
   const leftMost = atom.gotoLeftMost()
   const rightMost = atom.gotoRightMost()
 

@@ -46,6 +46,11 @@ class Space {
     this.updateMinDistance(point)
   }
 
+  // TODO: add test
+  areAllMinDistancePointsTrapped () {
+    return !this.minDistancePoints.some(point => !point.isTrapped())
+  }
+
   updateMinDistance (point) {
     if (point.distance > this.minDistance) return
 
@@ -110,23 +115,14 @@ class Space {
   exploreLocalMinimum (timeLimit = 1) {
     const timePlaned = timeLimit * 1000
     const startAt = +new Date()
-    // This is tricky, need to fix this
-    let lastExtendAt = startAt
     while (true) {
-      const timeUsed = new Date() - startAt
-      const timeRemaining = timePlaned - timeUsed
-      if (timeRemaining < 0) return
+      if ((new Date() - startAt) > timePlaned) return
       if (this.zeroDistancePoints.length) return
-
       try {
         this.check(this.findRandomMinNeighbor())
       } catch (error) {
         if (error !== Atom.NEIGHBOR_COLLISION_ERROR) throw error
-        const lastExtendPassed = new Date() - lastExtendAt
-        if (lastExtendPassed > (2 * timeRemaining)) {
-          this.extendDimension()
-          lastExtendAt = +new Date()
-        }
+        if (this.areAllMinDistancePointsTrapped()) this.extendDimension()
       }
     }
   }

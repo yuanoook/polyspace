@@ -3,10 +3,12 @@ const {
   validateDistanceRatio,
   randomNaturalNumber,
   randomSafeNumber,
-  repeat
+  repeat,
+  isCloseTo
 } = require('./utils')
 
 class Atom {
+  static PRECISION = 6
   static LEFT_INFINITY = -Infinity
   static RIGHT_INFINITY = Infinity
   static LEFT_SAFE_INTEGER = Number.MIN_SAFE_INTEGER
@@ -119,12 +121,23 @@ class Atom {
   }
 
   // TODO: test this
-  neighborCollisionCheck (atom) {
+  newNeighborCollisionCheck (atom) {
     if (this.value === atom.value) throw Atom.NEIGHBOR_COLLISION_ERROR
   }
 
+  // TODO: add test
+  isCloseTo ({ value }, precision = Atom.PRECISION) {
+    return isCloseTo(this.value, value, precision)
+  }
+
+  // TODO: test this
+  isTrapped (atom, precision = Atom.PRECISION) {
+    return this.isCloseTo({ value: this.getLeftHalfwayValue() }, precision) &&
+      this.isCloseTo({ value: this.getRightHalfwayValue() }, precision)
+  }
+
   connectLeftNeighbor (newNeighbor) {
-    this.neighborCollisionCheck(newNeighbor)
+    this.newNeighborCollisionCheck(newNeighbor)
     const exLeftNeighbor = this.left
 
     this.left = newNeighbor
@@ -137,7 +150,7 @@ class Atom {
   }
 
   connectRightNeighbor (newNeighbor) {
-    this.neighborCollisionCheck(newNeighbor)
+    this.newNeighborCollisionCheck(newNeighbor)
     const exRightNeighbor = this.right
 
     this.right = newNeighbor

@@ -319,6 +319,11 @@ class Point {
     return isSameNomials(this.getNomials(), point.getNomials())
   }
 
+  // TODO: test this
+  isTrapped () {
+    return !this.atoms.some(atom => !atom.isTrapped())
+  }
+
   euclideanDistance (point) {
     return euclideanDistance(this.getNomials(), point.getNomials())
   }

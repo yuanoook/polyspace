@@ -6,24 +6,12 @@ it('[PolySpace] [Space] [Basics]', () => {
   const space = new Space(polyNumbersTranslation)
   expect(space.translation).toBe(polyNumbersTranslation)
 
-  const inputs = [1, 2, 5]
-  const expectations = [1, 2, -10]
-  space.take(inputs, expectations)
-
-  const theBestPoint = space.findThePoint(30)
-  space.print()
-  expect(theBestPoint.isCloseTo(new Point([0, 1]), 3)).toBe(true)
-})
-
-it('[PolySpace] [Space] [Basics]', () => {
-  const space = new Space(polyNumbersTranslation)
-  expect(space.translation).toBe(polyNumbersTranslation)
-
-  const inputs = [1, 0, 0.5]
-  const expectations = [0, 1, 0.5]
+  const inputs = [-2, 2]
+  const expectations = [0, 4]
   space.take(inputs, expectations)
 
   const theBestPoint = space.findThePoint()
+
   space.print()
-  expect(theBestPoint.isCloseTo(new Point([1, -1]), 3)).toBe(true)
+  expect(theBestPoint.isCloseTo(new Point([2, 1]), 3)).toBe(true)
 })

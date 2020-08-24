@@ -8,6 +8,7 @@ const {
   repeat,
   isCloseTo,
   isSameNomials,
+  trimNomials,
   euclideanDistance
 } = require('./utils')
 
@@ -39,6 +40,9 @@ class Point {
   }
   getNomials () {
     return this.map(atom => atom.getValue())
+  }
+  getTrimmedNomials () {
+    return trimNomials(this.getNomials())
   }
   getDimensions () {
     return this.atoms.length

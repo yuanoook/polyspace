@@ -2,7 +2,10 @@ const Atom = require('./Atom')
 const Point = require('./Point')
 const {
   randomNaturalNumber,
-  isCloseTo
+  isCloseTo,
+  isCloseToPeriod,
+  last,
+  sleep
 } = require('./utils')
 
 class Space {
@@ -31,12 +34,12 @@ class Space {
     this.check(this.origin)
   }
 
-  print () {
+  printSolution () {
     console.log(`
-    checkCount: ${this.checkCount}
-    dimension: ${this.dimension}
-    minDistance: ${this.minDistance}
-    minDistancePoints: ${this.getRandomMinDistancePoint().getNomials()}
+    Solution: ${this.getRandomMinDistancePoint().getTrimmedNomials()}
+    Distance: ${this.minDistance}
+    Checked: ${this.checkCount}
+    Dimension: ${this.dimension}
     `)
   }
 
@@ -44,6 +47,11 @@ class Space {
     this.checkCount ++
     point.distance = this.meanSquaredError(point)
     this.updateMinDistance(point)
+  }
+
+  // TODO: add test
+  lastMinDistancePoint () {
+    return last(this.minDistancePoints)
   }
 
   // TODO: add test
@@ -57,13 +65,11 @@ class Space {
     if (point.distance < this.minDistance) {
       this.minDistancePoints.length = 0
     }
-    
+
     if (point.distance === this.minDistance &&
       this.minDistancePoints.length &&
-      point.isCloseTo(this.minDistancePoints[this.minDistancePoints.length - 1])
-    ) {
-      return
-    }
+      point.isCloseTo(this.lastMinDistancePoint())
+    ) return
 
     if (this.minDistancePoints.indexOf(point) < 0) {
       this.minDistancePoints.push(point)
@@ -112,12 +118,15 @@ class Space {
     return this.getRandomMinDistancePoint().findRandomNeighbor()
   }
 
-  exploreLocalMinimum (timeLimit = 1) {
+  async exploreLocalMinimum (timeLimit = 1) {
     const timePlaned = timeLimit * 1000
     const startAt = +new Date()
     while (true) {
-      if ((new Date() - startAt) > timePlaned) return
+      const timeUsed= new Date() - startAt
+      if (timeUsed > timePlaned) return
       if (this.zeroDistancePoints.length) return
+      if (isCloseToPeriod(timeUsed, 200)) await sleep(0)
+
       try {
         this.check(this.findRandomMinNeighbor())
       } catch (error) {
@@ -127,9 +136,9 @@ class Space {
     }
   }
 
-  findThePoint (timeLimit = 1) {
+  async findThePoint (timeLimit = 1) {
     if (this.zeroDistancePoints.length) return this.zeroDistancePoints[0]
-    this.exploreLocalMinimum(timeLimit)
+    await this.exploreLocalMinimum(timeLimit)
     return this.getRandomMinDistancePoint()
   }
 }

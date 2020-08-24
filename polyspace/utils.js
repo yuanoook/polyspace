@@ -1,3 +1,5 @@
+const PRECISION = 6
+
 function randomDistanceRatio (flag = 0) {
   let ratio
   while (!ratio || ratio === -1) ratio = Math.random() * 2 - 1
@@ -76,7 +78,7 @@ function euclideanDistance (n1, n2) {
 
 // This is from facebook/jest - toBeCloseTo
 // https://github.com/facebook/jest/blob/2a92e7f49fa35b219e5099d56b0179bccc1bf53e/packages/expect/src/matchers.ts#L125
-function isCloseTo (received, expected, precision = 6) {
+function isCloseTo (received, expected, precision = PRECISION) {
   let expectedDiff = 0
   let receivedDiff = 0
   if (received === Infinity && expected === Infinity) return true
@@ -85,6 +87,11 @@ function isCloseTo (received, expected, precision = 6) {
   expectedDiff = Math.pow(10, -precision) / 2
   receivedDiff = Math.abs(expected - received)
   return receivedDiff < expectedDiff
+}
+
+// TODO: add test
+function isCloseToPeriod (number, period, {precision = PRECISION, includeZero = false} = {}) {
+  return isCloseTo(number % period, includeZero ? 0 : period, precision)
 }
 
 // TODO: this should be moved out from the file
@@ -112,6 +119,24 @@ function polyNumbersTranslation (nomials) {
   return input => calculatePolyNumbers(nomials, input)
 }
 
+function trimNomials (nomials) {
+  let nonZeroStarted = false
+  return [...nomials].reverse().reduce((result, nomial, index) => {
+    nonZeroStarted = nonZeroStarted || nomial !== 0
+    return nonZeroStarted ? result.concat(nomial) : result
+  }, []).reverse()
+}
+
+// TODO: add test
+function last (array) {
+  return array[array.length - 1]
+}
+
+// TODO: add test
+async function sleep (second = 1) {
+  return Promise(resolve => setTimeout(resolve, secode * 1000))
+}
+
 module.exports = {
   randomDistanceRatio,
   randomPositiveDistanceRatio,
@@ -123,8 +148,12 @@ module.exports = {
   repeat,
   diffNomials,
   isSameNomials,
+  trimNomials,
   euclideanDistance,
   isCloseTo,
+  isCloseToPeriod,
   calculatePolyNumbers,
-  polyNumbersTranslation
+  polyNumbersTranslation,
+  last,
+  sleep
 }

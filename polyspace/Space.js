@@ -5,7 +5,8 @@ const {
   isCloseTo,
   isCloseToPeriod,
   last,
-  sleep
+  sleep,
+  validatePositive
 } = require('./utils')
 
 class Space {
@@ -32,14 +33,22 @@ class Space {
     this.minDistance = Infinity
     this.minDistancePoints = []
     this.check(this.origin)
+    this.lastSearchTimeUsed = 0
   }
 
   printSolution () {
+    const minNeighborsNomials = this
+      .getFirstMindDistancePoint()
+      .printNeighbors(false)
+
     console.log(`
-    Solution: ${this.getRandomMinDistancePoint().getTrimmedNomials()}
-    Distance: ${this.minDistance}
-    Checked: ${this.checkCount}
-    Dimension: ${this.dimension}
+Solution: ${this.getFirstMindDistancePoint().getTrimmedNomials()}
+Distance: ${this.minDistance}
+Dimension: ${this.dimension}
+Points Checked: ${this.checkCount}
+Last Search Time Used: ${this.lastSearchTimeUsed} ms
+Min-Distance Points: ${this.minDistancePoints.length}
+Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
     `)
   }
 
@@ -114,31 +123,54 @@ class Space {
     return points[randomNaturalNumber(points.length)]
   }
 
+  getFirstMindDistancePoint () {
+    return this.minDistancePoints[0]
+  }
+
   findRandomMinNeighbor () {
     return this.getRandomMinDistancePoint().findRandomNeighbor()
   }
 
-  async exploreLocalMinimum (timeLimit = 1) {
-    const timePlaned = timeLimit * 1000
-    const startAt = +new Date()
-    while (true) {
-      const timeUsed= new Date() - startAt
-      if (timeUsed > timePlaned) return
-      if (this.zeroDistancePoints.length) return
-      if (isCloseToPeriod(timeUsed, 200)) await sleep(0)
-
-      try {
-        this.check(this.findRandomMinNeighbor())
-      } catch (error) {
-        if (error !== Atom.NEIGHBOR_COLLISION_ERROR) throw error
-        if (this.areAllMinDistancePointsTrapped()) this.extendDimension()
-      }
-    }
+  findMinBiNeighbors () {
+    return this.getFirstMindDistancePoint().findBiNeighbors()
   }
 
-  async findThePoint (timeLimit = 1) {
-    if (this.zeroDistancePoints.length) return this.zeroDistancePoints[0]
-    await this.exploreLocalMinimum(timeLimit)
+  checkMinBiNeighbors () {
+    const minBiNeighbors = this.findMinBiNeighbors()
+    for (let biNeighbor of minBiNeighbors) this.check(biNeighbor)
+    return minBiNeighbors
+  }
+
+  exploreMinBiNeighbors() {
+    const minBiNeighbors = this.checkMinBiNeighbors()
+    if (!minBiNeighbors.length) {
+      this.extendDimension()
+      return this.checkMinBiNeighbors()
+    }
+    return minBiNeighbors
+  }
+
+  async exploreLocalMinimum ({timeBudget, countBudget}) {
+    const timePlaned = timeBudget * 1000
+    const startAt = +new Date()
+    let count = 0
+    while (count < countBudget) {
+      const timeUsed= new Date() - startAt
+      if (timeUsed > timePlaned) break
+      if (this.zeroDistancePoints.length) break
+      if (isCloseToPeriod(timeUsed, 100)) await sleep(0)
+      this.exploreMinBiNeighbors()
+      count ++
+    }
+    const totalTimeUsed = new Date() - startAt
+    this.lastSearchTimeUsed = totalTimeUsed || this.lastSearchTimeUsed
+  }
+
+  async findThePoint ({
+    timeBudget = Infinity,
+    countBudget = Infinity
+  } = {timeBudget: 1}) {
+    await this.exploreLocalMinimum({timeBudget, countBudget})
     return this.getRandomMinDistancePoint()
   }
 }

@@ -72,6 +72,20 @@ it('[PolySpace] [Point] [findNeighborAt]', () => {
   expect(exLeft.isRightNeighbor(newLeft)).toBe(true)
 })
 
+it('[PolySpace] [Point] [findBiNeighbors]', () => {
+  const point = new Point([1, 2, 3, 4, 5, 6, 7, 8])
+  const dimensions = 8
+  point.extendDimension(dimensions)
+  let biNeighbors = point.findBiNeighbors()
+  expect(biNeighbors.length).toBe(dimensions * 2)
+  let count = 1
+  while (biNeighbors.length) {
+    biNeighbors = point.findBiNeighbors()
+    count ++
+  }
+  expect(count / Atom.SCALE_DEEPTH_LOG2_REAL).toBeCloseTo(1, 1)
+})
+
 it('[PolySpace] [Point] [findRandomNeighborAt]', () => {
   const point = new Point([1, 2, 3, 4])
   let neighbor = point.findRandomNeighborAt(0)

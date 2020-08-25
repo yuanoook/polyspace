@@ -77,6 +77,42 @@ it('[PolySpace] [Atom] [findNeighbor]', () => {
   ])
 })
 
+describe('[PolySpace] [Atom] [findBiNeighbor]', () => {
+  it('Find right middle point neighbors', () => {
+    const atom = new Atom(3)
+    atom.findConnectedsAtScalars([1, 5])
+    const biNeighbors = atom.findBiNeighbors()
+    const biNeighborValues = biNeighbors.map(atom => atom.getValue())
+    expect(biNeighborValues).toEqual([2, 4])
+  })
+
+  it('Run certain times with start point of Number 0', () => {
+    const atom = new Atom(0)
+    let biNeighbors = atom.findBiNeighbors()
+    let count = 1
+    while (biNeighbors.length) {
+      biNeighbors = atom.findBiNeighbors()
+      count ++
+    }
+    expect(count / Atom.SCALE_DEEPTH_LOG2).toBeCloseTo(1)
+    expect(atom.isCloseTo(atom.left)).toBe(true)
+    expect(atom.isCloseTo(atom.right)).toBe(true)
+  })
+
+  it('Run certain times with start point of Number 1', () => {
+    const atom = new Atom(1)
+    let biNeighbors = atom.findBiNeighbors()
+    let count = 1
+    while (biNeighbors.length) {
+      biNeighbors = atom.findBiNeighbors()
+      count ++
+    }
+    expect(count / Atom.SCALE_DEEPTH_LOG2_REAL).toBeCloseTo(1, 1)
+    expect(atom.isCloseTo(atom.left)).toBe(true)
+    expect(atom.isCloseTo(atom.right)).toBe(true)
+  })
+})
+
 it('[PolySpace] [Atom] [findConnected]', () => {
   const atom = new Atom(3)
   expect(atom.getValue()).toBe(3)

@@ -32,6 +32,9 @@ class Point {
     this.checkIndex(index)
     return this.atoms[index].getValue()
   }
+  forEach (call) {
+    return this.atoms.forEach(call)
+  }
   map (call) {
     return this.atoms.map(call)
   }
@@ -56,14 +59,14 @@ class Point {
   checkDimension (dimension) {
     if (this.getDimensions() < dimension) this.extendDimension(dimension)
   }
-  extendDimension (dimension) {
-    return repeat(index => this.fillZeroAtomAt(index), dimension)
+  extendDimension (dimension, nomial = 0) {
+    return repeat(index => this.fillAtomAt(index, nomial), dimension)
   }
   // TODO: add test
   isCloseTo (point, precision = Point.PRECISION) {
     return isCloseTo(this.euclideanDistance(point), 0, precision) 
   }
-  fillZeroAtomAt (index) {
+  fillAtomAt (index, nomial = 0) {
     this.atoms[index] = this.atoms[index] || this.makeAtom()
   }
   copyWithAtomAt (index, atom) {
@@ -89,6 +92,15 @@ class Point {
   findNeighborAt (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     const atomNeighbor = this.getAtom(index).findNeighbor(distanceRatio)
     return this.copyWithAtomAt(index, atomNeighbor)
+  }
+
+  findBiNeighborsAt (index) {
+    const biNeighbors = this.getAtom(index).findBiNeighbors()
+    return biNeighbors.map(atomNeighbor => this.copyWithAtomAt(index, atomNeighbor))
+  }
+
+  findBiNeighbors () {
+    return this.reduce((neighbors, _, index) => neighbors.concat(this.findBiNeighborsAt(index)), [])
   }
 
   findRandomNeighborAt (index) {
@@ -330,6 +342,23 @@ class Point {
 
   euclideanDistance (point) {
     return euclideanDistance(this.getNomials(), point.getNomials())
+  }
+
+  printNeighborsAt (index, log = true) {
+    const atom = this.getAtom(index)
+    const result = [
+      atom.left && atom.left.parent,
+      atom.right && atom.right.parent
+    ].filter(atomNeighbor => atomNeighbor)
+    .map(point => point.getTrimmedNomials())
+    .filter(nomials => nomials.length)
+    if (log && result.length) console.log(JSON.stringify(result, null, 2))
+    return result
+  }
+
+  printNeighbors (log = true) {
+    return this.map((_, index) => this.printNeighborsAt(index, log))
+      .filter(neighbors => neighbors.length)
   }
 }
 

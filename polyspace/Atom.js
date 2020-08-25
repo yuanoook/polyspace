@@ -15,6 +15,10 @@ class Atom {
   static RIGHT_SAFE_INTEGER = Number.MAX_SAFE_INTEGER
   static DISTANCE_RATIO_HALF = 0.5
   static DISTANCE_STEP_ONE = 1
+  static SCALE_DEEPTH_LOG2_NATURAL = Math.log2(Atom.RIGHT_SAFE_INTEGER)
+  static SCALE_DEEPTH_LOG2_REAL = 2 * Atom.SCALE_DEEPTH_LOG2_NATURAL
+  static SCALE_DEEPTH_LOG2_MIN_VALUE = - Math.log2(Number.MIN_VALUE)
+  static SCALE_DEEPTH_LOG2 = Atom.SCALE_DEEPTH_LOG2_NATURAL + Atom.SCALE_DEEPTH_LOG2_MIN_VALUE
 
   static NEIGHBOR_COLLISION_ERROR = new Error(`Neighbor collision!`)
 
@@ -83,6 +87,25 @@ class Atom {
     validateDistanceRatio(distanceRatio, 1)
     const rightHalfwayValue = this.getRightHalfwayValue(distanceRatio)
     return this.connectRightNeighbor(new Atom(rightHalfwayValue))
+  }
+
+  findBiNeighbors () {
+    const neighbors = []
+
+    const leftValue = this.getLeftHalfwayValue()
+    if (leftValue < this.value &&
+      (!this.left || leftValue !== this.left.value)
+    ) neighbors.push(
+      this.connectLeftNeighbor(new Atom(leftValue))
+    )
+    const rightValue = this.getRightHalfwayValue()
+    if (rightValue > this.value &&
+      (!this.right || rightValue !== this.right.value)
+    ) neighbors.push(
+      this.connectRightNeighbor(new Atom(rightValue))
+    )
+
+    return neighbors
   }
 
   findNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {

@@ -1,29 +1,32 @@
 const Point = require('./Point')
 const Space = require('./Space')
-const { polyNumbersTranslation } = require('./utils')
+const {
+  polyNumbersTranslation,
+  polyNumbersFormatter
+} = require('./utils')
 
 it('[PolySpace] [Space] [Basics]', async () => {
-  await exam({
+  await examPolyNumbers({
     inputs: [0, 100],
-    expectations: [1, 100]
+    expectations: [1, 10000]
   })
-  await exam({
+  await examPolyNumbers({
     inputs: [0, 100],
     expectations: [1, 1.5]
   })
-  await exam({
+  await examPolyNumbers({
     inputs: [3, 4],
     expectations: [4, 3],
     solution: [7, -1]
   })
-  await exam({
+  await examPolyNumbers({
     inputs: [0, 1, 2],
     expectations: [0, 1, 4],
     solution: [0, 0, 1]
   })
 })
 
-async function exam ({
+async function examPolyNumbers ({
   inputs,
   expectations,
   solution,
@@ -35,7 +38,10 @@ async function exam ({
   space.take(inputs, expectations)
 
   const point = await space.findThePoint({timeBudget, countBudget})
-  space.printSolution(4)
+  space.printSolution({
+    precision: 4,
+    solutionFormatter: polyNumbersFormatter
+  })
 
   expect(space.minDistance).toBeCloseTo(0)
 

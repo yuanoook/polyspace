@@ -37,13 +37,19 @@ class Space {
     this.lastSearchTimeUsed = 0
   }
 
-  printSolution (precision = Space.PRECISION) {
+  printSolution ({
+    precision = Space.PRECISION,
+    solutionFormatter = x => x
+  }) {
+    const minDistancePoint = this.getFirstMindDistancePoint()
+    const solutionNomials = minDistancePoint.getTrimmedNomials(precision)
+    const solution = solutionFormatter(solutionNomials)
     const minNeighborsNomials = this
       .getFirstMindDistancePoint()
       .printNeighbors(false)
 
     console.log(`
-Solution: ${this.getFirstMindDistancePoint().getTrimmedNomials(precision)}
+Solution: ${solution}
 Distance: ${this.minDistance}
 Dimension: ${this.dimension}
 Points Checked: ${this.checkCount}

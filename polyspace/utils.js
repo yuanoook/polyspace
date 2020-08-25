@@ -119,6 +119,41 @@ function polyNumbersTranslation (nomials) {
   return input => calculatePolyNumbers(nomials, input)
 }
 
+const Superscripts = ['⁰', '¹', '²', '³', '⁴', '⁵', '⁶', '⁷', '⁸', '⁹',]
+Superscripts['.'] = '⋅'
+Object.assign(Superscripts, {
+  '+': '⁺',
+  '-': '⁻',
+  '=': '⁼',
+  '(': '⁽',
+  ')': '⁾',
+  'n': 'ⁿ',
+  'i': 'ⁱ'
+})
+function toSuperscripts (number) {
+  return (number + '').split('').map(n => Superscripts[n] || n)
+}
+function polyNumberFormatter (nomial, index) {
+  return nomial ? `${
+    (nomial === 1 && index)
+      ? ''
+      : (nomial === -1 ? '-' : nomial)
+  }${
+    index ? `x${
+      index !== 1 ? toSuperscripts(index) : ''
+    }` : ''
+  }` : ''
+}
+function polyNumbersFormatter (nomials) {
+  return `f(x) = ${
+    nomials
+      .map(polyNumberFormatter)
+      .filter(s => s)
+      .join(' + ')
+      .replace(/\+\s\-/g, '- ')
+  }`
+}
+
 // TODO: add test
 function trimNomials (nomials, precision = PRECISION) {
   let nonZeroStarted = false
@@ -159,6 +194,7 @@ module.exports = {
   isCloseToPeriod,
   calculatePolyNumbers,
   polyNumbersTranslation,
+  polyNumbersFormatter,
   last,
   sleep
 }

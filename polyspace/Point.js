@@ -44,8 +44,8 @@ class Point {
   getNomials () {
     return this.map(atom => atom.getValue())
   }
-  getTrimmedNomials () {
-    return trimNomials(this.getNomials())
+  getTrimmedNomials (precision = Point.PRECISION) {
+    return trimNomials(this.getNomials(), precision)
   }
   getDimensions () {
     return this.atoms.length
@@ -350,7 +350,7 @@ class Point {
       atom.left && atom.left.parent,
       atom.right && atom.right.parent
     ].filter(atomNeighbor => atomNeighbor)
-    .map(point => point.getTrimmedNomials())
+    .map(point => point.getTrimmedNomials(0))
     .filter(nomials => nomials.length)
     if (log && result.length) console.log(JSON.stringify(result, null, 2))
     return result

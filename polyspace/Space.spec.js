@@ -4,9 +4,12 @@ const { polyNumbersTranslation } = require('./utils')
 
 it('[PolySpace] [Space] [Basics]', async () => {
   await exam({
-    inputs: [0, 1],
-    expectations: [1, 1.5],
-    solution: [1, 0.5]
+    inputs: [0, 100],
+    expectations: [1, 100]
+  })
+  await exam({
+    inputs: [0, 100],
+    expectations: [1, 1.5]
   })
   await exam({
     inputs: [3, 4],
@@ -31,7 +34,12 @@ async function exam ({
   expect(space.translation).toBe(polyNumbersTranslation)
   space.take(inputs, expectations)
 
-  const theBestPoint = await space.findThePoint({timeBudget, countBudget})
-  space.printSolution()
-  expect(theBestPoint.isCloseTo(new Point(solution), 3)).toBe(true)
+  const point = await space.findThePoint({timeBudget, countBudget})
+  space.printSolution(4)
+
+  expect(space.minDistance).toBeCloseTo(0)
+
+  if (solution) expect(
+    point.isCloseTo(new Point(solution), 3)
+  ).toBe(true)
 }

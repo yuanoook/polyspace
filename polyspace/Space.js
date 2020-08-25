@@ -12,6 +12,7 @@ const {
 class Space {
   static PRECISION = 6
   static BOREDOM_TOLERANCE = 6
+  static TIME_BUDGET_DEFAULT = 5
   constructor (translation = () => 0, config = {}) {
     this.translation = translation
     this.inputs = []
@@ -36,13 +37,13 @@ class Space {
     this.lastSearchTimeUsed = 0
   }
 
-  printSolution () {
+  printSolution (precision = Space.PRECISION) {
     const minNeighborsNomials = this
       .getFirstMindDistancePoint()
       .printNeighbors(false)
 
     console.log(`
-Solution: ${this.getFirstMindDistancePoint().getTrimmedNomials()}
+Solution: ${this.getFirstMindDistancePoint().getTrimmedNomials(precision)}
 Distance: ${this.minDistance}
 Dimension: ${this.dimension}
 Points Checked: ${this.checkCount}
@@ -169,7 +170,10 @@ Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
   async findThePoint ({
     timeBudget = Infinity,
     countBudget = Infinity
-  } = {timeBudget: 1}) {
+  } = {}) {
+    if (timeBudget === Infinity &&
+      countBudget === Infinity
+    ) timeBudget = Space.TIME_BUDGET_DEFAULT
     await this.exploreLocalMinimum({timeBudget, countBudget})
     return this.getRandomMinDistancePoint()
   }

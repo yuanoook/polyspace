@@ -119,11 +119,16 @@ function polyNumbersTranslation (nomials) {
   return input => calculatePolyNumbers(nomials, input)
 }
 
-function trimNomials (nomials) {
+// TODO: add test
+function trimNomials (nomials, precision = PRECISION) {
   let nonZeroStarted = false
   return [...nomials].reverse().reduce((result, nomial, index) => {
-    nonZeroStarted = nonZeroStarted || nomial !== 0
-    return nonZeroStarted ? result.concat(nomial) : result
+    nonZeroStarted = nonZeroStarted || (precision
+      ? !isCloseTo(nomial, 0, precision)
+      : (nomial !== 0))
+    return nonZeroStarted
+      ? result.concat(precision ? +nomial.toFixed(precision) : nomial)
+      : result
   }, []).reverse()
 }
 

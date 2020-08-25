@@ -7,15 +7,6 @@ const {
 
 it('[PolySpace] [Space] [Basics]', async () => {
   await examPolyNumbers({
-    inputs: [0, 100],
-    expectations: [1, 10000]
-  })
-  await examPolyNumbers({
-    inputs: [0, 1, 2, 3],
-    expectations: [1, 2, 3, -4],
-    timeBudget: 10
-  })
-  await examPolyNumbers({
     inputs: [3, 4],
     expectations: [4, 3],
     solution: [7, -1]
@@ -24,6 +15,15 @@ it('[PolySpace] [Space] [Basics]', async () => {
     inputs: [0, 1, 2],
     expectations: [0, 1, 4],
     solution: [0, 0, 1]
+  })
+  await examPolyNumbers({
+    inputs: [0, 1, 2],
+    expectations: [0, 1, 4].map((e, i) => e + i + 4)
+  })
+  await examPolyNumbers({
+    inputs: [0, 1, 2, 3, 4, 50],
+    expectations: [1, -2, 3, -4, 2, -2],
+    timeBudget: 20
   })
 })
 

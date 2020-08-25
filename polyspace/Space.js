@@ -54,7 +54,9 @@ class Space {
 Find ${
   isGoodSolution ? 'good' : 'bad'
 } solution: ${solution} \n  in ${this.lastSearchTimeUsed} ms ${
-  isGoodSolution ? '' : `\n  with distance ${this.minDistance}`
+  isGoodSolution ? '' : `\n  with distance ${
+    this.minDistance
+  } \n  tried ${this.checkCount} times in ${this.dimension} dimensions`
 }
     `)
 

@@ -11,8 +11,9 @@ it('[PolySpace] [Space] [Basics]', async () => {
     expectations: [1, 10000]
   })
   await examPolyNumbers({
-    inputs: [0, 100],
-    expectations: [1, 1.5]
+    inputs: [0, 1, 2, 3],
+    expectations: [1, 2, 3, -4],
+    timeBudget: 10
   })
   await examPolyNumbers({
     inputs: [3, 4],
@@ -42,10 +43,18 @@ async function examPolyNumbers ({
     precision: 4,
     solutionFormatter: polyNumbersFormatter
   })
+  printDesmos({inputs, expectations})
 
   expect(space.minDistance).toBeCloseTo(0)
-
   if (solution) expect(
     point.isCloseTo(new Point(solution), 3)
   ).toBe(true)
+}
+
+function printDesmos ({inputs, expectations}) {
+  const dataTable = inputs.map(
+    (input, index) => `${input}, ${expectations[index]}`
+  ).join('\n')
+
+  console.log(`Plot on https://www.desmos.com/calculator \n${dataTable}`)
 }

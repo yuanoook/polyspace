@@ -48,11 +48,14 @@ class Space {
     const minNeighborsNomials = this
       .getFirstMindDistancePoint()
       .printNeighbors(false)
-    
+    const isGoodSolution = this.zeroDistancePoints.length > 0
+
     if (brief) return console.log(`
 Find ${
-  this.zeroDistancePoints.length ? 'good' : 'bad'
-} solution: ${solution} , in ${this.lastSearchTimeUsed} ms
+  isGoodSolution ? 'good' : 'bad'
+} solution: ${solution} \n  in ${this.lastSearchTimeUsed} ms ${
+  isGoodSolution ? '' : `\n  with distance ${this.minDistance}`
+}
     `)
 
     console.log(`

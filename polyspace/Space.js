@@ -39,14 +39,21 @@ class Space {
 
   printSolution ({
     precision = Space.PRECISION,
-    solutionFormatter = x => x
-  }) {
-    const minDistancePoint = this.getFirstMindDistancePoint()
-    const solutionNomials = minDistancePoint.getTrimmedNomials(precision)
+    solutionFormatter = x => x,
+    brief = true
+  } = {}) {
+    const thePoint = this.getThePoint()
+    const solutionNomials = thePoint.getTrimmedNomials(precision)
     const solution = solutionFormatter(solutionNomials)
     const minNeighborsNomials = this
       .getFirstMindDistancePoint()
       .printNeighbors(false)
+    
+    if (brief) return console.log(`
+Find ${
+  this.zeroDistancePoints.length ? 'good' : 'bad'
+} solution: ${solution} , in ${this.lastSearchTimeUsed} ms
+    `)
 
     console.log(`
 Solution: ${solution}
@@ -90,7 +97,6 @@ Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
     if (this.minDistancePoints.indexOf(point) < 0) {
       this.minDistancePoints.push(point)
     }
-
     this.minDistance = point.distance
     this.updateZeroDistance(point)
   }
@@ -128,6 +134,10 @@ Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
   getRandomMinDistancePoint () {
     const points = this.minDistancePoints
     return points[randomNaturalNumber(points.length)]
+  }
+
+  getThePoint () {
+    return this.zeroDistancePoints[0] || this.getFirstMindDistancePoint()
   }
 
   getFirstMindDistancePoint () {

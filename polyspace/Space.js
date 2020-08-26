@@ -52,13 +52,10 @@ class Space {
 
     if (brief) return console.log(`
 Find ${
-  isGoodSolution ? 'good' : 'bad'
-} solution: ${solution} \n  in ${this.lastSearchTimeUsed} ms ${
-  isGoodSolution ? '' : `\n  with distance ${
+  isGoodSolution ? 'perfect' : ''
+} solution: ${solution} \n  in ${this.lastSearchTimeUsed} ms \n  with distance ${
     this.minDistance
-  } \n  tried ${this.checkCount} times in ${this.dimension} dimensions`
-}
-    `)
+  } \n  tried ${this.checkCount} times in ${this.dimension} dimensions`)
 
     console.log(`
 Solution: ${solution}

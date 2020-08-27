@@ -1,13 +1,10 @@
-const Atom = require('./Atom')
 const Point = require('./Point')
 const {
-  randomNaturalNumber,
   isCloseTo,
   isCloseToPeriod,
-  last,
-  sleep,
-  validatePositive
+  sleep
 } = require('./utils')
+const { scatter3 } = require('./printMatlab')
 
 class Space {
   static PRECISION = 6
@@ -48,15 +45,30 @@ class Space {
     return JSON.stringify(minNeighborsNomials, null, 2)
   }
 
-  printPointsLog (log, samplingRate = 1 / 100) {
+  sampleLog (log, samplingRate = 1 / 100) {
     const logLength = log.length
     const samplingPeriod = Math.floor(logLength * samplingRate)
     return log
       .filter((_, index) => !(index % samplingPeriod))
-      .map(point => {
-        point.extendDimension(this.dimension)
-        return [point.distance, ...point.getNomials()].join('\t')
-      }).join('\n')
+      .map(point => point.extendDimension(this.dimension))
+  }
+
+  printPointsLog (log, samplingRate) {
+    return this.sampleLog(log, samplingRate)
+      .map(point => point.getNomials().join('\t'))
+      .join('\n')
+  }
+
+  printScatter3 (log, samplingRate = 1 / 100) {
+    const points = this.sampleLog(log, samplingRate)
+    const [x, y, z] = [[], [], []]
+    for (let point of points) {
+      const nomials = point.getNomials()
+      x.push(nomials[0])
+      y.push(nomials[1])
+      z.push(point.distance)
+    }
+    return scatter3(x, y, z)
   }
 
   printVisitedPoints (logSamplingRate) {
@@ -67,18 +79,32 @@ class Space {
     return this.printPointsLog(this.checkedPoints, logSamplingRate)
   }
 
+  printVisitedPointsScatter3 (logSamplingRate) {
+    return this.printScatter3(this.visitedPoints, logSamplingRate)
+  }
+
+  printCheckedPointsScatter3 (logSamplingRate) {
+    return this.printScatter3(this.checkedPoints, logSamplingRate)
+  }
+
   printSolution ({
     precision = Space.PRECISION,
     solutionFormatter = x => x,
     showMinNeighbors = false,
     showVisitedPoints = false,
     showCheckedPoints = false,
+    showMatlabScatter3 = false,
     logSamplingRate = 1 / 100
   } = {}) {
     const thePoint = this.minDistancePoint
     const solutionNomials = thePoint.getTrimmedNomials(precision)
     const solution = solutionFormatter(solutionNomials)
     const successTrialRate = (100 * this.stepCount / this.checkCount).toFixed(2)
+    const matlabScatter3 = showMatlabScatter3 ? `\n${
+      showVisitedPoints ? this.printVisitedPointsScatter3(logSamplingRate) : ''
+    }\n\n${
+      showCheckedPoints ? this.printCheckedPointsScatter3(logSamplingRate) : ''
+    }` : ''
 
     console.log(`Find${
       this.gotPerfectSolution() ? ' perfect' : '' } solution: ${
@@ -95,7 +121,8 @@ class Space {
         : ''} \n${
       showCheckedPoints
         ? '\nChecked Points: \n' + this.printCheckedPoints(logSamplingRate)
-        : ''
+        : ''} \n${
+      matlabScatter3
     }`)
   }
 

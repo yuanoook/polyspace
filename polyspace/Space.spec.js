@@ -41,7 +41,8 @@ it('[PolySpace] [Space] [Basics]', async () => {
     printPrecision: 4,
     showCheckedPoints: true,
     showVisitedPoints: true,
-    logSamplingRate: 1 / 1000000,
+    showMatlabScatter3: true,
+    logSamplingRate: 1 / 1000,
     maxDimensions: 2
   })
 
@@ -75,6 +76,7 @@ async function examPolyNumbers ({
   startFormula = '',
   showVisitedPoints = false,
   showCheckedPoints = false,
+  showMatlabScatter3 = false,
   logSamplingRate = 1 / 100
 }) {
   const space = new Space(polyNumbersTranslation)
@@ -87,6 +89,7 @@ async function examPolyNumbers ({
     solutionFormatter: polyNumbersFormatter,
     showVisitedPoints,
     showCheckedPoints,
+    showMatlabScatter3,
     logSamplingRate
   })
   printDesmos({inputs, expectations})

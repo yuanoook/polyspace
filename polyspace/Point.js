@@ -63,7 +63,8 @@ class Point {
     if (this.getDimensions() < dimension) this.extendDimension(dimension)
   }
   extendDimension (dimension, nomial = 0) {
-    return repeat(index => this.fillAtomAt(index, nomial), dimension)
+    repeat(index => this.fillAtomAt(index, nomial), dimension)
+    return this
   }
   // TODO: add test
   isCloseTo (point, precision = Point.PRECISION) {

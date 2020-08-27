@@ -36,13 +36,13 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //   })
 
   await examPolyNumbers({
-    inputs: [30, 40],
-    expectations: [40, -30],
+    inputs: [3, 4],
+    expectations: [4, 3],
     printPrecision: 4,
     showCheckedPoints: true,
     showVisitedPoints: true,
     showMatlabScatter3: true,
-    logSamplingRate: 1 / 1000,
+    logSampleAmount: 30,
     maxDimensions: 2
   })
 
@@ -77,7 +77,7 @@ async function examPolyNumbers ({
   showVisitedPoints = false,
   showCheckedPoints = false,
   showMatlabScatter3 = false,
-  logSamplingRate = 1 / 100
+  logSampleAmount = 100
 }) {
   const space = new Space(polyNumbersTranslation)
   expect(space.translation).toBe(polyNumbersTranslation)
@@ -90,7 +90,7 @@ async function examPolyNumbers ({
     showVisitedPoints,
     showCheckedPoints,
     showMatlabScatter3,
-    logSamplingRate
+    logSampleAmount
   })
   printDesmos({inputs, expectations})
 

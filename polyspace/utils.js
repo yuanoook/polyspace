@@ -206,8 +206,16 @@ function last (array) {
 
 // TODO: add test
 async function sleep (second = 1) {
-  return Promise(resolve => setTimeout(resolve, secode * 1000))
+  return Promise(resolve => setTimeout(resolve, second * 1000))
 }
+
+// TODO: test this amazing beautiful code
+// I have no idea what's this, but this works very fast
+// https://stackoverflow.com/a/25984542/6767484
+const randomShuffle = list => (((a,b,c,d) => {
+  c=a.length;while(c)b=Math.random()*c--|0,d=a[c],a[c]=a[b],a[b]=d
+})(list),list)
+const randomSubList = (list, count) => randomShuffle([...list]).slice(0, count)
 
 module.exports = {
   randomDistanceRatio,
@@ -229,5 +237,7 @@ module.exports = {
   polyNumbersFormatter,
   parsePolyNumbersFormula,
   last,
-  sleep
+  sleep,
+  randomShuffle,
+  randomSubList
 }

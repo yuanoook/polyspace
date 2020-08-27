@@ -24,16 +24,17 @@ class Space {
     this.inputs = this.inputs.concat(inputs)
     this.expectations = this.expectations.concat(expectations)
     this.setup()
+    return this
   }
 
-  setup () {
+  setup (origin = [0]) {
     this.minDistance = Infinity
     this.minDistancePoint = null
-    this.dimension = 1
+    this.dimension = origin.length
     this.stepCount = 0
     this.checkCount = 0
     this.lastSearchTimeUsed = 0
-    this.check(new Point([0]))
+    this.check(new Point(origin))
   }
 
   gotPerfectSolution () {

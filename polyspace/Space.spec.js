@@ -2,8 +2,10 @@ const Point = require('./Point')
 const Space = require('./Space')
 const {
   polyNumbersTranslation,
-  polyNumbersFormatter
+  polyNumbersFormatter,
+  parsePolyNumbersFormula
 } = require('./utils')
+const parabolicAntennaCurveData = require('./data.delon')
 
 it('[PolySpace] [Space] [Basics]', async () => {
 // Complex 2nd exponential example provided by Zoe
@@ -49,7 +51,11 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //     expectations: [0, 1, 4].map((e, i) => e + i + 4)
 //   })
 
-  await examPolyNumbers({...parseDelonsInputsExpectations()})
+  await examPolyNumbers({
+    startFormula: '-426.72866292004005 + 0.3936498633025643x + 0.00000948680158119152x²',
+    ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
+    timeBudget: 50
+  })
 })
 
 async function examPolyNumbers ({
@@ -58,11 +64,12 @@ async function examPolyNumbers ({
   solution,
   timeBudget,
   printPrecision = 0,
-  countBudget = Infinity
+  countBudget = Infinity,
+  startFormula = ''
 }) {
   const space = new Space(polyNumbersTranslation)
   expect(space.translation).toBe(polyNumbersTranslation)
-  space.take(inputs, expectations)
+  space.take(inputs, expectations).setup(parsePolyNumbersFormula(startFormula))
 
   const point = await space.findThePoint({timeBudget, countBudget})
   space.printSolution({
@@ -85,39 +92,8 @@ function printDesmos ({inputs, expectations}) {
   console.log(`Plot on https://www.desmos.com/calculator \n${dataTable}`)
 }
 
-function parseDelonsInputsExpectations (str = `652 6.019145569
-678 9.211675609
-704 12.52687435
-730 15.96450881
-756 19.52433339
-782 23.20613668
-808 27.00962301
-834 30.93445804
-2498 523.0521131
-2524 534.4688528
-2550 545.9995886
-2576 557.6442177
-2602 569.4026322
-2628 581.274718
-2654 593.2603553
-2680 605.3594177
-2706 617.5717724
-4084 1417.308357
-4110 1434.937441
-4136 1452.649011
-4162 1470.443452
-4188 1488.321368
-4214 1506.283616
-4240 1524.331331
-4266 1542.46595
-4292 1560.689229
-4318 1579.003243
-4344 1597.410375
-4370 1615.913283
-4396 1634.514841
-4422 1653.218067
-4448 1672.026036`) {
-    return str.split('\n').map(x => x.split(' '))
+function parseDelonsInputsExpectations (str = `600 0`) {
+    return str.split('\n').map(x => x.split(/\s+/))
     .reduce(
       ({inputs, expectations}, [i, e]) =>
       ({inputs: inputs.concat(+i), expectations: expectations.concat(+e)}),

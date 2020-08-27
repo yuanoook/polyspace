@@ -11,7 +11,8 @@ const {
   isSameNomials,
   euclideanDistance,
   calculatePolyNumbers,
-  polyNumbersTranslation
+  polyNumbersTranslation,
+  parsePolyNumbersFormula
 } = require('./utils')
 
 it('[PolySpace] [utils] [randomDistanceRatio]', () => {
@@ -123,4 +124,22 @@ it('[PolySpace] [utils] [calculatePolyNumbers]', () => {
   expect(polyNumbersTranslation([5, 1, 1])(2)).toBe(calculatePolyNumbers([5, 1, 1], 2))
   expect(polyNumbersTranslation([6, 1, 1])(3)).toBe(calculatePolyNumbers([6, 1, 1], 3))
   expect(polyNumbersTranslation([7, 1, 1])(4)).toBe(calculatePolyNumbers([7, 1, 1], 4))
+})
+
+it('[PolySpace] [utils] [parsePolyNumbersFormula]', () => {
+  expect(parsePolyNumbersFormula('')).toEqual([0])
+  expect(parsePolyNumbersFormula('-11')).toEqual([-11])
+  expect(parsePolyNumbersFormula('111')).toEqual([111])
+  expect(parsePolyNumbersFormula('-0')).toEqual([0])
+  expect(parsePolyNumbersFormula('x')).toEqual([0, 1])
+  expect(parsePolyNumbersFormula('-x')).toEqual([0, -1])
+  expect(parsePolyNumbersFormula('-x³')).toEqual([0, 0, 0, -1])
+  expect(parsePolyNumbersFormula('f(x) = 1 - x⁵')).toEqual([1, 0, 0, 0, 0, -1])
+  expect(parsePolyNumbersFormula('f(x) = 1 - 11.3x³ - x⁵')).toEqual([1, 0, 0, -11.3, 0, -1])
+  expect(parsePolyNumbersFormula('f(x) = -45.44 + 0.000081x²')).toEqual(
+    [-45.44, 0, 0.000081]
+  )
+  expect(parsePolyNumbersFormula('f(x) = -45.44 + 0.024x + 0.000081x²')).toEqual(
+    [-45.44, 0.024, 0.000081]
+  )
 })

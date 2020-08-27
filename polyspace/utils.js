@@ -130,6 +130,9 @@ Object.assign(Superscripts, {
   'n': 'ⁿ',
   'i': 'ⁱ'
 })
+SuperscriptsReverseMap = {}
+Object.keys(Superscripts).forEach(key => SuperscriptsReverseMap[Superscripts[key]] = key)
+
 function toSuperscripts (number) {
   return (number + '').split('').map(n => Superscripts[n] || n)
 }
@@ -152,6 +155,35 @@ function polyNumbersFormatter (nomials) {
       .join(' + ')
       .replace(/\+\s\-/g, '- ')
   }`
+}
+function parseSuperscript (script) {
+  if (script === undefined) return 0
+  if (script === '') return 1
+  return +script.split('')
+    .map(n => SuperscriptsReverseMap[n] || n)
+    .join('')
+}
+function parseCoefficient (number, exponent) {
+  number = (number+'').replace(/\s/g, '')
+  number = number === '-' ? '-1' : number
+  return +number || (exponent ? 1 : 0)
+}
+function parsePolyNumbersFormulaItem (item) {
+  let [number, superscript] = item.trim().split('x')
+  const exponent = parseSuperscript(superscript)
+  const coefficient = parseCoefficient(number, exponent)
+  return [exponent, coefficient]
+}
+function parsePolyNumbersFormula (formula) {
+  const nomials = []
+  formula.replace(/^f\(x\) = /, '')
+    .replace(/-/g, '+-')
+    .split('+')
+    .map(parsePolyNumbersFormulaItem)
+    .forEach(([exponent, coefficient]) => {
+      nomials[exponent] = coefficient
+    })
+  return repeat(index => nomials[index] || 0, nomials.length)
 }
 
 // TODO: add test
@@ -195,6 +227,7 @@ module.exports = {
   calculatePolyNumbers,
   polyNumbersTranslation,
   polyNumbersFormatter,
+  parsePolyNumbersFormula,
   last,
   sleep
 }

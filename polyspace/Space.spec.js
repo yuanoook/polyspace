@@ -68,8 +68,7 @@ async function examPolyNumbers ({
   const point = await space.findThePoint({timeBudget, countBudget})
   space.printSolution({
     precision: printPrecision,
-    solutionFormatter: polyNumbersFormatter,
-    showMinNeighbors: true
+    solutionFormatter: polyNumbersFormatter
   })
   printDesmos({inputs, expectations})
 

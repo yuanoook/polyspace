@@ -52,7 +52,7 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //   })
 
   await examPolyNumbers({
-    startFormula: '-426.72866292004005 + 0.3936498633025643x + 0.00000948680158119152x²',
+    startFormula: 'f(x) = -317.3220676428785 + 0.28444761546817254x + 0.0000311369810192968x²',
     ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
     timeBudget: 50
   })

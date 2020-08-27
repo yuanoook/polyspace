@@ -67,7 +67,7 @@ class Space {
       this.minDistance } \n${
       showMinNeighbors ? this.printMinNeighbors() : ''
     }`)
-}
+  }
 
   check (point) {
     this.checkCount ++

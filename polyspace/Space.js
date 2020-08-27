@@ -34,6 +34,8 @@ class Space {
     this.stepCount = 0
     this.checkCount = 0
     this.lastSearchTimeUsed = 0
+    this.visitedPointsLog = []
+    this.checkedPointsLog = []
     this.check(new Point(origin))
   }
 
@@ -46,10 +48,29 @@ class Space {
     return JSON.stringify(minNeighborsNomials, null, 2)
   }
 
+  printPointsLog (log, samplingRate = 1 / 100) {
+    const logLength = log.length
+    const samplingPeriod = Math.floor(logLength * samplingRate)
+    return log
+      .filter((_, index) => !(index % samplingPeriod))
+      .map(nomials => nomials.join(', ')).join('\n')
+  }
+
+  printVisitedPoints (logSamplingRate) {
+    return this.printPointsLog(this.visitedPointsLog, logSamplingRate)
+  }
+
+  printCheckedPoints (logSamplingRate) {
+    return this.printPointsLog(this.checkedPointsLog, logSamplingRate)
+  }
+
   printSolution ({
     precision = Space.PRECISION,
     solutionFormatter = x => x,
-    showMinNeighbors = false
+    showMinNeighbors = false,
+    showVisitedPoints = false,
+    showCheckedPoints = false,
+    logSamplingRate = 1 / 100
   } = {}) {
     const thePoint = this.minDistancePoint
     const solutionNomials = thePoint.getTrimmedNomials(precision)
@@ -65,7 +86,9 @@ class Space {
       this.dimension } dimensions \n  with success trial rate ${
       successTrialRate}% \n  got min distance ${
       this.minDistance } \n${
-      showMinNeighbors ? this.printMinNeighbors() : ''
+      showMinNeighbors ? this.printMinNeighbors() : ''} \n${
+      showVisitedPoints ? this.printVisitedPoints(logSamplingRate) : ''} \n${
+      showCheckedPoints ? this.printCheckedPoints(logSamplingRate) : ''
     }`)
   }
 
@@ -80,9 +103,13 @@ class Space {
   }
 
   updateMinDistance (point) {
+    const nomials = point.getNomials()
+    this.checkedPointsLog.push(nomials)
     if (point.distance >= this.minDistance) return false
+
     this.minDistance = point.distance
     this.minDistancePoint = point
+    this.visitedPointsLog.push()
     this.stepCount ++
     return true
   }
@@ -117,7 +144,8 @@ class Space {
   checkMinBiNeighbors () {
     const minBiNeighbors = this.findMinBiNeighbors()
     for (let biNeighbor of minBiNeighbors)
-      if (this.check(biNeighbor)) break
+      this.check(biNeighbor)
+    //   if (this.check(biNeighbor)) break
 
     return minBiNeighbors
   }

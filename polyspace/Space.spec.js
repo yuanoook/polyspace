@@ -35,11 +35,13 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //     timeBudget: 20
 //   })
 
-//   await examPolyNumbers({
-//     inputs: [3, 4],
-//     expectations: [4, 3],
-//     printPrecision: 4
-//   })
+  await examPolyNumbers({
+    inputs: [3, 4],
+    expectations: [4, 3],
+    printPrecision: 4,
+    showCheckedPoints: true,
+    logSamplingRate: 1 / 1000
+  })
 
 //   await examPolyNumbers({
 //     inputs: [0, 1, 2],
@@ -51,12 +53,13 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //     expectations: [0, 1, 4].map((e, i) => e + i + 4)
 //   })
 
-  await examPolyNumbers({
-    startFormula: 'f(x) = -49.32455322453447 + 0.025984646938002058x + 0.00008153016493831833x²',
-    ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
-    maxDimensions: 3,
-    timeBudget: 1000
-  })
+//   await examPolyNumbers({
+//     startFormula: 'f(x) = -21.185792266795538 + 5.731037866496542e-11x + 0.0000864332833576694x²',
+//     ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
+//     maxDimensions: 3,
+//     printPrecision: 0,
+//     timeBudget: 1000
+//   })
 })
 
 async function examPolyNumbers ({
@@ -64,10 +67,13 @@ async function examPolyNumbers ({
   expectations,
   solution,
   timeBudget,
-  printPrecision = 0,
+  printPrecision = 4,
   countBudget = Infinity,
   maxDimensions = Infinity,
-  startFormula = ''
+  startFormula = '',
+  showVisitedPoints = false,
+  showCheckedPoints = false,
+  logSamplingRate = 1 / 100
 }) {
   const space = new Space(polyNumbersTranslation)
   expect(space.translation).toBe(polyNumbersTranslation)
@@ -76,7 +82,10 @@ async function examPolyNumbers ({
   const point = await space.findThePoint({timeBudget, countBudget, maxDimensions})
   space.printSolution({
     precision: printPrecision,
-    solutionFormatter: polyNumbersFormatter
+    solutionFormatter: polyNumbersFormatter,
+    showVisitedPoints,
+    showCheckedPoints,
+    logSamplingRate
   })
   printDesmos({inputs, expectations})
 

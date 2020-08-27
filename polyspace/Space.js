@@ -72,7 +72,7 @@ class Space {
   check (point) {
     this.checkCount ++
     point.distance = this.meanSquaredError(point)
-    this.updateMinDistance(point)
+    return this.updateMinDistance(point)
   }
 
   isMinDistancePointTrapped () {
@@ -80,10 +80,11 @@ class Space {
   }
 
   updateMinDistance (point) {
-    if (point.distance >= this.minDistance) return
+    if (point.distance >= this.minDistance) return false
     this.minDistance = point.distance
     this.minDistancePoint = point
     this.stepCount ++
+    return true
   }
 
   extendDimension () {
@@ -115,20 +116,22 @@ class Space {
 
   checkMinBiNeighbors () {
     const minBiNeighbors = this.findMinBiNeighbors()
-    for (let biNeighbor of minBiNeighbors) this.check(biNeighbor)
+    for (let biNeighbor of minBiNeighbors)
+      if (this.check(biNeighbor)) break
+
     return minBiNeighbors
   }
 
-  exploreMinBiNeighbors() {
+  exploreMinBiNeighbors(maxDimensions) {
     const minBiNeighbors = this.checkMinBiNeighbors()
-    if (!minBiNeighbors.length) {
+    if (!minBiNeighbors.length && (this.dimension < maxDimensions)) {
       this.extendDimension()
       return this.checkMinBiNeighbors()
     }
     return minBiNeighbors
   }
 
-  async exploreLocalMinimum ({timeBudget, countBudget}) {
+  async exploreLocalMinimum ({timeBudget, countBudget, maxDimensions}) {
     const timePlaned = timeBudget * 1000
     const startAt = +new Date()
     let count = 0
@@ -137,7 +140,7 @@ class Space {
       if (timeUsed > timePlaned) break
       if (this.gotPerfectSolution()) break
       if (isCloseToPeriod(timeUsed, 100)) await sleep(0)
-      this.exploreMinBiNeighbors()
+      if (this.exploreMinBiNeighbors(maxDimensions).length <= 0) break
       count ++
     }
     const totalTimeUsed = new Date() - startAt
@@ -146,12 +149,13 @@ class Space {
 
   async findThePoint ({
     timeBudget = Infinity,
-    countBudget = Infinity
+    countBudget = Infinity,
+    maxDimensions = Infinity
   } = {}) {
     if (timeBudget === Infinity &&
       countBudget === Infinity
     ) timeBudget = Space.TIME_BUDGET_DEFAULT
-    await this.exploreLocalMinimum({timeBudget, countBudget})
+    await this.exploreLocalMinimum({timeBudget, countBudget, maxDimensions})
     return this.minDistancePoint
   }
 }

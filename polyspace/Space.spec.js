@@ -52,9 +52,10 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //   })
 
   await examPolyNumbers({
-    startFormula: 'f(x) = -317.3220676428785 + 0.28444761546817254x + 0.0000311369810192968x²',
+    startFormula: 'f(x) = -49.32455322453447 + 0.025984646938002058x + 0.00008153016493831833x²',
     ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
-    timeBudget: 50
+    maxDimensions: 3,
+    timeBudget: 1000
   })
 })
 
@@ -65,13 +66,14 @@ async function examPolyNumbers ({
   timeBudget,
   printPrecision = 0,
   countBudget = Infinity,
+  maxDimensions = Infinity,
   startFormula = ''
 }) {
   const space = new Space(polyNumbersTranslation)
   expect(space.translation).toBe(polyNumbersTranslation)
   space.take(inputs, expectations).setup(parsePolyNumbersFormula(startFormula))
 
-  const point = await space.findThePoint({timeBudget, countBudget})
+  const point = await space.findThePoint({timeBudget, countBudget, maxDimensions})
   space.printSolution({
     precision: printPrecision,
     solutionFormatter: polyNumbersFormatter

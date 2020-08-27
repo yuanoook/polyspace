@@ -34,8 +34,8 @@ class Space {
     this.stepCount = 0
     this.checkCount = 0
     this.lastSearchTimeUsed = 0
-    this.visitedPointsLog = []
-    this.checkedPointsLog = []
+    this.visitedPoints = []
+    this.checkedPoints = []
     this.check(new Point(origin))
   }
 
@@ -53,15 +53,18 @@ class Space {
     const samplingPeriod = Math.floor(logLength * samplingRate)
     return log
       .filter((_, index) => !(index % samplingPeriod))
-      .map(nomials => nomials.join(', ')).join('\n')
+      .map(point => {
+        point.extendDimension(this.dimension)
+        return [point.distance, ...point.getNomials()].join('\t')
+      }).join('\n')
   }
 
   printVisitedPoints (logSamplingRate) {
-    return this.printPointsLog(this.visitedPointsLog, logSamplingRate)
+    return this.printPointsLog(this.visitedPoints, logSamplingRate)
   }
 
   printCheckedPoints (logSamplingRate) {
-    return this.printPointsLog(this.checkedPointsLog, logSamplingRate)
+    return this.printPointsLog(this.checkedPoints, logSamplingRate)
   }
 
   printSolution ({
@@ -87,8 +90,12 @@ class Space {
       successTrialRate}% \n  got min distance ${
       this.minDistance } \n${
       showMinNeighbors ? this.printMinNeighbors() : ''} \n${
-      showVisitedPoints ? this.printVisitedPoints(logSamplingRate) : ''} \n${
-      showCheckedPoints ? this.printCheckedPoints(logSamplingRate) : ''
+      showVisitedPoints
+        ? '\nVisited Points: \n' + this.printVisitedPoints(logSamplingRate)
+        : ''} \n${
+      showCheckedPoints
+        ? '\nChecked Points: \n' + this.printCheckedPoints(logSamplingRate)
+        : ''
     }`)
   }
 
@@ -103,13 +110,12 @@ class Space {
   }
 
   updateMinDistance (point) {
-    const nomials = point.getNomials()
-    this.checkedPointsLog.push(nomials)
+    this.checkedPoints.push(point)
     if (point.distance >= this.minDistance) return false
 
     this.minDistance = point.distance
     this.minDistancePoint = point
-    this.visitedPointsLog.push()
+    this.visitedPoints.push(point)
     this.stepCount ++
     return true
   }

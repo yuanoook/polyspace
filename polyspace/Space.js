@@ -55,8 +55,8 @@ class Space {
     const solution = solutionFormatter(solutionNomials)
     const successTrialRate = (100 * this.stepCount / this.checkCount).toFixed(2)
 
-    console.log(`Find ${
-      this.gotPerfectSolution() ? 'perfect' : '' } solution: ${
+    console.log(`Find${
+      this.gotPerfectSolution() ? ' perfect' : '' } solution: ${
       solution} \n  in ${
       this.lastSearchTimeUsed } ms in ${
       this.stepCount } steps \n  tried ${

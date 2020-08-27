@@ -6,7 +6,6 @@ const {
 } = require('./utils')
 
 it('[PolySpace] [Space] [Basics]', async () => {
-
 // Complex 2nd exponential example provided by Zoe
 //   await examPolyNumbers({
 //     inputs: [1, 4, 3],
@@ -34,11 +33,11 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //     timeBudget: 20
 //   })
 
-  await examPolyNumbers({
-    inputs: [3, 4],
-    expectations: [4, 3],
-    printPrecision: 4
-  })
+//   await examPolyNumbers({
+//     inputs: [3, 4],
+//     expectations: [4, 3],
+//     printPrecision: 4
+//   })
 
 //   await examPolyNumbers({
 //     inputs: [0, 1, 2],
@@ -50,7 +49,7 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //     expectations: [0, 1, 4].map((e, i) => e + i + 4)
 //   })
 
-//   await examPolyNumbersForDelonWork()
+  await examPolyNumbers({...parseDelonsInputsExpectations()})
 })
 
 async function examPolyNumbers ({
@@ -86,15 +85,7 @@ function printDesmos ({inputs, expectations}) {
   console.log(`Plot on https://www.desmos.com/calculator \n${dataTable}`)
 }
 
-async function examPolyNumbersForDelonWork () {
-  const {is: inputs, es: expectations} = parseInputsExpectations()
-  await examPolyNumbers({
-    inputs,
-    expectations
-  })
-}
-
-function parseInputsExpectations (str = `652 6.019145569
+function parseDelonsInputsExpectations (str = `652 6.019145569
 678 9.211675609
 704 12.52687435
 730 15.96450881
@@ -128,8 +119,8 @@ function parseInputsExpectations (str = `652 6.019145569
 4448 1672.026036`) {
     return str.split('\n').map(x => x.split(' '))
     .reduce(
-      ({is, es}, [i, e]) =>
-      ({is: is.concat(+i), es: es.concat(+e)}),
-      {is: [], es: []}
+      ({inputs, expectations}, [i, e]) =>
+      ({inputs: inputs.concat(+i), expectations: expectations.concat(+e)}),
+      {inputs: [], expectations: []}
     )
 }

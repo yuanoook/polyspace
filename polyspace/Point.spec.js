@@ -321,6 +321,42 @@ it('[PolySpace] [Point] [getChainPoints]', () => {
   expect(point.getChainPoints(false)[0]).not.toBe(point)
 })
 
+it('[PolySpace] [Point] [getNeighbors]', () => {
+  const point = new Point([1, 2, 3, 4])
+  const biNeighbors = point.findBiNeighbors()
+  expect(biNeighbors.length).toBe(point.getDimensions() * 2)
+
+  let neighbors = point.getNeighbors()
+  expect(neighbors.length).toBe(point.getDimensions() * 2)
+  expect(neighbors).toEqual(biNeighbors)
+
+  point.findBiNeighbors()
+  neighbors = point.getNeighbors(2)
+  expect(neighbors.length).toBe(point.getDimensions() * 4)
+  expect(neighbors.indexOf(this)).toBe(-1)
+
+  point.findBiNeighbors()
+  neighbors = point.getNeighbors(3)
+  expect(neighbors.length).toBe(point.getDimensions() * 6)
+  expect(neighbors.indexOf(this)).toBe(-1)
+
+  point.findBiNeighbors()
+  neighbors = point.getNeighbors(4)
+  expect(neighbors.length).toBe(point.getDimensions() * 8)
+  expect(neighbors.indexOf(this)).toBe(-1)
+})
+
+it('[PolySpace] [Point] [shakeChainPoints]', () => {
+  const point = new Point([1, 2, 3, 4])
+  point.findBiNeighbors()
+  point.findBiNeighbors()
+  point.findBiNeighbors()
+  expect(point.getNeighbors(3).length).toBe(point.getDimensions() * 6)
+
+  point.shakeChainPoints()
+  expect(point.getNeighbors(3).length).toBe(point.getDimensions() * 2)
+})
+
 it('[PolySpace] [Point] [getInNetworkPoints / isInNetwork]', () => {
   const point = new Point([1, 2, 3, 4])
   const rNeighbors9 = point.findRandomNeighbors(9)

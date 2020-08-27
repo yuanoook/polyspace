@@ -41,6 +41,9 @@ class Point {
   reduce (call, init) {
     return this.atoms.reduce(call, init)
   }
+  collect (call, init = []) {
+    return this.reduce((list, atom, index) => list.concat(call(atom, index)), init)
+  }
   getNomials () {
     return this.map(atom => atom.getValue())
   }
@@ -100,7 +103,30 @@ class Point {
   }
 
   findBiNeighbors () {
-    return this.reduce((neighbors, _, index) => neighbors.concat(this.findBiNeighborsAt(index)), [])
+    return this.collect((atom, index) => this.findBiNeighborsAt(index))
+  }
+
+  // TODO: add test
+  getBiNeighborsAt (index) {
+    const atom = this.getAtom(index)
+    let neighbors = []
+    if (atom.left) neighbors.push(atom.left.parent)
+    if (atom.right) neighbors.push(atom.right.parent)
+    return neighbors
+  }
+  getBiNeighbors () {
+    return this.collect((atom, index) => this.getBiNeighborsAt(index))
+  }
+  getNeighbors (depth = 1) {
+    if (depth < 1) return []
+    const biNeighbors = this.getBiNeighbors()
+
+    const secondNeighbors = biNeighbors.reduce((neighbors, biNeighbor) =>
+      neighbors.concat(
+        biNeighbor.getNeighbors(depth - 1).filter(n => n !== this)
+    ), [])
+
+    return [...new Set(biNeighbors.concat(secondNeighbors))]
   }
 
   findRandomNeighborAt (index) {
@@ -244,10 +270,16 @@ class Point {
 
   // TODO: return new Points() object, add convenient methods
   getChainPoints (includeSelf = true) {
-    return this.reduce(
-      (points, _, index) => [...points, ...this.getChainPointsAt(index, false)],
-      includeSelf ? [this] : []
-    )
+    return this.collect(
+      (_, index) => this.getChainPointsAt(index, false),
+      includeSelf ? [this] : [])
+  }
+
+  shakeChainPoints () {
+    this.forEach(atom => {
+      if (atom.left) atom.left.left = null
+      if (atom.right) atom.right.right = null
+    })
   }
 
   getInNetworkPoints (includeSelf = true) {

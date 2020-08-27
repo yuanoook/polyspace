@@ -27,46 +27,46 @@ class Space {
   }
 
   setup () {
-    this.checkCount = 0
-    this.dimension = 1
-    this.origin = new Point([0])
-    this.zeroDistancePoints = []
     this.minDistance = Infinity
-    this.minDistancePoints = []
-    this.check(this.origin)
+    this.minDistancePoint = null
+    this.dimension = 1
+    this.stepCount = 0
+    this.checkCount = 0
     this.lastSearchTimeUsed = 0
+    this.check(new Point([0]))
+  }
+
+  gotPerfectSolution () {
+    return isCloseTo(this.minDistance, 0, Space.PRECISION)
+  }
+
+  printMinNeighbors () {
+    const minNeighborsNomials = this.minDistancePoint.printNeighbors(false)
+    return JSON.stringify(minNeighborsNomials, null, 2)
   }
 
   printSolution ({
     precision = Space.PRECISION,
     solutionFormatter = x => x,
-    brief = true
+    showMinNeighbors = false
   } = {}) {
-    const thePoint = this.getThePoint()
+    const thePoint = this.minDistancePoint
     const solutionNomials = thePoint.getTrimmedNomials(precision)
     const solution = solutionFormatter(solutionNomials)
-    const minNeighborsNomials = this
-      .getFirstMindDistancePoint()
-      .printNeighbors(false)
-    const isGoodSolution = this.zeroDistancePoints.length > 0
+    const successTrialRate = (100 * this.stepCount / this.checkCount).toFixed(2)
 
-    if (brief) return console.log(`
-Find ${
-  isGoodSolution ? 'perfect' : ''
-} solution: ${solution} \n  in ${this.lastSearchTimeUsed} ms \n  with distance ${
-    this.minDistance
-  } \n  tried ${this.checkCount} times in ${this.dimension} dimensions`)
-
-    console.log(`
-Solution: ${solution}
-Distance: ${this.minDistance}
-Dimension: ${this.dimension}
-Points Checked: ${this.checkCount}
-Last Search Time Used: ${this.lastSearchTimeUsed} ms
-Min-Distance Points: ${this.minDistancePoints.length}
-Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
-    `)
-  }
+    console.log(`Find ${
+      this.gotPerfectSolution() ? 'perfect' : '' } solution: ${
+      solution} \n  in ${
+      this.lastSearchTimeUsed } ms in ${
+      this.stepCount } steps \n  tried ${
+      this.checkCount } times in ${
+      this.dimension } dimensions \n  with success trial rate ${
+      successTrialRate}% \n  got min distance ${
+      this.minDistance } \n${
+      showMinNeighbors ? this.printMinNeighbors() : ''
+    }`)
+}
 
   check (point) {
     this.checkCount ++
@@ -74,50 +74,21 @@ Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
     this.updateMinDistance(point)
   }
 
-  // TODO: add test
-  lastMinDistancePoint () {
-    return last(this.minDistancePoints)
-  }
-
-  // TODO: add test
-  areAllMinDistancePointsTrapped () {
-    return !this.minDistancePoints.some(point => !point.isTrapped())
+  isMinDistancePointTrapped () {
+    return this.minDistancePoint.isTrapped()
   }
 
   updateMinDistance (point) {
-    if (point.distance > this.minDistance) return
-
-    if (point.distance < this.minDistance) {
-      this.minDistancePoints.length = 0
-    }
-
-    if (point.distance === this.minDistance &&
-      this.minDistancePoints.length &&
-      point.isCloseTo(this.lastMinDistancePoint())
-    ) return
-
-    if (this.minDistancePoints.indexOf(point) < 0) {
-      this.minDistancePoints.push(point)
-    }
+    if (point.distance >= this.minDistance) return
     this.minDistance = point.distance
-    this.updateZeroDistance(point)
+    this.minDistancePoint = point
+    this.stepCount ++
   }
 
-  updateZeroDistance (point) {
-    if (isCloseTo(point.distance, 0, Space.PRECISION))
-      this.zeroDistancePoints.push(point)
-  }
-
-  getAllPoints () {
-    return this.origin.getInNetworkPoints()
-  }
-
-  // TODO - While try to extendDimension, remove all
   extendDimension () {
     this.dimension ++
-    // TODO - Shake points to save computing
-    // this.getAllPoints().map(point => point.extendDimension(this.dimension))
-    this.minDistancePoints.map(point => point.extendDimension(this.dimension))
+    this.minDistancePoint.shakeChainPoints()
+    this.minDistancePoint.extendDimension(this.dimension)
   }
 
   squaredError (point, input, expectation) {
@@ -133,25 +104,12 @@ Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
     return Math.sqrt(totalSquaredError)
   }
 
-  getRandomMinDistancePoint () {
-    const points = this.minDistancePoints
-    return points[randomNaturalNumber(points.length)]
-  }
-
-  getThePoint () {
-    return this.zeroDistancePoints[0] || this.getFirstMindDistancePoint()
-  }
-
-  getFirstMindDistancePoint () {
-    return this.minDistancePoints[0]
-  }
-
   findRandomMinNeighbor () {
-    return this.getRandomMinDistancePoint().findRandomNeighbor()
+    return this.minDistancePoint.findRandomNeighbor()
   }
 
   findMinBiNeighbors () {
-    return this.getFirstMindDistancePoint().findBiNeighbors()
+    return this.minDistancePoint.findBiNeighbors()
   }
 
   checkMinBiNeighbors () {
@@ -176,7 +134,7 @@ Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
     while (count < countBudget) {
       const timeUsed= new Date() - startAt
       if (timeUsed > timePlaned) break
-      if (this.zeroDistancePoints.length) break
+      if (this.gotPerfectSolution()) break
       if (isCloseToPeriod(timeUsed, 100)) await sleep(0)
       this.exploreMinBiNeighbors()
       count ++
@@ -193,7 +151,7 @@ Min-Neighbors: ${JSON.stringify(minNeighborsNomials, null, 2)}
       countBudget === Infinity
     ) timeBudget = Space.TIME_BUDGET_DEFAULT
     await this.exploreLocalMinimum({timeBudget, countBudget})
-    return this.getRandomMinDistancePoint()
+    return this.minDistancePoint
   }
 }
 

@@ -36,14 +36,15 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //   })
 
   await examPolyNumbers({
+    // This is beautiful - https://plotly.com/~yuanoook/5/
     inputs: [3, 4],
     expectations: [4, 3],
     printPrecision: 4,
-    showCheckedPoints: true,
+    // showCheckedPoints: true,
     showVisitedPoints: true,
-    showMatlabScatter3: true,
-    logSampleAmount: 30,
-    maxDimensions: 2
+    logSampleAmount: 1000000000,
+    maxDimensions: 2,
+    printFunc: text => require('fs').writeFileSync('./log.txt', text)
   })
 
 //   await examPolyNumbers({
@@ -77,20 +78,22 @@ async function examPolyNumbers ({
   showVisitedPoints = false,
   showCheckedPoints = false,
   showMatlabScatter3 = false,
-  logSampleAmount = 100
+  logSampleAmount = 100,
+  printFunc
 }) {
   const space = new Space(polyNumbersTranslation)
   expect(space.translation).toBe(polyNumbersTranslation)
   space.take(inputs, expectations).setup(parsePolyNumbersFormula(startFormula))
 
   const point = await space.findThePoint({timeBudget, countBudget, maxDimensions})
-  space.printSolution({
+  await space.printSolution({
     precision: printPrecision,
     solutionFormatter: polyNumbersFormatter,
     showVisitedPoints,
     showCheckedPoints,
     showMatlabScatter3,
-    logSampleAmount
+    logSampleAmount,
+    printFunc
   })
   printDesmos({inputs, expectations})
 

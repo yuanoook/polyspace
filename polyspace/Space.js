@@ -60,12 +60,12 @@ class Space {
   }
 
   sampleLog (log, amount) {
-    return this.randomSample(log, amount)
+    return this.regularSample(log, amount)
   }
 
   printPointsLog (log, amount) {
     return this.sampleLog(log, amount)
-      .map(point => point.getNomials().join('\t'))
+      .map(point => [...point.getNomials(), point.distance].join('\t'))
       .join('\n')
   }
 
@@ -97,14 +97,15 @@ class Space {
     return this.printScatter3(this.checkedPoints, logSampleAmount)
   }
 
-  printSolution ({
+  async printSolution ({
     precision = Space.PRECISION,
     solutionFormatter = x => x,
     showMinNeighbors = false,
     showVisitedPoints = false,
     showCheckedPoints = false,
     showMatlabScatter3 = false,
-    logSampleAmount = 100
+    logSampleAmount = 100,
+    printFunc = console.log.bind(console)
   } = {}) {
     const thePoint = this.minDistancePoint
     const solutionNomials = thePoint.getTrimmedNomials(precision)
@@ -116,15 +117,15 @@ class Space {
       showCheckedPoints ? 'Checked Points\n' + this.printCheckedPointsScatter3(logSampleAmount) : ''
     }` : ''
 
-    console.log(`Find${
-      this.gotPerfectSolution() ? ' perfect' : '' } solution: ${
+    await printFunc(`Find${
+      this.gotPerfectSolution() ? ' perfect' : '' } curve fitting: ${
       solution} \n  in ${
       this.lastSearchTimeUsed } ms in ${
       this.stepCount } steps \n  tried ${
       this.checkCount } times in ${
       this.dimension } dimensions \n  with success trial rate ${
       successTrialRate}% \n  got min distance ${
-      this.minDistance } \n${
+      this.minDistance } \n \n Visualize it - https://chart-studio.plotly.com/create/ ${
       showMinNeighbors ? this.printMinNeighbors() : ''} \n${
       showVisitedPoints
         ? '\nVisited Points: \n' + this.printVisitedPoints(logSampleAmount)

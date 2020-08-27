@@ -8,7 +8,6 @@ scatter3(x,y,z,5,z,'filled');
 set(gca,'xscale','log');
 set(gca,'yscale','log');
 set(gca,'zscale','log');
-view([17 21]);
 colormap(jet);
 colorbar;
 

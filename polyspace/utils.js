@@ -217,6 +217,15 @@ const randomShuffle = list => (((a,b,c,d) => {
 })(list),list)
 const randomSubList = (list, count) => randomShuffle([...list]).slice(0, count)
 
+// TODO: add test
+const genFileTimePostfix = () => new Date()
+  .toString()
+  .replace(/\:/g,'-')
+  .replace(/[^\d\w\-]/g, ' ')
+  .trim()
+  .replace(/\s/g, '_')
+  .split('__')[0]
+
 module.exports = {
   randomDistanceRatio,
   randomPositiveDistanceRatio,
@@ -239,5 +248,6 @@ module.exports = {
   last,
   sleep,
   randomShuffle,
-  randomSubList
+  randomSubList,
+  genFileTimePostfix
 }

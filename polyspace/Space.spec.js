@@ -3,7 +3,8 @@ const Space = require('./Space')
 const {
   polyNumbersTranslation,
   polyNumbersFormatter,
-  parsePolyNumbersFormula
+  parsePolyNumbersFormula,
+  genFileTimePostfix
 } = require('./utils')
 const parabolicAntennaCurveData = require('./data.delon')
 
@@ -44,7 +45,7 @@ it('[PolySpace] [Space] [Basics]', async () => {
     showVisitedPoints: true,
     logSampleAmount: 1000000000,
     maxDimensions: 2,
-    printFunc: text => require('fs').writeFileSync('./log.txt', text)
+    printFunc: text => require('fs').writeFileSync(`./log-${genFileTimePostfix()}.txt`, text)
   })
 
 //   await examPolyNumbers({

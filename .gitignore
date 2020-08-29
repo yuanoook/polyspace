@@ -109,3 +109,4 @@ package-lock.json
 core.node.*
 
 log.txt
+log-*.txt

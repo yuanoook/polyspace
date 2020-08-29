@@ -58,7 +58,7 @@ class Atom {
 
   getLeftHalfwayValue (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     return +(this.getLeftSafeValue() * distanceRatio +
-      this.getValue() * (1 - distanceRatio)) //.toFixed(1)
+      this.getValue() * (1 - distanceRatio)) // .toFixed(2)
   }
 
   getRightNeighborValue () {
@@ -74,7 +74,7 @@ class Atom {
 
   getRightHalfwayValue (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     return +(this.getRightSafeValue() * distanceRatio +
-      this.getValue() * (1 - distanceRatio)) //.toFixed(1)
+      this.getValue() * (1 - distanceRatio)) // .toFixed(2)
   }
 
   findLeftNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {

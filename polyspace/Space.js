@@ -34,6 +34,7 @@ class Space {
     this.lastSearchTimeUsed = 0
     this.visitedPoints = []
     this.checkedPoints = []
+    this.biNeighborMatrixCheckIndex = 0
     this.check(new Point(origin))
   }
 
@@ -111,6 +112,7 @@ class Space {
     const solutionNomials = thePoint.getTrimmedNomials(precision)
     const solution = solutionFormatter(solutionNomials)
     const successTrialRate = (100 * this.stepCount / this.checkCount).toFixed(2)
+    const timeStepSpeed = (this.stepCount / this.lastSearchTimeUsed).toFixed(4)
     const matlabScatter3 = showMatlabScatter3 ? `\n${
       showVisitedPoints ? 'Visited Points\n' + this.printVisitedPointsScatter3(logSampleAmount) : ''
     }\n\n${
@@ -121,7 +123,8 @@ class Space {
       this.gotPerfectSolution() ? ' perfect' : '' } curve fitting: ${
       solution} \n  in ${
       this.lastSearchTimeUsed } ms in ${
-      this.stepCount } steps \n  tried ${
+      this.stepCount } steps \n  with speed ${
+      timeStepSpeed} steps/ms \n  tried ${
       this.checkCount } times in ${
       this.dimension } dimensions \n  with success trial rate ${
       successTrialRate}% \n  got min distance ${
@@ -181,24 +184,60 @@ class Space {
     return this.minDistancePoint.findRandomNeighbor()
   }
 
-  findMinBiNeighbors () {
+  findBiNeighbors () {
     return this.minDistancePoint.findBiNeighbors()
   }
 
-  checkMinBiNeighbors () {
-    const minBiNeighbors = this.findMinBiNeighbors()
-    for (let biNeighbor of minBiNeighbors)
-      this.check(biNeighbor)
-    //   if (this.check(biNeighbor)) break
-
-    return minBiNeighbors
+  checkBiNeighbors () {
+    const biNeighbors = this.findBiNeighbors()
+    for (let biNeighbor of biNeighbors)
+      if (this.check(biNeighbor)) break
+    return biNeighbors
   }
 
-  exploreMinBiNeighbors(maxDimensions) {
-    const minBiNeighbors = this.checkMinBiNeighbors()
+  findBiNeighborsMatrix () {
+    return this.minDistancePoint.findBiNeighborsMatrix()
+  }
+
+  checkBiNeighborsMatrixList (list) {
+    for (let point of list)
+      if(this.check(point)) return true
+    return false
+  }
+
+  checkBiNeighborsMatrix () {
+    const matrix = this.findBiNeighborsMatrix()
+    let matrixIsNotEmpty = false
+    let count = 0
+    while (count < this.dimension) {
+      const list = matrix[this.biNeighborMatrixCheckIndex]
+      matrixIsNotEmpty = matrixIsNotEmpty || (list.length > 0)
+      if (this.checkBiNeighborsMatrixList(list)) break
+      count ++
+      this.biNeighborMatrixCheckIndex ++
+      this.biNeighborMatrixCheckIndex = this.biNeighborMatrixCheckIndex % this.dimension
+    }
+    return matrixIsNotEmpty
+  }
+
+  // exploreBiNeighborsMatrix performs 8% faster than exploreBiNeighbors
+  // by index preferring & quick breaking
+  // Quick breaking contributes the most performance improvement
+  // Index preferring add lightly advantages
+  exploreBiNeighborsMatrix(maxDimensions) {
+    const exploredSome = this.checkBiNeighborsMatrix()
+    if (!exploredSome && (this.dimension < maxDimensions)) {
+      this.extendDimension()
+      return this.checkBiNeighborsMatrix()
+    }
+    return exploredSome
+  }
+
+  exploreBiNeighbors(maxDimensions) {
+    const minBiNeighbors = this.checkBiNeighbors()
     if (!minBiNeighbors.length && (this.dimension < maxDimensions)) {
       this.extendDimension()
-      return this.checkMinBiNeighbors()
+      return this.checkBiNeighbors()
     }
     return minBiNeighbors
   }
@@ -212,7 +251,8 @@ class Space {
       if (timeUsed > timePlaned) break
       if (this.gotPerfectSolution()) break
       if (isCloseToPeriod(timeUsed, 100)) await sleep(0)
-      if (this.exploreMinBiNeighbors(maxDimensions).length <= 0) break
+      // if (!this.exploreBiNeighbors(maxDimensions).length) break
+      if (!this.exploreBiNeighborsMatrix(maxDimensions)) break
       count ++
     }
     const totalTimeUsed = new Date() - startAt

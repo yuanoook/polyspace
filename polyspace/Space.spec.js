@@ -7,6 +7,7 @@ const {
   genFileTimePostfix
 } = require('./utils')
 const parabolicAntennaCurveData = require('./data.delon')
+const printFunc = text => require('fs').writeFileSync(`./log-${genFileTimePostfix()}.txt`, text)
 
 it('[PolySpace] [Space] [Basics]', async () => {
 // Complex 2nd exponential example provided by Zoe
@@ -36,17 +37,18 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //     timeBudget: 20
 //   })
 
-  await examPolyNumbers({
-    // This is beautiful - https://plotly.com/~yuanoook/5/
-    inputs: [3, 4],
-    expectations: [4, 3],
-    printPrecision: 4,
-    // showCheckedPoints: true,
-    showVisitedPoints: true,
-    logSampleAmount: 1000000000,
-    maxDimensions: 2,
-    printFunc: text => require('fs').writeFileSync(`./log-${genFileTimePostfix()}.txt`, text)
-  })
+  // await examPolyNumbers({
+  //   // This is beautiful - https://plotly.com/~yuanoook/5/
+  //   inputs: [1, 2],
+  //   expectations: [1, 4],
+  //   printPrecision: 4,
+  //   // showCheckedPoints: true,
+  //   showVisitedPoints: true,
+  //   logSampleAmount: 10000000000,
+  //   timeBudget: 100,
+  //   maxDimensions: 2,
+  //   printFunc
+  // })
 
 //   await examPolyNumbers({
 //     inputs: [0, 1, 2],
@@ -58,13 +60,15 @@ it('[PolySpace] [Space] [Basics]', async () => {
 //     expectations: [0, 1, 4].map((e, i) => e + i + 4)
 //   })
 
-//   await examPolyNumbers({
-//     startFormula: 'f(x) = -21.185792266795538 + 5.731037866496542e-11x + 0.0000864332833576694x²',
-//     ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
-//     maxDimensions: 3,
-//     printPrecision: 0,
-//     timeBudget: 1000
-//   })
+  await examPolyNumbers({
+    // startFormula: 'f(x) = -21.185792266795538 + 5.731037866496542e-11x + 0.0000864332833576694x²',
+    ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
+    maxDimensions: 3,
+    printPrecision: 0,
+    showVisitedPoints: true,
+    logSampleAmount: 10000000000,
+    printFunc
+  })
 })
 
 async function examPolyNumbers ({
@@ -96,7 +100,7 @@ async function examPolyNumbers ({
     logSampleAmount,
     printFunc
   })
-  printDesmos({inputs, expectations})
+  // printDesmos({inputs, expectations})
 
   expect(space.minDistance).toBeCloseTo(0)
   if (solution) expect(

@@ -107,6 +107,10 @@ class Point {
     return this.collect((atom, index) => this.findBiNeighborsAt(index))
   }
 
+  findBiNeighborsMatrix () {
+    return this.collect((atom, index) => [this.findBiNeighborsAt(index)])
+  }
+
   // TODO: add test
   getBiNeighborsAt (index) {
     const atom = this.getAtom(index)

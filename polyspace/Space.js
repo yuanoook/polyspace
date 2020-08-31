@@ -128,7 +128,7 @@ class Space {
       this.checkCount } times in ${
       this.dimension } dimensions \n  with success trial rate ${
       successTrialRate}% \n  got min distance ${
-      this.minDistance } \n \n Visualize it - https://chart-studio.plotly.com/create/ ${
+      this.minDistance } \n \nVisualize it - https://chart-studio.plotly.com/create/ ${
       showMinNeighbors ? this.printMinNeighbors() : ''} \n${
       showVisitedPoints
         ? '\nVisited Points: \n' + this.printVisitedPoints(logSampleAmount)

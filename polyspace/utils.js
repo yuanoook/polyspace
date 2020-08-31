@@ -177,7 +177,9 @@ function parsePolyNumbersFormulaItem (item) {
 function parsePolyNumbersFormula (formula) {
   const nomials = []
   formula.replace(/^f\(x\) = /, '')
+    .replace(/e\s*-/g, '*[ee]*')  // Fix science notation
     .replace(/-/g, '+-')
+    .replace(/\*\[ee\]\*/g, 'e-') // Restore science notation
     .split('+')
     .map(parsePolyNumbersFormulaItem)
     .forEach(([exponent, coefficient]) => {

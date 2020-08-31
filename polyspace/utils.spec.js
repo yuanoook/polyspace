@@ -142,4 +142,7 @@ it('[PolySpace] [utils] [parsePolyNumbersFormula]', () => {
   expect(parsePolyNumbersFormula('f(x) = -45.44 + 0.024x + 0.000081x²')).toEqual(
     [-45.44, 0.024, 0.000081]
   )
+  expect(parsePolyNumbersFormula('f(x) = -45.44 + 0.024x + 9.973508529750448e-7x²')).toEqual(
+    [-45.44, 0.024, 9.973508529750448e-7]
+  )
 })

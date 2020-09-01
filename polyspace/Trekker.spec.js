@@ -12,6 +12,9 @@ it('trekking.js', async () => {
   expect(sum([1,2,3])).toBe(6)
 
   const log = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  expect(makeF(log, 0)(2)).toBe(2)
+  expect(makeF(log, 2)(0)).toBe(1)
+  expect(makeF(log, 2)(1)).toBe(1.5)
   expect(makeF(log, 2)(2)).toBe(2)
   expect(makeF(log, 3)(3)).toBe(3)
   expect(makeF(log, 4)(4)).toBe(4)

@@ -4,7 +4,9 @@ function sum(...args) {
 
 function makeF(log, radius) {
   return index => {
-    const samples = log.slice(index - radius, index + radius + 1)
+    const start = Math.max(index - radius, 0)
+    const end = Math.min(index + radius + 1, log.length)
+    const samples = log.slice(start, end)
     const samplesSum = sum(samples)
     return samplesSum / samples.length
   }

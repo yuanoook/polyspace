@@ -33,7 +33,7 @@ function generateTrekking(log, smoothRadius, predictBaseStep = 1, predictTimes =
   }
 }
 
-function trekkingTranslation(nomials) {
+function trekkingErrorTranslation(nomials) {
   return log => totalTrekkingError(nomials, log)
 }
 
@@ -67,5 +67,5 @@ module.exports = {
   allTrekkingError,
   totalTrekkingError,
   trekkingError,
-  trekkingTranslation
+  trekkingErrorTranslation
 }

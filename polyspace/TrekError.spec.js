@@ -30,7 +30,10 @@ async function examLogTrekking ({
 }) {
   const space = new Space(trekkingErrorTranslation)
   expect(space.translation).toBe(trekkingErrorTranslation)
-  space.take([log], [0]).setup([0, 0, 0])
+  // TODO: Set search space boundary
+  // eg. positive integers
+
+  space.take([log], [0]).setup([1, 1, 1])
 
   const point = await space.findThePoint({timeBudget, countBudget, maxDimensions: 3})
   await space.printSolution({

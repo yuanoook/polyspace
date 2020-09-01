@@ -52,6 +52,22 @@ it('Trekker.js [trekkingError]', async () => {
   expect(trekkingError([1, 2, 3], null, 3, log)).toBe(0)
 })
 
+it('Trekker.js [trekkingError] with nomials', async () => {
+  const log = [
+    [0, 0], [1, 1], [2, 2], [3, 3], [4, 4],
+    [5, 5], [6, 6], [7, 7], [8, 8], [9, 9]
+  ]
+  expect(trekkingError([0, 0, 0], null, 0, log)).toBe(1)
+  expect(trekkingError([0, 1, 1], null, 0, log)).toBe(1)
+
+  expect(trekkingError([0, 1, 1], null, 1, log)).toBe(0)
+  expect(trekkingError([0, 1, 1], null, 2, log)).toBe(0)
+  expect(trekkingError([0, 1, 1], null, 3, log)).toBe(0)
+
+  expect(trekkingError([1, 2, 2], null, 3, log)).toBe(0)
+  expect(trekkingError([1, 2, 3], null, 3, log)).toBe(0)
+})
+
 it('Trekker.js [allTrekkingError]', async () => {
   const log = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   expect(allTrekkingError([0, 1, 1], log)).toEqual([1, 0, 0, 0, 0, 0, 0, 0, 0, 1])

@@ -43,11 +43,11 @@ it('[PolySpace] [Space] [Basics]', async () => {
     expectations: [1, 4],
     printPrecision: 4,
     // showCheckedPoints: true,
-    showVisitedPoints: true,
+    // showVisitedPoints: true,
     logSampleAmount: 10000000000,
-    timeBudget: 100,
+    timeBudget: 10,
     maxDimensions: 2,
-    printFunc
+    // printFunc
   })
 
 //   await examPolyNumbers({

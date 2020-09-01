@@ -78,6 +78,7 @@ function allTrekkingError(nomials, log) {
 }
 
 function trekkingError([smoothRadius, predictBaseStep, predictTimes], _, index, log) {
+  // console.log('trekkingError: ', index)
   const trekking = generateTrekking(log, smoothRadius, predictBaseStep, predictTimes)
   const [predictIndex, prediction] = trekking(index)
   const expectationIndex = Math.min(predictIndex, log.length - 1)

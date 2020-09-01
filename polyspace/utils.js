@@ -63,7 +63,6 @@ function call2Nomials (n1, n2, call) {
 
 function add2Nomials (n1, n2) {
   return call2Nomials(n1, n2, (n1i, n2i) => {
-    console.log('n2i + n1i: ', n2i, n1i, n2i + n1i)
     return n2i + n1i
   })
 }
@@ -240,6 +239,19 @@ const genFileTimePostfix = () => new Date()
   .replace(/\s/g, '_')
   .split('__')[0]
 
+const unlinkFiles = regex => {
+  const fs = require('fs')
+  const dir = './'
+  fs.readdirSync(dir)
+    .filter(f => regex.test(f))
+    .map(f => fs.unlinkSync(dir + f))
+}
+
+const printFunc = text => {
+  unlinkFiles(/^log\-/)
+  require('fs').writeFileSync(`./log-${genFileTimePostfix()}.txt`, text)
+}
+
 module.exports = {
   randomDistanceRatio,
   randomPositiveDistanceRatio,
@@ -264,5 +276,6 @@ module.exports = {
   sleep,
   randomShuffle,
   randomSubList,
-  genFileTimePostfix
+  genFileTimePostfix,
+  printFunc
 }

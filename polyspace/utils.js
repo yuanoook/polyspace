@@ -52,12 +52,24 @@ function repeat (call, count = 1) {
   return results
 }
 
-function diffNomials (n1, n2) {
+// TODO: add test
+function call2Nomials (n1, n2, call) {
   return repeat(i => {
     const n1i = n1[i] === undefined ? 0 : n1[i]
     const n2i = n2[i] === undefined ? 0 : n2[i]
-    return n2i - n1i
+    return call(n1i, n2i)
   }, Math.max(n1.length, n2.length))
+}
+
+function add2Nomials (n1, n2) {
+  return call2Nomials(n1, n2, (n1i, n2i) => {
+    console.log('n2i + n1i: ', n2i, n1i, n2i + n1i)
+    return n2i + n1i
+  })
+}
+
+function diffNomials (n1, n2) {
+  return call2Nomials(n1, n2, (n1i, n2i) => n2i - n1i)
 }
 
 function isSameNomials (n1, n2) {
@@ -237,6 +249,7 @@ module.exports = {
   randomPositiveSafeNumber,
   validatePositive,
   repeat,
+  add2Nomials,
   diffNomials,
   isSameNomials,
   trimNomials,

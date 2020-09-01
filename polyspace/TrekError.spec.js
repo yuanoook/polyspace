@@ -32,7 +32,7 @@ async function examLogTrekking ({
   const point = await space.findThePoint({timeBudget, countBudget, maxDimensions: 3})
   await space.printSolution({
     precision: printPrecision,
-    solutionFormatter: polyNumbersFormatter,
+    // solutionFormatter: polyNumbersFormatter,
     showVisitedPoints,
     showCheckedPoints,
     showMatlabScatter3,

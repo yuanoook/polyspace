@@ -1,5 +1,6 @@
 const {
-  sum,
+  sumScalar,
+  sumNomials,
   generateSmoothLog,
   generateTrekking,
   parseTrekkingLog,
@@ -9,9 +10,16 @@ const {
 } = require('./Trekker')
 const trekkingLog = require('./data.-2+3x')
 
-it('Trekker.js [sum]', async () => {
-  expect(sum(1,2,3)).toBe(6)
-  expect(sum([1,2,3])).toBe(6)
+it('Trekker.js [sumScalar]', async () => {
+  expect(sumScalar([1,2,3])).toBe(6)
+})
+
+it('Trekker.js [sumNomials]', async () => {
+  expect(sumNomials([
+    [0, 1],
+    [0, 2],
+    [0, 3]
+  ])).toEqual([0, 6])
 })
 
 it('Trekker.js [generateSmoothLog]', async () => {

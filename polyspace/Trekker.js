@@ -1,5 +1,31 @@
-function sum(...args) {
-  return [].concat(...args).reduce((s, n) => s + n, 0)
+const { 
+  add2Nomials, 
+  diffNomials, 
+  euclideanDistance
+} = require('./utils')
+
+function sumScalar(scalarList) {
+  return scalarList.reduce((a, b) => a + b, 0)
+}
+
+function sumNomials(nomialsList) {
+  return nomialsList.reduce((s, n) => add2Nomials(s, n), [])
+}
+
+function divideNomials(nomials, divisor) {
+  return nomials.map(scalar => scalar / divisor)
+}
+
+function meanScalar(scalarList) {
+  return sumScalar(scalarList) / scalarList.length
+}
+
+function meanNomials(nomialsList) {
+  return divideNomials(sumNomials(nomialsList), nomialsList.length)
+}
+
+function multiplyNomials(nomials, times) {
+  return nomials.map(scalar => scalar * times)
 }
 
 function generateSmoothLog(log, radius = 0) {
@@ -7,8 +33,8 @@ function generateSmoothLog(log, radius = 0) {
     const start = Math.max(index - radius, 0)
     const end = Math.max(Math.min(index + radius + 1, log.length), 1)
     const samples = log.slice(start, end)
-    const samplesSum = sum(samples)
-    return samplesSum / samples.length
+    const isScalar = !Array.isArray(log[0])
+    return isScalar ? meanScalar(samples) : meanNomials(samples)
   }
 }
 
@@ -28,7 +54,13 @@ function generateTrekking(log, smoothRadius, predictBaseStep = 1, predictTimes =
   return index => {
     const smoothLog = generateSmoothLog(log, smoothRadius)
     const predictIndex = index + predictBaseStep * predictTimes
-    const prediction = (predictTimes + 1) * smoothLog(index) - predictTimes * smoothLog(index - predictBaseStep)
+    const isScalar = !Array.isArray(log[0])
+    const prediction = isScalar
+      ? (predictTimes + 1) * smoothLog(index) - predictTimes * smoothLog(index - predictBaseStep)
+      : diffNomials(
+        multiplyNomials(smoothLog(index - predictBaseStep), predictTimes),
+        multiplyNomials(smoothLog(index), predictTimes + 1)
+      )
     return [predictIndex, prediction]
   }
 }
@@ -38,7 +70,7 @@ function trekkingErrorTranslation(nomials) {
 }
 
 function totalTrekkingError(nomials, log) {
-  return sum(allTrekkingError(nomials, log))
+  return sumScalar(allTrekkingError(nomials, log))
 }
 
 function allTrekkingError(nomials, log) {
@@ -50,7 +82,10 @@ function trekkingError([smoothRadius, predictBaseStep, predictTimes], _, index, 
   const [predictIndex, prediction] = trekking(index)
   const expectationIndex = Math.min(predictIndex, log.length - 1)
   const expectation = log[expectationIndex]
-  return (prediction - expectation) ** 2
+  const isScalar = !Array.isArray(log[0])
+  return isScalar
+    ? (prediction - expectation) ** 2
+    : euclideanDistance(prediction, expectation)
 }
 
 function parseTrekkingLog(log) {
@@ -60,7 +95,8 @@ function parseTrekkingLog(log) {
 }
 
 module.exports = {
-  sum,
+  sumScalar,
+  sumNomials,
   generateSmoothLog,
   generateTrekking,
   parseTrekkingLog,

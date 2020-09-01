@@ -7,6 +7,7 @@ const {
   randomPositiveSafeNumber,
   validatePositive,
   repeat,
+  add2Nomials,
   diffNomials,
   isSameNomials,
   euclideanDistance,
@@ -68,6 +69,14 @@ it('[PolySpace] [utils] [repeat]', () => {
   expect(repeat(() => 0, 3)).toEqual([0, 0, 0])
   let count = 0
   expect(repeat(() => count++, 3)).toEqual([0, 1, 2])
+})
+
+it('[PolySpace] [utils] [add2Nomials]', () => {
+  expect(add2Nomials([], [1])).toEqual([1])
+  expect(add2Nomials([0], [1])).toEqual([1])
+  expect(add2Nomials([0, 0, 3], [1, -1, 2])).toEqual([1, -1, 5])
+  expect(add2Nomials([3, 2, 1], [2, 1])).toEqual([5, 3, 1])
+  expect(add2Nomials([3, 2, 1], [])).toEqual([3, 2, 1])
 })
 
 it('[PolySpace] [utils] [diffNomials / isSameNomials]', () => {

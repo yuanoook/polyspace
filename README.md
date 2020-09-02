@@ -1,6 +1,7 @@
-# Poly numbers network
+# Polyspace
 
-## 0 Everything is already set.
+
+## Everything is already set.
 
 Motion in lower dimensional space,
 

@@ -1,7 +1,7 @@
 {
-  "name": "thruple",
+  "name": "polyspace",
   "version": "1.0.0",
-  "description": "## Demo https://yuanoook.github.io/thruple",
+  "description": "## Demo https://yuanoook.github.io/polyspace",
   "main": "index.js",
   "scripts": {
     "test": "jest",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yuanoook/thruple.git"
+    "url": "git+https://github.com/yuanoook/polyspace.git"
   },
   "author": "Rango Yuan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/yuanoook/thruple/issues"
+    "url": "https://github.com/yuanoook/polyspace/issues"
   },
-  "homepage": "https://github.com/yuanoook/thruple#readme",
+  "homepage": "https://github.com/yuanoook/polyspace#readme",
   "devDependencies": {
     "jest": "^26.0.1"
   },

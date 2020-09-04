@@ -11,6 +11,7 @@ class Atom {
   static PRECISION = 6
   static LEFT_INFINITY = -Infinity
   static RIGHT_INFINITY = Infinity
+  // Add config boundary :D
   static LEFT_SAFE_INTEGER = Number.MIN_SAFE_INTEGER
   static RIGHT_SAFE_INTEGER = Number.MAX_SAFE_INTEGER
   static DISTANCE_RATIO_HALF = 0.5

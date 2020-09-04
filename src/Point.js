@@ -14,6 +14,7 @@ const {
 
 class Point {
   static PRECISION = 6
+  // TODO: ADD boundary & base unit config
   constructor (nomials = [], config = {}) {
     this.atoms = nomials.map(value => this.makeAtom(value))
     Object.assign(this, config)

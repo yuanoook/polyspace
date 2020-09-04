@@ -7,7 +7,7 @@ const {
   allTrekkingError,
   totalTrekkingError,
   trekkingError
-} = require('../Trekker')
+} = require('../src/Trekker')
 const trekkingLog = require('./data.-2+3x')
 
 it('Trekker.js [sumScalar]', async () => {

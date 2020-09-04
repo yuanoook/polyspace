@@ -1,4 +1,4 @@
-const { Point, Origin } = require('../index')
+const { Point, Origin } = require('../src/index')
 
 it('[PolySpace] [Origin]', () => {
   const origin = new Origin()

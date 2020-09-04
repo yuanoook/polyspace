@@ -1,9 +1,9 @@
 const {
   parseTrekkingLog,
   trekkingErrorTranslation
-} = require('../Trekker')
-const { printFunc } = require('../utils')
-const Space = require('../Space')
+} = require('../src/Trekker')
+const { printFunc } = require('../src/utils')
+const Space = require('../src/Space')
 const trekkingLog = require('./data.-2+3x')
 const log = parseTrekkingLog(trekkingLog).map(item => [item[0], item[1]])
 

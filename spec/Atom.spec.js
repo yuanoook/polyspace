@@ -1,4 +1,4 @@
-const Atom = require('../Atom')
+const Atom = require('../src/Atom')
 
 it('[PolySpace] [Atom] [Basics]', () => {
   const atom = new Atom()

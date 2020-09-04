@@ -4,7 +4,6 @@ const {
   polyNumbersTranslation,
   polyNumbersFormatter,
   parsePolyNumbersFormula,
-  genFileTimePostfix,
   getPrintFunc
 } = require('../src/utils')
 const parabolicAntennaCurveData = require('./data.delon')
@@ -44,11 +43,11 @@ it('[PolySpace] [Space] [Basics]', async () => {
     expectations: [1, 4],
     printPrecision: 4,
     // showCheckedPoints: true,
-    // showVisitedPoints: true,
+    showVisitedPoints: true,
     logSampleAmount: 10000000000,
     timeBudget: 10,
     maxDimensions: 2,
-    // printFunc
+    printFunc
   })
 
 //   await examPolyNumbers({
@@ -83,7 +82,6 @@ async function examPolyNumbers ({
   startFormula = '',
   showVisitedPoints = false,
   showCheckedPoints = false,
-  showMatlabScatter3 = false,
   logSampleAmount = 100,
   printFunc
 }) {
@@ -97,7 +95,6 @@ async function examPolyNumbers ({
     solutionFormatter: polyNumbersFormatter,
     showVisitedPoints,
     showCheckedPoints,
-    showMatlabScatter3,
     logSampleAmount,
     printFunc
   })

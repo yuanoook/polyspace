@@ -27,7 +27,6 @@ async function examLogTrekking ({
   countBudget = Infinity,
   showVisitedPoints = false,
   showCheckedPoints = false,
-  showMatlabScatter3 = false,
   logSampleAmount = 100,
   printFunc
 }) {
@@ -43,7 +42,6 @@ async function examLogTrekking ({
     precision: printPrecision,
     showVisitedPoints,
     showCheckedPoints,
-    showMatlabScatter3,
     logSampleAmount,
     printFunc
   })

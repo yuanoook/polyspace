@@ -5,7 +5,7 @@ const {
   sleep,
   randomSubList
 } = require('./utils')
-const { scatter3 } = require('./printMatlab')
+const SpacePrint = require('./Space.print')
 
 class Space {
   static PRECISION = 6
@@ -40,104 +40,6 @@ class Space {
 
   gotPerfectSolution () {
     return isCloseTo(this.minDistance, 0, Space.PRECISION)
-  }
-
-  printMinNeighbors () {
-    const minNeighborsNomials = this.minDistancePoint.printNeighbors(false)
-    return JSON.stringify(minNeighborsNomials, null, 2)
-  }
-
-  regularSample (log, amount = 100) {
-    const logLength = log.length
-    const samplingPeriod = Math.floor(logLength / amount)
-    return log
-      .filter((_, index) => !(index % samplingPeriod))
-      .map(point => point.extendDimension(this.dimension))
-  }
-
-  randomSample (log, amount = 100) {
-    return randomSubList(log, amount)
-      .map(point => point.extendDimension(this.dimension))
-  }
-
-  sampleLog (log, amount) {
-    return this.regularSample(log, amount)
-  }
-
-  printPointsLog (log, amount) {
-    return this.sampleLog(log, amount)
-      .map(point => [...point.getNomials(), point.distance].join('\t'))
-      .join('\n')
-  }
-
-  printScatter3 (log, amount) {
-    const points = this.sampleLog(log, amount)
-    const [x, y, z] = [[], [], []]
-    for (let point of points) {
-      const nomials = point.getNomials()
-      x.push(nomials[0])
-      y.push(nomials[1])
-      z.push(point.distance)
-    }
-    return scatter3(x, y, z)
-  }
-
-  printVisitedPoints (logSampleAmount) {
-    return this.printPointsLog(this.visitedPoints, logSampleAmount)
-  }
-
-  printCheckedPoints (logSampleAmount) {
-    return this.printPointsLog(this.checkedPoints, logSampleAmount)
-  }
-
-  printVisitedPointsScatter3 (logSampleAmount) {
-    return this.printScatter3(this.visitedPoints, logSampleAmount)
-  }
-
-  printCheckedPointsScatter3 (logSampleAmount) {
-    return this.printScatter3(this.checkedPoints, logSampleAmount)
-  }
-
-  async printSolution ({
-    precision = Space.PRECISION,
-    solutionFormatter = x => x,
-    showMinNeighbors = false,
-    showVisitedPoints = false,
-    showCheckedPoints = false,
-    showMatlabScatter3 = false,
-    logSampleAmount = 100,
-    printFunc = console.log.bind(console)
-  } = {}) {
-    const thePoint = this.minDistancePoint
-    const solutionNomials = thePoint.getTrimmedNomials(precision)
-    const solution = solutionFormatter(solutionNomials)
-    const successTrialRate = (100 * this.stepCount / this.checkCount).toFixed(2)
-    const timeStepSpeed = (this.stepCount / this.lastSearchTimeUsed).toFixed(4)
-    const matlabScatter3 = showMatlabScatter3 ? `\n${
-      showVisitedPoints ? 'Visited Points\n' + this.printVisitedPointsScatter3(logSampleAmount) : ''
-    }\n\n${
-      showCheckedPoints ? 'Checked Points\n' + this.printCheckedPointsScatter3(logSampleAmount) : ''
-    }` : ''
-
-    await printFunc(`Find${
-      this.gotPerfectSolution() ? ' perfect' : '' } curve fitting: ${
-      solution} \n  in ${
-      this.lastSearchTimeUsed } ms in ${
-      this.stepCount } steps \n  with speed ${
-      timeStepSpeed} steps/ms \n  tried ${
-      this.checkCount } times in ${
-      this.dimension } dimensions \n  with success trial rate ${
-      successTrialRate}% \n  got min distance ${
-      this.minDistance } \n \nVisualize it - https://chart-studio.plotly.com/create/ ${
-      showMinNeighbors ? this.printMinNeighbors() : ''} \n${
-      showVisitedPoints
-        ? '\nVisited Points: \n' + this.printVisitedPoints(logSampleAmount)
-        : ''} \n${
-      showCheckedPoints
-        ? '\nChecked Points: \n' + this.printCheckedPoints(logSampleAmount)
-        : ''} \n${
-      matlabScatter3
-    }`)
   }
 
   check (point) {
@@ -270,5 +172,9 @@ class Space {
     return this.minDistancePoint
   }
 }
+
+Object.assign(Space.prototype, {
+  ...SpacePrint
+})
 
 module.exports = Space

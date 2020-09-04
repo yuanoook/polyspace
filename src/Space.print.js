@@ -1,9 +1,9 @@
 const {
   randomSubList
 } = require('./utils')
+const SpaceConst = require('./Space.Const')
 
 module.exports = {
-
   printMinNeighbors () {
     const minNeighborsNomials = this.minDistancePoint.printNeighbors(false)
     return JSON.stringify(minNeighborsNomials, null, 2)
@@ -41,7 +41,7 @@ module.exports = {
   },
 
   async printSolution ({
-    precision = Space.PRECISION,
+    precision = SpaceConst.PRECISION,
     solutionFormatter = x => x,
     showMinNeighbors = false,
     showVisitedPoints = false,

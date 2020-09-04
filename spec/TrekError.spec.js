@@ -2,10 +2,13 @@ const {
   parseTrekkingLog,
   trekkingErrorTranslation
 } = require('../src/Trekker')
-const { printFunc } = require('../src/utils')
+const {
+  getPrintFunc
+} = require('../src/utils')
 const Space = require('../src/Space')
 const trekkingLog = require('./data.-2+3x')
 const log = parseTrekkingLog(trekkingLog).map(item => [item[0], item[1]])
+const printFunc = getPrintFunc('trek-error')
 
 it('Trekker.js [trekkingErrorTranslation]', async () => {
   await examLogTrekking({

@@ -4,10 +4,11 @@ const {
   polyNumbersTranslation,
   polyNumbersFormatter,
   parsePolyNumbersFormula,
-  genFileTimePostfix
+  genFileTimePostfix,
+  getPrintFunc
 } = require('../src/utils')
 const parabolicAntennaCurveData = require('./data.delon')
-const printFunc = text => require('fs').writeFileSync(`./log-${genFileTimePostfix()}.txt`, text)
+const printFunc = getPrintFunc('space')
 
 it('[PolySpace] [Space] [Basics]', async () => {
 // Complex 2nd exponential example provided by Zoe

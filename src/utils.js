@@ -247,10 +247,12 @@ const unlinkFiles = regex => {
     .map(f => fs.unlinkSync(dir + f))
 }
 
-const printFunc = text => {
-  unlinkFiles(/^log\-/)
-  require('fs').writeFileSync(`./log-${genFileTimePostfix()}.txt`, text)
+const printFunc = (text, name = '') => {
+  unlinkFiles(new RegExp(`^log-${name}`))
+  require('fs').writeFileSync(`./log-${name}-${genFileTimePostfix()}.txt`, text)
 }
+
+const getPrintFunc = name => text => printFunc(text, name)
 
 module.exports = {
   randomDistanceRatio,
@@ -277,5 +279,6 @@ module.exports = {
   randomShuffle,
   randomSubList,
   genFileTimePostfix,
-  printFunc
+  printFunc,
+  getPrintFunc
 }

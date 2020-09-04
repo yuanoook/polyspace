@@ -223,7 +223,7 @@ class Space {
   // exploreBiNeighborsMatrix performs 8% faster than exploreBiNeighbors
   // by index preferring & quick breaking
   // Quick breaking contributes the most performance improvement
-  // Index preferring add lightly advantages
+  // Index preferring adds a slight advantage
   exploreBiNeighborsMatrix(maxDimensions) {
     const exploredSome = this.checkBiNeighborsMatrix()
     if (!exploredSome && (this.dimension < maxDimensions)) {
@@ -251,7 +251,6 @@ class Space {
       if (timeUsed > timePlaned) break
       if (this.gotPerfectSolution()) break
       if (isCloseToPeriod(timeUsed, 100)) await sleep(0)
-      // if (!this.exploreBiNeighbors(maxDimensions).length) break
       if (!this.exploreBiNeighborsMatrix(maxDimensions)) break
       count ++
     }

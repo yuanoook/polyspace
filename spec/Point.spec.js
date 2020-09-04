@@ -83,7 +83,7 @@ it('[PolySpace] [Point] [findBiNeighbors]', () => {
     biNeighbors = point.findBiNeighbors()
     count ++
   }
-  expect(count / Atom.SCALE_DEEPTH_LOG2_REAL).toBeCloseTo(1, 1)
+  expect(count / Atom.SCALE_DEPTH_LOG2_REAL).toBeCloseTo(1, 1)
 })
 
 it('[PolySpace] [Point] [findRandomNeighborAt]', () => {

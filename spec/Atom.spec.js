@@ -94,7 +94,7 @@ describe('[PolySpace] [Atom] [findBiNeighbor]', () => {
       biNeighbors = atom.findBiNeighbors()
       count ++
     }
-    expect(count / Atom.SCALE_DEEPTH_LOG2).toBeCloseTo(1)
+    expect(count / Atom.SCALE_DEPTH_LOG2).toBeCloseTo(1)
     expect(atom.isCloseTo(atom.left)).toBe(true)
     expect(atom.isCloseTo(atom.right)).toBe(true)
   })
@@ -107,7 +107,7 @@ describe('[PolySpace] [Atom] [findBiNeighbor]', () => {
       biNeighbors = atom.findBiNeighbors()
       count ++
     }
-    expect(count / Atom.SCALE_DEEPTH_LOG2_REAL).toBeCloseTo(1, 1)
+    expect(count / Atom.SCALE_DEPTH_LOG2_REAL).toBeCloseTo(1, 1)
     expect(atom.isCloseTo(atom.left)).toBe(true)
     expect(atom.isCloseTo(atom.right)).toBe(true)
   })

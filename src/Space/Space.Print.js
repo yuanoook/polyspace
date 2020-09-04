@@ -1,6 +1,6 @@
 const {
   randomSubList
-} = require('./utils')
+} = require('../utils')
 const SpaceConst = require('./Space.Const')
 
 module.exports = {

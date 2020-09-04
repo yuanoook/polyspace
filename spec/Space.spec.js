@@ -6,7 +6,7 @@ const {
   parsePolyNumbersFormula,
   getPrintFunc
 } = require('../src/utils')
-const parabolicAntennaCurveData = require('./data.delon')
+const parabolicAntennaCurveData = require('./data/data.delon')
 const printFunc = getPrintFunc('space')
 
 it('[PolySpace] [Space] [Basics]', async () => {

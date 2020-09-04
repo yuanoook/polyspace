@@ -6,7 +6,7 @@ const {
   getPrintFunc
 } = require('../src/utils')
 const Space = require('../src/Space')
-const trekkingLog = require('./data.-2+3x')
+const trekkingLog = require('./data/data.-2+3x')
 const log = parseTrekkingLog(trekkingLog).map(item => [item[0], item[1]])
 const printFunc = getPrintFunc('trek-error')
 

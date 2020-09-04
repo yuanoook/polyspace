@@ -8,7 +8,7 @@ const {
   totalTrekkingError,
   trekkingError
 } = require('../src/Trekker')
-const trekkingLog = require('./data.-2+3x')
+const trekkingLog = require('./data/data.-2+3x')
 
 it('Trekker.js [sumScalar]', async () => {
   expect(sumScalar([1,2,3])).toBe(6)

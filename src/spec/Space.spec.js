@@ -1,11 +1,11 @@
-const Point = require('./Point')
-const Space = require('./Space')
+const Point = require('../Point')
+const Space = require('../Space')
 const {
   polyNumbersTranslation,
   polyNumbersFormatter,
   parsePolyNumbersFormula,
   genFileTimePostfix
-} = require('./utils')
+} = require('../utils')
 const parabolicAntennaCurveData = require('./data.delon')
 const printFunc = text => require('fs').writeFileSync(`./log-${genFileTimePostfix()}.txt`, text)
 

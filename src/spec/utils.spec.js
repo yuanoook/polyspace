@@ -14,7 +14,7 @@ const {
   calculatePolyNumbers,
   polyNumbersTranslation,
   parsePolyNumbersFormula
-} = require('./utils')
+} = require('../utils')
 
 it('[PolySpace] [utils] [randomDistanceRatio]', () => {
   expect(randomDistanceRatio()).not.toBe(0)

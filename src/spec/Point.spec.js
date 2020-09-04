@@ -1,5 +1,5 @@
-const Point = require('./Point')
-const Atom = require('./Atom')
+const Point = require('../Point')
+const Atom = require('../Atom')
 
 it('[PolySpace] [Point] [Basics]', () => {
   const point = new Point([1, 2, 3, 4])

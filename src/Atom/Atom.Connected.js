@@ -14,7 +14,7 @@ module.exports = {
     while (atom) {
       const leftValue = atom.getLeftNeighborValue()
       if (leftValue === newValue) return atom.left
-      if (leftValue < newValue) return atom.connectLeftNeighbor(new Atom(newValue))
+      if (leftValue < newValue) return atom.connectLeftNeighbor(this.newAtom(newValue))
       atom = atom.left
     }
     throw new Error(`findLeftConnected ${distance}`)
@@ -28,7 +28,7 @@ module.exports = {
     while (atom) {
       const rightValue = atom.getRightNeighborValue()
       if (rightValue === newValue) return atom.right
-      if (rightValue > newValue) return atom.connectRightNeighbor(new Atom(newValue))
+      if (rightValue > newValue) return atom.connectRightNeighbor(this.newAtom(newValue))
       atom = atom.right
     }
     throw new Error(`findRightConnected ${distance}`)

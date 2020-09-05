@@ -2,7 +2,7 @@ const {
   randomDistanceRatio,
   validateDistanceRatio,
   repeat
-} = require('./utils')
+} = require('../utils')
 const AtomConst = require('./Atom.Const')
 
 module.exports = {
@@ -10,32 +10,8 @@ module.exports = {
     return this.left ? this.left.getValue() : AtomConst.LEFT_INFINITY
   },
 
-  getLeftSafeValue () {
-    const leftNeighborValue = this.getLeftNeighborValue()
-    return leftNeighborValue <= AtomConst.LEFT_SAFE_INTEGER
-      ? AtomConst.LEFT_SAFE_INTEGER
-      : leftNeighborValue
-  },
-
-  getLeftHalfwayValue (distanceRatio = AtomConst.DISTANCE_RATIO_HALF) {
-    return +(this.getLeftSafeValue() * distanceRatio +
-      this.getValue() * (1 - distanceRatio)) // .toFixed(2)
-  },
-
   getRightNeighborValue () {
     return this.right ? this.right.getValue() : AtomConst.RIGHT_INFINITY
-  },
-
-  getRightSafeValue () {
-    const rightNeighborValue = this.getRightNeighborValue()
-    return rightNeighborValue >= AtomConst.RIGHT_SAFE_INTEGER
-      ? AtomConst.RIGHT_SAFE_INTEGER
-      : rightNeighborValue
-  },
-
-  getRightHalfwayValue (distanceRatio = AtomConst.DISTANCE_RATIO_HALF) {
-    return +(this.getRightSafeValue() * distanceRatio +
-      this.getValue() * (1 - distanceRatio)) // .toFixed(2)
   },
 
   findLeftNeighbor (distanceRatio = AtomConst.DISTANCE_RATIO_HALF) {
@@ -107,12 +83,6 @@ module.exports = {
   // TODO: test this
   newNeighborCollisionCheck (atom) {
     if (this.value === atom.value) throw AtomConst.NEIGHBOR_COLLISION_ERROR
-  },
-
-  // TODO: test this
-  isTrapped (atom, precision = AtomConst.PRECISION) {
-    return this.isCloseTo({ value: this.getLeftHalfwayValue() }, precision) &&
-      this.isCloseTo({ value: this.getRightHalfwayValue() }, precision)
   },
 
   connectLeftNeighbor (newNeighbor) {

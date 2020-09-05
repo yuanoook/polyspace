@@ -1,27 +1,27 @@
 const {
-  randomDistanceRatio,
-  validateDistanceRatio,
   randomNaturalNumber,
   randomSafeNumber,
   repeat,
   isCloseTo
 } = require('./utils')
+const AtomConst = require('./Atom.Const')
+const AtomNeighbor = require('./Atom.Neighbor')
 
 class Atom {
-  static PRECISION = 6
-  static LEFT_INFINITY = -Infinity
-  static RIGHT_INFINITY = Infinity
+  static PRECISION = AtomConst.PRECISION
+  static LEFT_INFINITY = AtomConst.LEFT_INFINITY
+  static RIGHT_INFINITY = AtomConst.RIGHT_INFINITY
   // Add config boundary :D
-  static LEFT_SAFE_INTEGER = Number.MIN_SAFE_INTEGER
-  static RIGHT_SAFE_INTEGER = Number.MAX_SAFE_INTEGER
-  static DISTANCE_RATIO_HALF = 0.5
-  static DISTANCE_STEP_ONE = 1
-  static SCALE_DEPTH_LOG2_NATURAL = Math.log2(Atom.RIGHT_SAFE_INTEGER)
-  static SCALE_DEPTH_LOG2_REAL = 2 * Atom.SCALE_DEPTH_LOG2_NATURAL
-  static SCALE_DEPTH_LOG2_MIN_VALUE = - Math.log2(Number.MIN_VALUE)
-  static SCALE_DEPTH_LOG2 = Atom.SCALE_DEPTH_LOG2_NATURAL + Atom.SCALE_DEPTH_LOG2_MIN_VALUE
+  static LEFT_SAFE_INTEGER = AtomConst.LEFT_SAFE_INTEGER
+  static RIGHT_SAFE_INTEGER = AtomConst.RIGHT_SAFE_INTEGER
+  static DISTANCE_RATIO_HALF = AtomConst.DISTANCE_RATIO_HALF
+  static DISTANCE_STEP_ONE = AtomConst.DISTANCE_STEP_ONE
+  static SCALE_DEPTH_LOG2_NATURAL = AtomConst.SCALE_DEPTH_LOG2_NATURAL
+  static SCALE_DEPTH_LOG2_REAL = AtomConst.SCALE_DEPTH_LOG2_REAL
+  static SCALE_DEPTH_LOG2_MIN_VALUE = AtomConst.SCALE_DEPTH_LOG2_MIN_VALUE
+  static SCALE_DEPTH_LOG2 = AtomConst.SCALE_DEPTH_LOG2
 
-  static NEIGHBOR_COLLISION_ERROR = new Error(`Neighbor collision!`)
+  static NEIGHBOR_COLLISION_ERROR = AtomConst.NEIGHBOR_COLLISION_ERROR
 
   constructor (value = 0, config = {}) {
     this.validateValue(value)
@@ -29,6 +29,10 @@ class Atom {
     this.left = null
     this.right = null
     Object.assign(this, config)
+  }
+
+  newAtom (...args) {
+    return new Atom(...args)
   }
 
   validateValue (value) {
@@ -46,131 +50,9 @@ class Atom {
     return this.value
   }
 
-  getLeftNeighborValue () {
-    return this.left ? this.left.getValue() : Atom.LEFT_INFINITY
-  }
-
-  getLeftSafeValue () {
-    const leftNeighborValue = this.getLeftNeighborValue()
-    return leftNeighborValue <= Atom.LEFT_SAFE_INTEGER
-      ? Atom.LEFT_SAFE_INTEGER
-      : leftNeighborValue
-  }
-
-  getLeftHalfwayValue (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    return +(this.getLeftSafeValue() * distanceRatio +
-      this.getValue() * (1 - distanceRatio)) // .toFixed(2)
-  }
-
-  getRightNeighborValue () {
-    return this.right ? this.right.getValue() : Atom.RIGHT_INFINITY
-  }
-
-  getRightSafeValue () {
-    const rightNeighborValue = this.getRightNeighborValue()
-    return rightNeighborValue >= Atom.RIGHT_SAFE_INTEGER
-      ? Atom.RIGHT_SAFE_INTEGER
-      : rightNeighborValue
-  }
-
-  getRightHalfwayValue (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    return +(this.getRightSafeValue() * distanceRatio +
-      this.getValue() * (1 - distanceRatio)) // .toFixed(2)
-  }
-
-  findLeftNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    validateDistanceRatio(distanceRatio, 1)
-    const leftHalfwayValue = this.getLeftHalfwayValue(distanceRatio)
-    return this.connectLeftNeighbor(new Atom(leftHalfwayValue))
-  }
-
-  findRightNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    validateDistanceRatio(distanceRatio, 1)
-    const rightHalfwayValue = this.getRightHalfwayValue(distanceRatio)
-    return this.connectRightNeighbor(new Atom(rightHalfwayValue))
-  }
-
-  findBiNeighbors () {
-    const neighbors = []
-
-    const leftValue = this.getLeftHalfwayValue()
-    if (leftValue < this.value &&
-      (!this.left || leftValue !== this.left.value)
-    ) neighbors.push(
-      this.connectLeftNeighbor(new Atom(leftValue))
-    )
-    const rightValue = this.getRightHalfwayValue()
-    if (rightValue > this.value &&
-      (!this.right || rightValue !== this.right.value)
-    ) neighbors.push(
-      this.connectRightNeighbor(new Atom(rightValue))
-    )
-
-    return neighbors
-  }
-
-  findNeighbor (distanceRatio = Atom.DISTANCE_RATIO_HALF) {
-    validateDistanceRatio(distanceRatio, 0)
-    return distanceRatio > 0
-      ? this.findRightNeighbor(distanceRatio)
-      : this.findLeftNeighbor(Math.abs(distanceRatio))
-  }
-
-  findRandomNeighbor () {
-    return this.findNeighbor(randomDistanceRatio())
-  }
-
-  findRandomNeighbors (count = 1) {
-    return repeat(() => this.findRandomNeighbor(), count)
-  }
-
-  isLeftNeighbor (atom) {
-    return this.left === atom && atom.right === this
-  }
-
-  isRightNeighbor (atom) {
-    return this.right === atom && atom.left === this
-  }
-
-  isNeighbor (atom) {
-    return this.isLeftNeighbor(atom) || this.isRightNeighbor(atom)
-  }
-
-  gotoRandomNeighbor () {
-    if (this.left === null && this.right === null)
-      throw new Error(`gotoRandomNeighbor: no neighbor!`)
-    if (this.left === null) return this.right
-    if (this.right === null) return this.left
-    return Math.random() < 0.5 ? this.left : this.right
-  }
-
-  // TODO: test this
-  newNeighborCollisionCheck (atom) {
-    if (this.value === atom.value) throw Atom.NEIGHBOR_COLLISION_ERROR
-  }
-
   // TODO: add test
   isCloseTo ({ value }, precision = Atom.PRECISION) {
     return isCloseTo(this.value, value, precision)
-  }
-
-  // TODO: test this
-  isTrapped (atom, precision = Atom.PRECISION) {
-    return this.isCloseTo({ value: this.getLeftHalfwayValue() }, precision) &&
-      this.isCloseTo({ value: this.getRightHalfwayValue() }, precision)
-  }
-
-  connectLeftNeighbor (newNeighbor) {
-    this.newNeighborCollisionCheck(newNeighbor)
-    const exLeftNeighbor = this.left
-
-    this.left = newNeighbor
-    newNeighbor.right = this
-
-    newNeighbor.left = exLeftNeighbor
-    if (exLeftNeighbor) exLeftNeighbor.right = newNeighbor
-
-    return newNeighbor
   }
 
   connectRightNeighbor (newNeighbor) {
@@ -344,5 +226,9 @@ class Atom {
     return this.getChainAtoms().map(atom => atom.getValue())
   }
 }
+
+Object.assign(Atom.prototype, {
+  ...AtomNeighbor
+})
 
 module.exports = Atom

@@ -34,6 +34,7 @@ class Atom {
   newAtom (value, config) {
     return new Atom(value, {
       // TODO: finish this :D
+      unit: this.unit,
       limits: this.limits,
       ...config
     })

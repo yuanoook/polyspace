@@ -8,11 +8,10 @@ module.exports = {
   take (inputs, expectations) {
     this.inputs = this.inputs.concat(inputs)
     this.expectations = this.expectations.concat(expectations)
-    this.setup()
     return this
   },
 
-  setup (origin = [0]) {
+  setup (origin = [0], config) {
     this.minDistance = Infinity
     this.minDistancePoint = null
     this.dimension = origin.length
@@ -22,7 +21,7 @@ module.exports = {
     this.visitedPoints = []
     this.checkedPoints = []
     this.biNeighborMatrixCheckIndex = 0
-    this.check(new Point(origin))
+    this.check(new Point(origin, config))
   },
 
   gotPerfectSolution () {

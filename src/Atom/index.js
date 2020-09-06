@@ -31,8 +31,12 @@ class Atom {
     Object.assign(this, config)
   }
 
-  newAtom (...args) {
-    return new Atom(...args)
+  newAtom (value, config) {
+    return new Atom(value, {
+      // TODO: finish this :D
+      limits: this.limits,
+      ...config
+    })
   }
 
   validateValue (value) {

@@ -28,10 +28,8 @@ class Atom {
   constructor (value = 0, {
     parent,
     unit = + `1e-${AtomConst.PRECISION}`,
-    limits = {
-      left: AtomConst.LEFT_SAFE_INTEGER,
-      right: AtomConst.RIGHT_SAFE_INTEGER
-    }
+    leftLimit = AtomConst.LEFT_SAFE_INTEGER,
+    rightLimit = AtomConst.RIGHT_SAFE_INTEGER
   } = {}) {
     this.left = null
     this.right = null
@@ -39,7 +37,8 @@ class Atom {
 
     validatePositive(unit)
     this.unit = unit
-    this.limits = limits
+    this.leftLimit = leftLimit
+    this.rightLimit = rightLimit
 
     this.validateValue(value)
     this.value = value
@@ -48,13 +47,14 @@ class Atom {
   newAtom (value, config) {
     return new Atom(value, {
       unit: this.unit,
-      limits: this.limits,
+      leftLimit: this.leftLimit,
+      rightLimit: this.rightLimit,
       ...config
     })
   }
 
   validateValue (value) {
-    return validateLimits(value, this.limits)
+    return validateLimits(value, this.leftLimit, this.rightLimit)
   }
 
   getValue () {
@@ -63,8 +63,8 @@ class Atom {
 
   getLeftSafeValue () {
     const leftNeighborValue = this.getLeftNeighborValue()
-    return leftNeighborValue <= this.limits.left
-      ? this.limits.left
+    return leftNeighborValue <= this.leftLimit
+      ? this.leftLimit
       : leftNeighborValue
   }
 
@@ -75,8 +75,8 @@ class Atom {
 
   getRightSafeValue () {
     const rightNeighborValue = this.getRightNeighborValue()
-    return rightNeighborValue >= this.limits.right
-      ? this.limits.right
+    return rightNeighborValue >= this.rightLimit
+      ? this.rightLimit
       : rightNeighborValue
   }
 

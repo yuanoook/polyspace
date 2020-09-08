@@ -52,27 +52,20 @@ it('[PolySpace] [Atom] [Basics]', () => {
 })
 
 it('[PolySpace] [Atom] [unit & limits]', () => {
-  expect(new Atom().unit).toBe(+ `1e-${AtomConst.PRECISION}`)
-  expect(new Atom().limits).toEqual({
-    left: AtomConst.LEFT_SAFE_INTEGER,
-    right: AtomConst.RIGHT_SAFE_INTEGER
-  })
-  expect(new Atom(0, {unit: 1}).unit).toBe(1)
-  expect(new Atom(0, {limits: {
-    left: -10,
-    right: 10
-  }}).limits).toEqual({
-    left: -10,
-    right: 10
-  })
-  expect(new Atom(0, {limits: {
-    left: -10,
-    right: 10
-  }}).unit).toBe(+ `1e-${AtomConst.PRECISION}`)
-  expect(new Atom(0, {unit: 1}).limits).toEqual({
-    left: AtomConst.LEFT_SAFE_INTEGER,
-    right: AtomConst.RIGHT_SAFE_INTEGER
-  })
+  let atom = new Atom()
+  expect(atom.unit).toBe(+ `1e-${AtomConst.PRECISION}`)
+  expect(atom.leftLimit).toBe(AtomConst.LEFT_SAFE_INTEGER)
+  expect(atom.rightLimit).toBe(AtomConst.RIGHT_SAFE_INTEGER)
+
+  let atomWithUnit1 = new Atom(0, {unit: 1})
+  expect(atomWithUnit1.unit).toBe(1)
+
+  atom = new Atom(0, {leftLimit: -10, rightLimit: 10})
+  expect(atom.leftLimit).toBe(-10)
+  expect(atom.rightLimit).toBe(10)
+
+  expect(atomWithUnit1.leftLimit).toBe(AtomConst.LEFT_SAFE_INTEGER)
+  expect(atomWithUnit1.rightLimit).toBe(AtomConst.RIGHT_SAFE_INTEGER)
 })
 
 it('[PolySpace] [Atom] [getChainAtoms]', () => {

@@ -1,5 +1,7 @@
 const {
-  isCloseTo
+  isCloseTo,
+  validatePositive,
+  validateLimits
 } = require('../utils')
 const AtomConst = require('./Atom.Const')
 const AtomNeighbor = require('./Atom.Neighbor')
@@ -23,17 +25,28 @@ class Atom {
 
   static NEIGHBOR_COLLISION_ERROR = AtomConst.NEIGHBOR_COLLISION_ERROR
 
-  constructor (value = 0, config = {}) {
-    this.validateValue(value)
-    this.value = value
+  constructor (value = 0, {
+    parent,
+    unit = + `1e-${AtomConst.PRECISION}`,
+    limits = {
+      left: AtomConst.LEFT_SAFE_INTEGER,
+      right: AtomConst.RIGHT_SAFE_INTEGER
+    }
+  } = {}) {
     this.left = null
     this.right = null
-    Object.assign(this, config)
+    this.parent = parent
+
+    validatePositive(unit)
+    this.unit = unit
+    this.limits = limits
+
+    this.validateValue(value)
+    this.value = value
   }
 
   newAtom (value, config) {
     return new Atom(value, {
-      // TODO: finish this :D
       unit: this.unit,
       limits: this.limits,
       ...config
@@ -41,14 +54,7 @@ class Atom {
   }
 
   validateValue (value) {
-    if (value < Atom.LEFT_SAFE_INTEGER ||
-      value > Atom.RIGHT_SAFE_INTEGER
-    ) throw new Error(`Atom.LEFT_SAFE_INTEGER(${
-      Atom.LEFT_SAFE_INTEGER
-    }) < value < Atom.RIGHT_SAFE_INTEGER(${
-      Atom.RIGHT_SAFE_INTEGER
-    }). We get ${value}`)
-    return true
+    return validateLimits(value, this.limits)
   }
 
   getValue () {
@@ -57,8 +63,8 @@ class Atom {
 
   getLeftSafeValue () {
     const leftNeighborValue = this.getLeftNeighborValue()
-    return leftNeighborValue <= AtomConst.LEFT_SAFE_INTEGER
-      ? AtomConst.LEFT_SAFE_INTEGER
+    return leftNeighborValue <= this.limits.left
+      ? this.limits.left
       : leftNeighborValue
   }
 
@@ -69,8 +75,8 @@ class Atom {
 
   getRightSafeValue () {
     const rightNeighborValue = this.getRightNeighborValue()
-    return rightNeighborValue >= AtomConst.RIGHT_SAFE_INTEGER
-      ? AtomConst.RIGHT_SAFE_INTEGER
+    return rightNeighborValue >= this.limits.right
+      ? this.limits.right
       : rightNeighborValue
   }
 

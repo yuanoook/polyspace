@@ -1,4 +1,5 @@
 const Atom = require('../src/Atom')
+const AtomConst = require('../src/Atom/Atom.Const')
 
 it('[PolySpace] [Atom] [Basics]', () => {
   const atom = new Atom()
@@ -48,6 +49,30 @@ it('[PolySpace] [Atom] [Basics]', () => {
 
   let configuredAtom = new Atom(0, {parent: ':D'})
   expect(configuredAtom.parent).toBe(':D')
+})
+
+it('[PolySpace] [Atom] [unit & limits]', () => {
+  expect(new Atom().unit).toBe(+ `1e-${AtomConst.PRECISION}`)
+  expect(new Atom().limits).toEqual({
+    left: AtomConst.LEFT_SAFE_INTEGER,
+    right: AtomConst.RIGHT_SAFE_INTEGER
+  })
+  expect(new Atom(0, {unit: 1}).unit).toBe(1)
+  expect(new Atom(0, {limits: {
+    left: -10,
+    right: 10
+  }}).limits).toEqual({
+    left: -10,
+    right: 10
+  })
+  expect(new Atom(0, {limits: {
+    left: -10,
+    right: 10
+  }}).unit).toBe(+ `1e-${AtomConst.PRECISION}`)
+  expect(new Atom(0, {unit: 1}).limits).toEqual({
+    left: AtomConst.LEFT_SAFE_INTEGER,
+    right: AtomConst.RIGHT_SAFE_INTEGER
+  })
 })
 
 it('[PolySpace] [Atom] [getChainAtoms]', () => {

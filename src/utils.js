@@ -30,6 +30,11 @@ function validatePositive (value) {
   if (value <= 0) throw new Error(`Must be positive - ${value}`)
 }
 
+function validateLimits (value, {left, right}) {
+  if (value < left || value > right) throw new Error(`${left} <= ${value} <= ${right}`)
+  return true
+}
+
 function validateDistanceRatio (distanceRatio, flag = 0) {
   if (distanceRatio === 0 ||
     distanceRatio <= -1 ||
@@ -262,6 +267,7 @@ module.exports = {
   randomSafeNumber,
   randomPositiveSafeNumber,
   validatePositive,
+  validateLimits,
   repeat,
   add2Nomials,
   diffNomials,

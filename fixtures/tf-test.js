@@ -39,7 +39,7 @@
     async function showExamples(data) {
         // Get a surface
         const surface = tfvis.visor().surface({
-            name: 'Thruple',
+            name: 'PolySpace',
             tab: 'Input Data'
         });
         const drawArea = surface.drawArea;

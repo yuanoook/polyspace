@@ -1,4 +1,5 @@
 const {
+  BASE_UNIT,
   randomDistanceRatio,
   randomPositiveDistanceRatio,
   validateDistanceRatio,
@@ -13,7 +14,11 @@ const {
   euclideanDistance,
   calculatePolyNumbers,
   polyNumbersTranslation,
-  parsePolyNumbersFormula
+  parsePolyNumbersFormula,
+  isCloseTo,
+  isCloseIn,
+  isCloseToPeriod,
+  sleep
 } = require('../src/utils')
 
 it('[PolySpace] [utils] [randomDistanceRatio]', () => {
@@ -154,4 +159,29 @@ it('[PolySpace] [utils] [parsePolyNumbersFormula]', () => {
   expect(parsePolyNumbersFormula('f(x) = -45.44 + 0.024x + 9.973508529750448e-7x²')).toEqual(
     [-45.44, 0.024, 9.973508529750448e-7]
   )
+})
+
+
+it('[PolySpace] [utils] [isCloseTo isCloseIn isCloseToPeriod]', () => {
+  expect(isCloseTo(1, 2)).toBe(false)
+  expect(isCloseTo(0.000001, 0.0000014)).toBe(true)
+  expect(isCloseTo(1, 1.4, 0)).toBe(true)
+  expect(isCloseTo(10, 14, -1)).toBe(true)
+  expect(isCloseTo(20, 14, -1)).toBe(false)
+
+  expect(isCloseIn(1, 2)).toBe(false)
+  expect(isCloseIn(0.000001, 0.0000014, BASE_UNIT)).toBe(true)
+  expect(isCloseIn(1, 1.4, 1)).toBe(true)
+  expect(isCloseIn(10, 14, 10)).toBe(true)
+  expect(isCloseIn(20, 14, 10)).toBe(false)
+
+  expect(isCloseToPeriod(100.000001, 100)).toBe(false)
+  expect(isCloseToPeriod(100.0000001, 100)).toBe(true)
+  expect(isCloseToPeriod(101, 100, 10)).toBe(true)
+})
+
+it('[PolySpace] [utils] [sleep]', async () => {
+  const startAt = new Date()
+  await sleep(1)
+  expect(new Date() - startAt).toBeGreaterThanOrEqual(1000)
 })

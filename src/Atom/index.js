@@ -91,7 +91,7 @@ class Atom {
   }
 
   // TODO: test this
-  isTrapped (atom, precision = AtomConst.PRECISION) {
+  isTrapped (precision = AtomConst.PRECISION) {
     return this.isCloseTo({ value: this.getLeftHalfwayValue() }, precision) &&
       this.isCloseTo({ value: this.getRightHalfwayValue() }, precision)
   }

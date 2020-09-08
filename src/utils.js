@@ -1,4 +1,5 @@
 const PRECISION = 6
+const BASE_UNIT = +`1e-${PRECISION}`
 
 function randomDistanceRatio (flag = 0) {
   let ratio
@@ -105,9 +106,17 @@ function isCloseTo (received, expected, precision = PRECISION) {
   return receivedDiff < expectedDiff
 }
 
+function isCloseIn (a, b, unit = BASE_UNIT) {
+  if (a === Infinity && b === Infinity) return true
+  if (a === -Infinity && b === -Infinity) return true
+  return Math.abs(a - b) < unit / 2
+}
+
 // TODO: add test
-function isCloseToPeriod (number, period, {precision = PRECISION, includeZero = false} = {}) {
-  return isCloseTo(number % period, includeZero ? 0 : period, precision)
+function isCloseToPeriod (number, period, unit = BASE_UNIT) {
+  const midPoint = period / 2
+  const midDistance = Math.abs(number % period - midPoint)
+  return isCloseIn(midDistance, midPoint, unit)
 }
 
 // TODO: this should be moved out from the file
@@ -222,9 +231,8 @@ function last (array) {
   return array[array.length - 1]
 }
 
-// TODO: add test
 async function sleep (second = 1) {
-  return Promise(resolve => setTimeout(resolve, second * 1000))
+  return new Promise(resolve => setTimeout(resolve, second * 1000))
 }
 
 // TODO: test this amazing beautiful code
@@ -260,6 +268,7 @@ const printFunc = (text, name = '') => {
 const getPrintFunc = name => text => printFunc(text, name)
 
 module.exports = {
+  BASE_UNIT,
   randomDistanceRatio,
   randomPositiveDistanceRatio,
   validateDistanceRatio,
@@ -274,8 +283,11 @@ module.exports = {
   isSameNomials,
   trimNomials,
   euclideanDistance,
+
+  isCloseIn,
   isCloseTo,
   isCloseToPeriod,
+
   calculatePolyNumbers,
   polyNumbersTranslation,
   polyNumbersFormatter,

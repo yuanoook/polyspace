@@ -1,5 +1,5 @@
 const {
-  isCloseTo,
+  isCloseIn,
   validatePositive,
   validateLimits
 } = require('../utils')
@@ -85,15 +85,13 @@ class Atom {
       this.getValue() * (1 - distanceRatio)) // .toFixed(2)
   }
 
-  // TODO: add test
-  isCloseTo ({ value }, precision = Atom.PRECISION) {
-    return isCloseTo(this.value, value, precision)
+  isCloseIn ({ value }, baseUnit = this.baseUnit) {
+    return isCloseIn(this.value, value, baseUnit)
   }
 
-  // TODO: test this
-  isTrapped (precision = AtomConst.PRECISION) {
-    return this.isCloseTo({ value: this.getLeftHalfwayValue() }, precision) &&
-      this.isCloseTo({ value: this.getRightHalfwayValue() }, precision)
+  isTrapped () {
+    return this.isCloseIn({ value: this.getLeftHalfwayValue() }) &&
+      this.isCloseIn({ value: this.getRightHalfwayValue() })
   }
 }
 

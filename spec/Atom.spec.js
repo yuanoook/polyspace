@@ -51,14 +51,14 @@ it('[PolySpace] [Atom] [Basics]', () => {
   expect(configuredAtom.parent).toBe(':D')
 })
 
-it('[PolySpace] [Atom] [unit & limits]', () => {
+it('[PolySpace] [Atom] [baseUnit & limits]', () => {
   let atom = new Atom()
-  expect(atom.unit).toBe(+ `1e-${AtomConst.PRECISION}`)
+  expect(atom.baseUnit).toBe(AtomConst.BASE_UNIT)
   expect(atom.leftLimit).toBe(AtomConst.LEFT_SAFE_INTEGER)
   expect(atom.rightLimit).toBe(AtomConst.RIGHT_SAFE_INTEGER)
 
-  let atomWithUnit1 = new Atom(0, {unit: 1})
-  expect(atomWithUnit1.unit).toBe(1)
+  let atomWithUnit1 = new Atom(0, {baseUnit: 1})
+  expect(atomWithUnit1.baseUnit).toBe(1)
 
   atom = new Atom(0, {leftLimit: -10, rightLimit: 10})
   expect(atom.leftLimit).toBe(-10)

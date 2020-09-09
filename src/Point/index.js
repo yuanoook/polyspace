@@ -7,7 +7,7 @@ const PointNetwork = require('./Point.Network')
 
 class Point {
   static PRECISION = PointConst.PRECISION
-  // TODO: ADD boundary & base unit config
+  // TODO: ADD boundary & base baseUnit config
   constructor (nomials = [], config = {}) {
     this.atoms = nomials.map(value => this.makeAtom(value))
     Object.assign(this, config)

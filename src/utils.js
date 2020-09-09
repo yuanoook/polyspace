@@ -106,17 +106,17 @@ function isCloseTo (received, expected, precision = PRECISION) {
   return receivedDiff < expectedDiff
 }
 
-function isCloseIn (a, b, unit = BASE_UNIT) {
+function isCloseIn (a, b, baseUnit = BASE_UNIT) {
   if (a === Infinity && b === Infinity) return true
   if (a === -Infinity && b === -Infinity) return true
-  return Math.abs(a - b) < unit / 2
+  return Math.abs(a - b) < baseUnit / 2
 }
 
 // TODO: add test
-function isCloseToPeriod (number, period, unit = BASE_UNIT) {
+function isCloseToPeriod (number, period, baseUnit = BASE_UNIT) {
   const midPoint = period / 2
   const midDistance = Math.abs(number % period - midPoint)
-  return isCloseIn(midDistance, midPoint, unit)
+  return isCloseIn(midDistance, midPoint, baseUnit)
 }
 
 // TODO: this should be moved out from the file

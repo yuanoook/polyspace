@@ -27,7 +27,7 @@ class Atom {
 
   constructor (value = 0, {
     parent,
-    unit = + `1e-${AtomConst.PRECISION}`,
+    baseUnit = AtomConst.BASE_UNIT,
     leftLimit = AtomConst.LEFT_SAFE_INTEGER,
     rightLimit = AtomConst.RIGHT_SAFE_INTEGER
   } = {}) {
@@ -35,8 +35,8 @@ class Atom {
     this.right = null
     this.parent = parent
 
-    validatePositive(unit)
-    this.unit = unit
+    validatePositive(baseUnit)
+    this.baseUnit = baseUnit
     this.leftLimit = leftLimit
     this.rightLimit = rightLimit
 
@@ -46,7 +46,7 @@ class Atom {
 
   newAtom (value, config) {
     return new Atom(value, {
-      unit: this.unit,
+      baseUnit: this.baseUnit,
       leftLimit: this.leftLimit,
       rightLimit: this.rightLimit,
       ...config

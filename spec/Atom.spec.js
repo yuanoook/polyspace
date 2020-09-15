@@ -11,23 +11,6 @@ it('[PolySpace] [Atom] [getChainAtoms]', () => {
   expect(atom.getChainValues()).toEqual([1, 2, 3, 4, 5])
 })
 
-it('[PolySpace] [Atom] [findNeighbor]', () => {
-  const atom = new Atom(3)
-  expect(atom.getValue()).toBe(3)
-
-  let left = atom.findNeighbor(-0.1)
-  expect(atom.left).toBe(left)
-
-  let right = atom.findNeighbor(0.2)
-  expect(atom.right).toBe(right)
-
-  expect(atom.getChainValues()).toEqual([
-    atom.getValue() * 0.9 + Atom.LEFT_SAFE_INTEGER * 0.1,
-    3,
-    atom.getValue() * 0.8 + Atom.RIGHT_SAFE_INTEGER * 0.2,
-  ])
-})
-
 describe('[PolySpace] [Atom] [findBiNeighbor]', () => {
   it('Find right middle point neighbors', () => {
     const atom = new Atom(3)

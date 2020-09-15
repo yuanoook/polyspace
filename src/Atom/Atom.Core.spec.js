@@ -11,12 +11,12 @@ it('[PolySpace] [Atom] [Basics]', () => {
 
   atom.findLeftNeighbor()
   expect(atom.left).not.toBe(null)
-  expect(atom.left.getValue()).toBe(Atom.LEFT_SAFE_INTEGER / 2)
+  expect(atom.left.getValue()).toBe(Atom.LEFT_SAFE_INTEGER)
   expect(atom.right).toBe(null)
 
   atom.findRightNeighbor()
   expect(atom.right).not.toBe(null)
-  expect(atom.right.getValue()).toBe(Atom.RIGHT_SAFE_INTEGER / 2)
+  expect(atom.right.getValue()).toBe(Atom.RIGHT_SAFE_INTEGER)
 
   expect(atom.left.right).toBe(atom)
   expect(atom.left.left).toBe(null)
@@ -71,6 +71,10 @@ it('[PolySpace] [Atom] [baseUnit, leftLimit, rightLimit]', () => {
 it('[PolySpace] [Atom] [isCloseIn]', () => {
   let atom = new Atom(0, {baseUnit: 10})
   expect(atom.isCloseIn({value: 3})).toBe(true)
+
+  expect(atom.isCloseIn({value: 5})).toBe(false)
+  expect(atom.isCloseIn({value: -5})).toBe(false)
+
   expect(atom.isCloseIn({value: 30})).toBe(false)
 })
 
@@ -79,15 +83,25 @@ it('[PolySpace] [Atom] [isTrapped]', () => {
     leftLimit: -5,
     rightLimit: 5,
     baseUnit: 10
+  }).isTrapped()).toBe(false)
+
+  expect(new Atom(0, {
+    leftLimit: -5,
+    rightLimit: 5,
+    baseUnit: 11
   }).isTrapped()).toBe(true)
+
   let atom = new Atom(0, {
     leftLimit: -100,
     rightLimit: 100,
     baseUnit: 10
   })
   expect(atom.isTrapped()).toBe(false)
-  atom.findConnectedAtScalar(-5)
+  atom.findConnectedAtScalar(-10)
   expect(atom.isTrapped()).toBe(false)
-  atom.findConnectedAtScalar(5)
+  atom.findConnectedAtScalar(10)
+  expect(atom.isTrapped()).toBe(false)
+
+  atom.findBiNeighbors()
   expect(atom.isTrapped()).toBe(true)
 })

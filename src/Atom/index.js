@@ -1,9 +1,9 @@
 const {
-  isCloseIn,
   validatePositive,
   validateLimits
 } = require('../utils')
 const AtomConst = require('./Atom.Const')
+const AtomCore = require('./Atom.Core')
 const AtomNeighbor = require('./Atom.Neighbor')
 const AtomConnected = require('./Atom.Connected')
 const AtomWalk = require('./Atom.Walk')
@@ -56,46 +56,10 @@ class Atom {
   validateValue (value) {
     return validateLimits(value, this.leftLimit, this.rightLimit)
   }
-
-  getValue () {
-    return this.value
-  }
-
-  getLeftSafeValue () {
-    const leftNeighborValue = this.getLeftNeighborValue()
-    return leftNeighborValue <= this.leftLimit
-      ? this.leftLimit
-      : leftNeighborValue
-  }
-
-  getLeftHalfwayValue (distanceRatio = AtomConst.DISTANCE_RATIO_HALF) {
-    return +(this.getLeftSafeValue() * distanceRatio +
-      this.getValue() * (1 - distanceRatio)) // .toFixed(2)
-  }
-
-  getRightSafeValue () {
-    const rightNeighborValue = this.getRightNeighborValue()
-    return rightNeighborValue >= this.rightLimit
-      ? this.rightLimit
-      : rightNeighborValue
-  }
-
-  getRightHalfwayValue (distanceRatio = AtomConst.DISTANCE_RATIO_HALF) {
-    return +(this.getRightSafeValue() * distanceRatio +
-      this.getValue() * (1 - distanceRatio)) // .toFixed(2)
-  }
-
-  isCloseIn ({ value }, baseUnit = this.baseUnit) {
-    return isCloseIn(this.value, value, baseUnit)
-  }
-
-  isTrapped () {
-    return this.isCloseIn({ value: this.getLeftHalfwayValue() }) &&
-      this.isCloseIn({ value: this.getRightHalfwayValue() })
-  }
 }
 
 Object.assign(Atom.prototype, {
+  ...AtomCore,
   ...AtomNeighbor,
   ...AtomConnected,
   ...AtomWalk,

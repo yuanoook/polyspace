@@ -88,6 +88,14 @@ function trekkingError([
   const expectationIndex = Math.min(predictIndex, log.length - 1)
   const expectation = log[expectationIndex]
   const isScalar = !Array.isArray(log[0])
+  try {
+    euclideanDistance(prediction, expectation)
+  } catch(e) {
+    console.log(smoothRadius, predictBaseStep, predictTimes)
+    console.log(predictIndex, prediction)
+    console.log(expectationIndex, expectation)
+    throw e
+  }
   return isScalar
     ? (prediction - expectation) ** 2
     : euclideanDistance(prediction, expectation)

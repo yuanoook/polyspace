@@ -57,8 +57,8 @@ it('Trekker.js [trekkingError] with nomials', async () => {
     [0, 0], [1, 1], [2, 2], [3, 3], [4, 4],
     [5, 5], [6, 6], [7, 7], [8, 8], [9, 9]
   ]
-  expect(trekkingError([0, 0, 0], null, 0, log)).toBe(1)
-  expect(trekkingError([0, 1, 1], null, 0, log)).toBe(1)
+  expect(trekkingError([0, 0, 0], null, 0, log)).toBe(0)
+  expect(trekkingError([0, 1, 1], null, 0, log)).toBe(Math.sqrt(2))
 
   expect(trekkingError([0, 1, 1], null, 1, log)).toBe(0)
   expect(trekkingError([0, 1, 1], null, 2, log)).toBe(0)

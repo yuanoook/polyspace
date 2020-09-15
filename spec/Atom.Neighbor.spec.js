@@ -1,5 +1,5 @@
-const Atom = require('./index')
-const AtomConst = require('./Atom.Const')
+const Atom = require('../src/Atom/index')
+const AtomConst = require('../src/Atom/Atom.Const')
 
 it('[PolySpace] [Atom] [findNeighbor]', () => {
   const atom = new Atom(3)

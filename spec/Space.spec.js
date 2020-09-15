@@ -77,7 +77,7 @@ async function examPolyNumbers ({
   solution,
   timeBudget,
   printPrecision = 4,
-  countBudget = Infinity,
+  trialBudget = Infinity,
   maxDimensions = Infinity,
   startFormula = '',
   showVisitedPoints = false,
@@ -89,7 +89,7 @@ async function examPolyNumbers ({
   expect(space.translation).toBe(polyNumbersTranslation)
   space.take(inputs, expectations).setup(parsePolyNumbersFormula(startFormula))
 
-  const point = await space.findThePoint({timeBudget, countBudget, maxDimensions})
+  const point = await space.findThePoint({timeBudget, trialBudget, maxDimensions})
   await space.printSolution({
     precision: printPrecision,
     solutionFormatter: polyNumbersFormatter,

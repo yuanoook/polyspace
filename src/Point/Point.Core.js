@@ -11,7 +11,13 @@ const PointConst = require('./Point.Const')
 
 module.exports = {
   makeAtom (value = 0) {
-    return new Atom(value, {parent: this})
+    let config = {parent: this}
+    if (typeof value === 'object') {
+      config = Object.assign(config, value)
+      value = config.value || 0
+      delete config.value
+    }
+    return new Atom(value, config)
   },
 
   getAtom (index) {

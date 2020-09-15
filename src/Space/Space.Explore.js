@@ -67,11 +67,11 @@ module.exports = {
     return minBiNeighbors
   },
 
-  async exploreLocalMinimum ({timeBudget, countBudget, maxDimensions}) {
+  async exploreLocalMinimum ({timeBudget, trialBudget, maxDimensions}) {
     const timePlaned = timeBudget * 1000
     const startAt = +new Date()
     let count = 0
-    while (count < countBudget) {
+    while (count < trialBudget) {
       const timeUsed= new Date() - startAt
       if (timeUsed > timePlaned) break
       if (this.gotPerfectSolution()) break
@@ -85,13 +85,13 @@ module.exports = {
 
   async findThePoint ({
     timeBudget = Infinity,
-    countBudget = Infinity,
+    trialBudget = Infinity,
     maxDimensions = Infinity
   } = {}) {
     if (timeBudget === Infinity &&
-      countBudget === Infinity
+      trialBudget === Infinity
     ) timeBudget = SpaceConst.TIME_BUDGET_DEFAULT
-    await this.exploreLocalMinimum({timeBudget, countBudget, maxDimensions})
+    await this.exploreLocalMinimum({timeBudget, trialBudget, maxDimensions})
     return this.minDistancePoint
   }
 }

@@ -13,7 +13,7 @@ const printFunc = getPrintFunc('trek-error')
 it('Trekker.js [trekkingErrorTranslation]', async () => {
   await examLogTrekking({
     log,
-    timeBudget: 1,
+    trialBudget: 100,
     showVisitedPoints: true,
     printFunc
   })
@@ -24,7 +24,7 @@ async function examLogTrekking ({
   solution,
   timeBudget,
   printPrecision = 4,
-  countBudget = Infinity,
+  trialBudget = Infinity,
   showVisitedPoints = false,
   showCheckedPoints = false,
   logSampleAmount = 100,
@@ -32,12 +32,14 @@ async function examLogTrekking ({
 }) {
   const space = new Space(trekkingErrorTranslation)
   expect(space.translation).toBe(trekkingErrorTranslation)
-  // TODO: Set search space boundary
-  // eg. positive integers
 
-  space.take([log], [0]).setup([1, 1, 1])
+  space.take([log], [0]).setup([
+    {value: 10, leftLimit: 1, rightLimit: 1000, name: 'smoothRadius'},
+    {value: 10, leftLimit: 1, rightLimit: 1000, name: 'predictBaseStep'},
+    {value: 10, leftLimit: 1, rightLimit: 1000, name: 'predictTimes'}
+  ])
 
-  const point = await space.findThePoint({timeBudget, countBudget, maxDimensions: 3})
+  const point = await space.findThePoint({timeBudget, trialBudget, maxDimensions: 3})
   await space.printSolution({
     precision: printPrecision,
     showVisitedPoints,

@@ -19,9 +19,5 @@
   "homepage": "https://github.com/yuanoook/polyspace#readme",
   "devDependencies": {
     "jest": "^26.0.1"
-  },
-  "dependencies": {
-    "lodash": "^4.17.20",
-    "mathjs": "^7.1.0"
   }
 }

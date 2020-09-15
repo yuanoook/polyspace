@@ -77,7 +77,11 @@ function allTrekkingError(nomials, log) {
   return log.map((...args) => trekkingError(nomials, ...args))
 }
 
-function trekkingError([smoothRadius, predictBaseStep, predictTimes], _, index, log) {
+function trekkingError([
+  smoothRadius,
+  predictBaseStep,
+  predictTimes
+], _, index, log) {
   // console.log('trekkingError: ', index)
   const trekking = generateTrekking(log, smoothRadius, predictBaseStep, predictTimes)
   const [predictIndex, prediction] = trekking(index)

@@ -36,9 +36,9 @@ it('[PolySpace] [Point] [isSame]', () => {
   expect(new Point([1, 2]).isSame(new Point([1, 2, 0, 0]))).toBe(true)
 })
 
-it('[PolySpace] [Point] [copyWithAtomAt]', () => {
+it('[PolySpace] [Point] [cloneWithNewAtomAt]', () => {
   const point = new Point([1, 2, 3, 4])
-  const newPoint = point.copyWithAtomAt(0, new Atom())
+  const newPoint = point.cloneWithNewAtomAt(0, new Atom())
   expect(newPoint.getNomials()).toEqual([0, 2, 3, 4])
 })
 

@@ -13,11 +13,17 @@ module.exports = {
   makeAtom (value = 0) {
     let config = {parent: this}
     if (typeof value === 'object') {
-      config = Object.assign(config, value)
+      Object.assign(config, value)
       value = config.value || 0
       delete config.value
     }
     return new Atom(value, config)
+  },
+
+  cloneAtom(atom) {
+    return atom.newAtom(atom.getValue(), {
+      parent: this
+    })
   },
 
   getAtom (index) {
@@ -88,13 +94,13 @@ module.exports = {
     this.atoms[index] = this.atoms[index] || this.makeAtom()
   },
 
-  copyWithAtomAt (index, atom) {
+  cloneWithNewAtomAt (index, atom) {
     this.checkIndex(index)
     const newPoint = this.newPoint()
     atom.parent = newPoint
     for (let i in this.atoms) newPoint.atoms[i] = +i === +index
       ? atom
-      : newPoint.makeAtom(this.atoms[i].getValue())
+      : newPoint.cloneAtom(this.atoms[i])
     return newPoint
   },
 

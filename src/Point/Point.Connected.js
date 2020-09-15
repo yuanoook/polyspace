@@ -8,22 +8,22 @@ const {
 module.exports = {
   findLeftConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
     const atomConnected = this.getAtom(index).findLeftConnected(distance)
-    return this.copyWithAtomAt(index, atomConnected)
+    return this.cloneWithNewAtomAt(index, atomConnected)
   },
 
   findRightConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
     const atomConnected = this.getAtom(index).findRightConnected(distance)
-    return this.copyWithAtomAt(index, atomConnected)
+    return this.cloneWithNewAtomAt(index, atomConnected)
   },
 
   findConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {
     const atomConnected = this.getAtom(index).findConnected(distance)
-    return this.copyWithAtomAt(index, atomConnected)
+    return this.cloneWithNewAtomAt(index, atomConnected)
   },
 
   findConnectedAtWithScalar (index, value) {
     const atomConnected = this.getAtom(index).findConnectedAtScalar(value)
-    return this.copyWithAtomAt(index, atomConnected)
+    return this.cloneWithNewAtomAt(index, atomConnected)
   },
 
   findRandomLeftConnectedWith (distance = Atom.DISTANCE_STEP_ONE) {

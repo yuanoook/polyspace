@@ -8,22 +8,22 @@ const {
 module.exports = {
   findLeftNeighborAt (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     const atomNeighbor = this.getAtom(index).findLeftNeighbor(distanceRatio)
-    return this.copyWithAtomAt(index, atomNeighbor)
+    return this.cloneWithNewAtomAt(index, atomNeighbor)
   },
 
   findRightNeighborAt (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     const atomNeighbor = this.getAtom(index).findRightNeighbor(distanceRatio)
-    return this.copyWithAtomAt(index, atomNeighbor)
+    return this.cloneWithNewAtomAt(index, atomNeighbor)
   },
 
   findNeighborAt (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {
     const atomNeighbor = this.getAtom(index).findNeighbor(distanceRatio)
-    return this.copyWithAtomAt(index, atomNeighbor)
+    return this.cloneWithNewAtomAt(index, atomNeighbor)
   },
 
   findBiNeighborsAt (index) {
     const biNeighbors = this.getAtom(index).findBiNeighbors()
-    return biNeighbors.map(atomNeighbor => this.copyWithAtomAt(index, atomNeighbor))
+    return biNeighbors.map(atomNeighbor => this.cloneWithNewAtomAt(index, atomNeighbor))
   },
 
   findBiNeighbors () {
@@ -61,12 +61,12 @@ module.exports = {
 
   findRandomNeighborAt (index) {
     const atomNeighbor = this.getAtom(index).findRandomNeighbor()
-    return this.copyWithAtomAt(index, atomNeighbor)
+    return this.cloneWithNewAtomAt(index, atomNeighbor)
   },
 
   findRandomNeighborsAt (index, count = 1) {
     const atomNeighbors = this.getAtom(index).findRandomNeighbors(count)
-    return repeat(i => this.copyWithAtomAt(index, atomNeighbors[i]), count)
+    return repeat(i => this.cloneWithNewAtomAt(index, atomNeighbors[i]), count)
   },
 
   findRandomLeftNeighborWith (distanceRatio = Atom.DISTANCE_RATIO_HALF) {

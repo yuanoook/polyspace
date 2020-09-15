@@ -35,6 +35,13 @@ class Atom {
     this.right = null
     this.parent = parent
 
+    if (value === -9007199254740991) {
+      console.log(baseUnit)
+      console.log(leftLimit)
+      console.log(rightLimit)
+      throw new Error(value)
+    }
+
     validatePositive(baseUnit)
     this.baseUnit = baseUnit
     this.leftLimit = leftLimit

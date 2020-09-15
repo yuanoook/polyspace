@@ -10,12 +10,15 @@ it('[PolySpace] [Point] [findBiNeighbors]', () => {
   while (point.findBiNeighbors().length) {
     const neighbors = point.getBiNeighbors()
     for (let neighbor of neighbors) {
+      expect(neighbor.getAtom(0).baseUnit).toBe(1)
       expect(neighbor.getAtom(0).leftLimit).toBe(1)
       expect(neighbor.getAtom(0).rightLimit).toBe(1000)
 
+      expect(neighbor.getAtom(1).baseUnit).toBe(2)
       expect(neighbor.getAtom(1).leftLimit).toBe(2)
       expect(neighbor.getAtom(1).rightLimit).toBe(2000)
 
+      expect(neighbor.getAtom(2).baseUnit).toBe(3)
       expect(neighbor.getAtom(2).leftLimit).toBe(3)
       expect(neighbor.getAtom(2).rightLimit).toBe(3000)
     }

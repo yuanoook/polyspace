@@ -51,6 +51,33 @@ it('[PolySpace] [Atom] [Basics]', () => {
   expect(configuredAtom.parent).toBe(':D')
 })
 
+it('[PolySpace] [Atom] [roundUp]', () => {
+  let atom = new Atom()
+  expect(atom.roundUp(1)).toBe(1)
+  expect(atom.roundUp(1.2)).toBe(1.2)
+  expect(atom.roundUp(1.8)).toBe(1.8)
+  expect(atom.roundUp(-1.8)).toBe(-1.8)
+
+  atom = new Atom(1, {baseUnit: 1.1})
+  expect(atom.roundUp(1)).toBe(1)
+  expect(atom.roundUp(1.2)).toBe(1.2)
+  expect(atom.roundUp(1.8)).toBe(1.8)
+  expect(atom.roundUp(-1.8)).toBe(-1.8)
+
+  atom = new Atom(0, {baseUnit: 1})
+  expect(atom.roundUp(1)).toBe(1)
+  expect(atom.roundUp(1.2)).toBe(1)
+  expect(atom.roundUp(1.8)).toBe(2)
+  expect(atom.roundUp(-1.8)).toBe(-2)
+
+  atom = new Atom(3, {baseUnit: 5})
+  expect(atom.roundUp(1)).toBe(3)
+  expect(atom.roundUp(7)).toBe(8)
+  expect(atom.roundUp(10)).toBe(8)
+  expect(atom.roundUp(-1)).toBe(-2)
+  expect(atom.roundUp(-5)).toBe(-7)
+})
+
 it('[PolySpace] [Atom] [baseUnit, leftLimit, rightLimit]', () => {
   let atom = new Atom()
   expect(atom.baseUnit).toBe(AtomConst.BASE_UNIT)
@@ -80,10 +107,16 @@ it('[PolySpace] [Atom] [isCloseIn]', () => {
 
 it('[PolySpace] [Atom] [isTrapped]', () => {
   expect(new Atom(0, {
+    leftLimit: -4.75,
+    rightLimit: 4.75,
+    baseUnit: 9.5
+  }).isTrapped()).toBe(false)
+
+  expect(new Atom(0, {
     leftLimit: -5,
     rightLimit: 5,
     baseUnit: 10
-  }).isTrapped()).toBe(false)
+  }).isTrapped()).toBe(true)
 
   expect(new Atom(0, {
     leftLimit: -5,
@@ -100,7 +133,7 @@ it('[PolySpace] [Atom] [isTrapped]', () => {
   atom.findConnectedAtScalar(-10)
   expect(atom.isTrapped()).toBe(false)
   atom.findConnectedAtScalar(10)
-  expect(atom.isTrapped()).toBe(false)
+  expect(atom.isTrapped()).toBe(true)
 
   atom.findBiNeighbors()
   expect(atom.isTrapped()).toBe(true)

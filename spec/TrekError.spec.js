@@ -34,9 +34,9 @@ async function examLogTrekking ({
   expect(space.translation).toBe(trekkingErrorTranslation)
 
   space.take([log], [0]).setup([
-    {value: 10, leftLimit: 1, rightLimit: 1000, name: 'smoothRadius'},
-    {value: 10, leftLimit: 1, rightLimit: 1000, name: 'predictBaseStep'},
-    {value: 10, leftLimit: 1, rightLimit: 1000, name: 'predictTimes'}
+    {value: 10, leftLimit: 1, baseUnit: 1, rightLimit: 1000, name: 'smoothRadius'},
+    {value: 10, leftLimit: 1, baseUnit: 1, rightLimit: 1000, name: 'predictBaseStep'},
+    {value: 10, leftLimit: 1, baseUnit: 1, rightLimit: 1000, name: 'predictTimes'}
   ])
 
   const point = await space.findThePoint({timeBudget, trialBudget, maxDimensions: 3})

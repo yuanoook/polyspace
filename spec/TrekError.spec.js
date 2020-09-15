@@ -7,8 +7,10 @@ const {
 } = require('../src/utils')
 const Space = require('../src/Space')
 const trekkingLog = require('./data/data.-2+3x')
-const log = parseTrekkingLog(trekkingLog).map(item => [item[0], item[1]])
+const log = parseTrekkingLog(trekkingLog).map(item => [item[0], item[1], item[2]])
 const printFunc = getPrintFunc('trek-error')
+
+jest.setTimeout(30 * 60 * 1000); // 1 second
 
 it('Trekker.js [trekkingErrorTranslation]', async () => {
   await examLogTrekking({
@@ -34,9 +36,9 @@ async function examLogTrekking ({
   expect(space.translation).toBe(trekkingErrorTranslation)
 
   space.take([log], [0]).setup([
-    {value: 10, leftLimit: 1, baseUnit: 1, rightLimit: 1000, name: 'smoothRadius'},
-    {value: 10, leftLimit: 1, baseUnit: 1, rightLimit: 1000, name: 'predictBaseStep'},
-    {value: 10, leftLimit: 1, baseUnit: 1, rightLimit: 1000, name: 'predictTimes'}
+    {value: 50, baseUnit: 1, leftLimit: 1, rightLimit: 1000, name: 'smoothRadius'},
+    {value: 50, baseUnit: 1, leftLimit: 1, rightLimit: 1000, name: 'predictBaseStep'},
+    {value: 50, baseUnit: 1, leftLimit: 1, rightLimit: 1000, name: 'predictTimes'}
   ])
 
   const point = await space.findThePoint({timeBudget, trialBudget, maxDimensions: 3})

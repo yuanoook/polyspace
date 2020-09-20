@@ -8,6 +8,7 @@ const {
 } = require('../src/utils')
 const parabolicAntennaCurveData = require('./data/data.delon')
 const printFunc = getPrintFunc('space')
+jest.setTimeout(30 * 60 * 1000); // 1 second
 
 it('[PolySpace] [Space] [Basics]', async () => {
 // Complex 2nd exponential example provided by Zoe
@@ -39,14 +40,14 @@ it('[PolySpace] [Space] [Basics]', async () => {
 
   await examPolyNumbers({
     // This is beautiful - https://plotly.com/~yuanoook/5/
-    inputs: [1, 2],
-    expectations: [1, 4],
+    inputs: [3, 5, 2],
+    expectations: [3, 4, 1],
     printPrecision: 4,
     // showCheckedPoints: true,
     showVisitedPoints: true,
     logSampleAmount: 10000000000,
-    timeBudget: 10,
-    maxDimensions: 2,
+    timeBudget: 60,
+    maxDimensions: 3,
     printFunc
   })
 

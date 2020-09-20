@@ -9,6 +9,7 @@ const {
   trekkingError
 } = require('../src/Trekker')
 const trekkingLog = require('./data/data.-2+3x')
+jest.setTimeout(30 * 60 * 1000); // 1 second
 
 it('Trekker.js [sumScalar]', async () => {
   expect(sumScalar([1,2,3])).toBe(6)

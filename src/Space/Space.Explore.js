@@ -21,7 +21,7 @@ module.exports = {
   },
 
   findBiNeighborsMatrix () {
-    return this.minDistancePoint.findBiNeighborsMatrix()
+    return this.minDistancePoint.findBiNeighborsMatrix(this.directionDelta)
   },
 
   checkBiNeighborsMatrixList (list) {
@@ -35,12 +35,11 @@ module.exports = {
     let matrixIsNotEmpty = false
     let count = 0
     while (count < this.dimension) {
-      const list = matrix[this.biNeighborMatrixCheckIndex]
+      const list = matrix[this.visitingIndex]
       matrixIsNotEmpty = matrixIsNotEmpty || (list.length > 0)
       if (this.checkBiNeighborsMatrixList(list)) break
       count ++
-      this.biNeighborMatrixCheckIndex ++
-      this.biNeighborMatrixCheckIndex = this.biNeighborMatrixCheckIndex % this.dimension
+      this.updateVisitingIndex()
     }
     return matrixIsNotEmpty
   },

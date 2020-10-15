@@ -14,3 +14,17 @@ it('[PolySpace] [Point] [Basics]', () => {
   expect(point.getAtom(1).rightLimit).toBe(1000)
   expect(point.getAtom(2).rightLimit).toBe(1000)
 })
+
+it('[PolySpace] [Point] [getDirection]', () => {
+  const point0 = new Point([0, 0])
+  const point10 = new Point([10, 10, 10])
+
+  expect(point0.getDirection(point0)).toEqual([0, 0])
+  expect(point10.getDirection(point10)).toEqual([0, 0, 0])
+  expect(point0.getDirection(point10)).toEqual([1, 1, 1])
+  expect(point10.getDirection(point0)).toEqual([-1, -1, -1])
+
+  const pointX = new Point([2, 4, 8, 16])
+  expect(point0.getDirection(pointX)).toEqual([1, 2, 4, 8])
+  expect(point10.getDirection(pointX)).toEqual([-1, -0.75, -0.25, 2])
+})

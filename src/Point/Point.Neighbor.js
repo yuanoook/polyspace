@@ -30,7 +30,7 @@ module.exports = {
     return this.collect((atom, index) => this.findBiNeighborsAt(index))
   },
 
-  findBiNeighborsMatrix () {
+  findBiNeighborsMatrix (directionDelta) {
     return this.collect((atom, index) => [this.findBiNeighborsAt(index)])
   },
 

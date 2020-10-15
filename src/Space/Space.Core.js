@@ -18,9 +18,14 @@ module.exports = {
     this.stepCount = 0
     this.checkCount = 0
     this.lastSearchTimeUsed = 0
+
+    this.visitingIndex = 0
+    this.visitedPointCount = 0
+    this.lastVisitedPoint = null
+
+    this.keyPoints = []
     this.visitedPoints = []
     this.checkedPoints = []
-    this.biNeighborMatrixCheckIndex = 0
     this.check(new Point(origin, config))
   },
 
@@ -39,14 +44,36 @@ module.exports = {
   },
 
   updateMinDistance (point) {
-    this.checkedPoints.push(point)
+    // this.checkedPoints.push(point)
     if (point.distance >= this.minDistance) return false
 
     this.minDistance = point.distance
     this.minDistancePoint = point
-    this.visitedPoints.push(point)
+    this.updateVisitedPoint(point)
     this.stepCount ++
     return true
+  },
+
+  updateVisitedPoint (point) {
+    this.visitedPointCount ++
+    this.visitedPoints.push(point)
+
+  },
+
+  updateVisitingIndex () {
+    this.updateKeyPoint()
+    this.visitingIndex ++
+    this.visitingIndex = this.visitingIndex % this.dimension
+  },
+
+  updateKeyPoint () {
+    const previousKeyPoint = this.keyPoints[this.visitingIndex]
+    this.updateDirectionDelta(previousKeyPoint, this.minDistancePoint)
+    this.keyPoints[this.visitingIndex] = this.minDistancePoint
+  },
+
+  updateDirectionDelta (previousKeyPoint, currentKeyPoint) {
+    this.directionDelta = currentKeyPoint - previousKeyPoint
   },
 
   extendDimension () {

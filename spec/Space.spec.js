@@ -40,10 +40,10 @@ it('[PolySpace] [Space] [Basics]', async () => {
 
   await examPolyNumbers({
     // This is beautiful - https://plotly.com/~yuanoook/5/
-    inputs: [3, 5, 2],
-    expectations: [3, 4, 1],
+    inputs: [3, 5],
+    expectations: [3, 4],
     printPrecision: 4,
-    // showCheckedPoints: true,
+    showCheckedPoints: true,
     showVisitedPoints: true,
     logSampleAmount: 10000000000,
     timeBudget: 60,

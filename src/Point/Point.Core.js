@@ -108,7 +108,6 @@ module.exports = {
     return isSameNomials(this.getNomials(), point.getNomials())
   },
 
-  // TODO: test this
   isTrapped () {
     return !this.atoms.some(atom => !atom.isTrapped())
   },
@@ -128,5 +127,19 @@ module.exports = {
       },
       Math.max(this.atoms.length, point.atoms.length)
     ).filter(([x]) => x)
+  },
+
+  getDirection (point, baseIndex = 0) {
+    let baseDivisor
+    return repeat(
+      i => {
+        const thisIndexValue = this.atoms[i] ? this.atoms[i].value : 0
+        const pointIndexValue = point.atoms[i] ? point.atoms[i].value : 0
+        const distanceAtIndex = pointIndexValue - thisIndexValue
+        if (baseIndex === i) baseDivisor = Math.abs(distanceAtIndex || 1)
+        return distanceAtIndex
+      },
+      Math.max(this.atoms.length, point.atoms.length)
+    ).map(distance => distance / baseDivisor)
   }
 }

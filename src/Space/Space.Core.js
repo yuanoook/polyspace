@@ -19,6 +19,7 @@ module.exports = {
     this.checkCount = 0
     this.lastSearchTimeUsed = 0
 
+    this.previousVisitedIndex = 0
     this.visitingIndex = 0
     this.keyPoints = []
     this.direction = null
@@ -46,6 +47,7 @@ module.exports = {
     // this.checkedPoints.push(point)
     if (point.distance >= this.minDistance) return false
 
+    this.beforeUpdateMinDistance()
     this.minDistance = point.distance
     this.minDistancePoint = point
     this.visitedPoints.push(point)
@@ -54,15 +56,24 @@ module.exports = {
   },
 
   updateVisitingIndex () {
-    this.updateKeyPoint()
     this.visitingIndex ++
     this.visitingIndex = this.visitingIndex % this.dimension
   },
 
-  updateKeyPoint () {
-    const previousKeyPoint = this.keyPoints[this.visitingIndex]
+  beforeUpdateMinDistance () {
+    const indexSwitched = this.visitingIndex !== this.previousVisitedIndex
+    if (indexSwitched) {
+      this.updateSettledKeyPoint(this.previousVisitedIndex)
+      this.previousVisitedIndex = this.visitingIndex
+    }
+  },
+
+  updateSettledKeyPoint (index) {
+    const previousKeyPoint = this.keyPoints[index]
+    if (previousKeyPoint === this.minDistancePoint) throw new Error('Should not be possible now!')
+
     this.updateDirection(previousKeyPoint, this.minDistancePoint)
-    this.keyPoints[this.visitingIndex] = this.minDistancePoint
+    this.keyPoints[index] = this.minDistancePoint
   },
 
   updateDirection (previousKeyPoint, currentKeyPoint) {

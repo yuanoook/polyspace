@@ -22,6 +22,11 @@ module.exports = {
   },
 
   findBiNeighborsAt (index, direction) {
+    global.xcount = global.xcount || 0
+    global.xcount ++
+    if (global.xcount === 50) {
+      console.log(direction)
+    }
     const biNeighbors = this.getAtom(index).findBiNeighbors()
     return biNeighbors.map(atomNeighbor => this.cloneWithNewAtomAt(index, atomNeighbor, direction))
   },

@@ -21,6 +21,8 @@ it('[PolySpace] [Space] [Basics]', async () => {
     inputs: [1, 4, 3],
     expectations: [4, 1, 1],
     timeBudget: 10,
+    showVisitedPoints: true,
+    logSampleAmount: 10000000000,
     printFunc
   })
 

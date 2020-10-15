@@ -49,11 +49,18 @@ module.exports = {
   // Quick breaking contributes the most performance improvement
   // Index preferring adds a slight advantage
   exploreBiNeighborsMatrix(maxDimensions) {
-    const exploredSome = this.checkBiNeighborsMatrix()
+    let exploredSome = this.checkBiNeighborsMatrix()
+
+    if (!exploredSome && this.direction) {
+      this.resetStartPoint()
+      exploredSome = this.checkBiNeighborsMatrix()
+    }
+
     if (!exploredSome && (this.dimension < maxDimensions)) {
       this.extendDimension()
-      return this.checkBiNeighborsMatrix()
+      exploredSome = this.checkBiNeighborsMatrix()
     }
+
     return exploredSome
   },
 

@@ -85,5 +85,24 @@ module.exports = {
     return this.isIntegerUnit()
       ? this.isTrappedWithIntegerUnit()
       : this.isTrappedWithFractionUnit()
+  },
+
+  shakeOffLeft () {
+    if (this.left) {
+      this.left.right = null
+      this.left = null
+    }
+  },
+
+  shakeOffRight () {
+    if (this.right) {
+      this.right.left = null
+      this.right = null
+    }
+  },
+
+  shakeOff () {
+    this.shakeOffLeft()
+    this.shakeOffRight()
   }
 }

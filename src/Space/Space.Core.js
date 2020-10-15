@@ -80,9 +80,15 @@ module.exports = {
       : this.direction
   },
 
+  resetStartPoint () {
+    this.keyPoints = []
+    this.direction = null
+    this.minDistancePoint.shakeOff()
+  },
+
   extendDimension () {
     this.dimension ++
-    this.minDistancePoint.shakeChainPoints()
+    this.minDistancePoint.shakeOffChainPoints()
     this.minDistancePoint.extendDimension(this.dimension)
   },
 

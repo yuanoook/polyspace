@@ -18,10 +18,14 @@ module.exports = {
       includeSelf ? [this] : [])
   },
 
-  shakeChainPoints () {
+  shakeOffChainPoints () {
     this.forEach(atom => {
-      if (atom.left) atom.left.left = null
-      if (atom.right) atom.right.right = null
+      if (atom.left) atom.left.shakeOffLeft()
+      if (atom.right) atom.right.shakeOffRight()
     })
+  },
+
+  shakeOff () {
+    this.forEach(atom => atom.shakeOff())
   }
 }

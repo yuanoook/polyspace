@@ -346,14 +346,14 @@ it('[PolySpace] [Point] [getNeighbors]', () => {
   expect(neighbors.indexOf(this)).toBe(-1)
 })
 
-it('[PolySpace] [Point] [shakeChainPoints]', () => {
+it('[PolySpace] [Point] [shakeOffChainPoints]', () => {
   const point = new Point([1, 2, 3, 4])
   point.findBiNeighbors()
   point.findBiNeighbors()
   point.findBiNeighbors()
   expect(point.getNeighbors(3).length).toBe(point.getDimensions() * 6)
 
-  point.shakeChainPoints()
+  point.shakeOffChainPoints()
   expect(point.getNeighbors(3).length).toBe(point.getDimensions() * 2)
 })
 

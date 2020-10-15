@@ -139,15 +139,6 @@ module.exports = {
   },
 
   getDirection (point, baseIndex = 0) {
-    global.ycount = global.ycount || 0
-    global.ycount ++
-
-    if (global.ycount === 2000) {
-      console.log(this.getNomials())
-      console.log(point.getNomials())
-      console.log(baseIndex)
-    }
-
     let baseDivisor
     return repeat(
       i => {

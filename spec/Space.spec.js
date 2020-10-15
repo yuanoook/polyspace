@@ -23,6 +23,7 @@ it('[PolySpace] [Space] [Basics]', async () => {
     timeBudget: 10,
     showVisitedPoints: true,
     logSampleAmount: 10000000000,
+    maxDimensions: 3,
     printFunc
   })
 

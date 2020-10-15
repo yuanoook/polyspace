@@ -70,8 +70,6 @@ module.exports = {
 
   updateSettledKeyPoint (index) {
     const previousKeyPoint = this.keyPoints[index]
-    if (previousKeyPoint === this.minDistancePoint) throw new Error('Should not be possible now!')
-
     this.updateDirection(previousKeyPoint, this.minDistancePoint)
     this.keyPoints[index] = this.minDistancePoint
   },

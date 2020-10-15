@@ -8,6 +8,17 @@ module.exports = {
     return this.value
   },
 
+  forceOffsetValue (offset) {
+    if (this.left || this.right) throw new Error(`Cannot force offset value!`)
+
+    let newValue = this.value + offset
+    newValue = Math.min(this.rightLimit, newValue)
+    newValue = Math.max(this.leftLimit, newValue)
+    newValue = this.roundUp(newValue)
+
+    this.value = newValue
+  },
+
   isIntegerUnit () {
     return this.baseUnit % 1 === 0
   },

@@ -21,7 +21,7 @@ module.exports = {
   },
 
   findBiNeighborsMatrix () {
-    return this.minDistancePoint.findBiNeighborsMatrix(this.directionDelta)
+    return this.minDistancePoint.findBiNeighborsMatrix(this.direction)
   },
 
   checkBiNeighborsMatrixList (list) {

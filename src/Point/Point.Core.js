@@ -90,17 +90,26 @@ module.exports = {
     return isCloseTo(this.euclideanDistance(point), 0, precision) 
   },
 
-  fillAtomAt (index, nomial = 0) {
+  fillAtomAt (index) {
     this.atoms[index] = this.atoms[index] || this.makeAtom()
   },
 
-  cloneWithNewAtomAt (index, atom) {
+  cloneWithNewAtomAt (index, atom, direction) {
     this.checkIndex(index)
     const newPoint = this.newPoint()
     atom.parent = newPoint
-    for (let i in this.atoms) newPoint.atoms[i] = +i === +index
-      ? atom
-      : newPoint.cloneAtom(this.atoms[i])
+    for (let i in this.atoms) {
+      const needClone = +i !== +index
+      const atomForNewPoint = needClone ? newPoint.cloneAtom(this.atoms[i]) : atom
+
+      if (needClone && direction && direction[i] && direction[index]) {
+        const baseOffset = atom.value - this.atoms[index].value
+        const offset = baseOffset * (direction[i] / direction[index])
+        atomForNewPoint.forceOffsetValue(offset)
+      }
+
+      newPoint.atoms[i] = atomForNewPoint
+    }
     return newPoint
   },
 

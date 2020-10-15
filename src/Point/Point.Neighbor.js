@@ -21,17 +21,17 @@ module.exports = {
     return this.cloneWithNewAtomAt(index, atomNeighbor)
   },
 
-  findBiNeighborsAt (index) {
+  findBiNeighborsAt (index, direction) {
     const biNeighbors = this.getAtom(index).findBiNeighbors()
-    return biNeighbors.map(atomNeighbor => this.cloneWithNewAtomAt(index, atomNeighbor))
+    return biNeighbors.map(atomNeighbor => this.cloneWithNewAtomAt(index, atomNeighbor, direction))
   },
 
   findBiNeighbors () {
-    return this.collect((atom, index) => this.findBiNeighborsAt(index))
+    return this.collect((_, index) => this.findBiNeighborsAt(index))
   },
 
-  findBiNeighborsMatrix (directionDelta) {
-    return this.collect((atom, index) => [this.findBiNeighborsAt(index)])
+  findBiNeighborsMatrix (direction) {
+    return this.collect((_, index) => [this.findBiNeighborsAt(index, direction)])
   },
 
   // TODO: add test

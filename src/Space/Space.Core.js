@@ -20,10 +20,9 @@ module.exports = {
     this.lastSearchTimeUsed = 0
 
     this.visitingIndex = 0
-    this.visitedPointCount = 0
-    this.lastVisitedPoint = null
-
     this.keyPoints = []
+    this.direction = null
+
     this.visitedPoints = []
     this.checkedPoints = []
     this.check(new Point(origin, config))
@@ -49,15 +48,9 @@ module.exports = {
 
     this.minDistance = point.distance
     this.minDistancePoint = point
-    this.updateVisitedPoint(point)
+    this.visitedPoints.push(point)
     this.stepCount ++
     return true
-  },
-
-  updateVisitedPoint (point) {
-    this.visitedPointCount ++
-    this.visitedPoints.push(point)
-
   },
 
   updateVisitingIndex () {
@@ -68,12 +61,14 @@ module.exports = {
 
   updateKeyPoint () {
     const previousKeyPoint = this.keyPoints[this.visitingIndex]
-    this.updateDirectionDelta(previousKeyPoint, this.minDistancePoint)
+    this.updateDirection(previousKeyPoint, this.minDistancePoint)
     this.keyPoints[this.visitingIndex] = this.minDistancePoint
   },
 
-  updateDirectionDelta (previousKeyPoint, currentKeyPoint) {
-    this.directionDelta = currentKeyPoint - previousKeyPoint
+  updateDirection (previousKeyPoint, currentKeyPoint) {
+    this.direction = previousKeyPoint
+      ? previousKeyPoint.getDirection(currentKeyPoint, this.visitingIndex)
+      : this.direction
   },
 
   extendDimension () {

@@ -78,6 +78,18 @@ it('[PolySpace] [Atom] [roundUp]', () => {
   expect(atom.roundUp(-5)).toBe(-7)
 })
 
+it('[PolySpace] [Atom] [forceOffsetValue]', () => {
+  const atom = new Atom()
+  atom.forceOffsetValue(1)
+  expect(atom.getValue()).toBe(1)
+
+  atom.forceOffsetValue(-10)
+  expect(atom.getValue()).toBe(-9)
+
+  atom.findBiNeighbors()
+  expect(() => atom.forceOffsetValue(1)).toThrow()
+})
+
 it('[PolySpace] [Atom] [baseUnit, leftLimit, rightLimit]', () => {
   let atom = new Atom()
   expect(atom.baseUnit).toBe(AtomConst.BASE_UNIT)

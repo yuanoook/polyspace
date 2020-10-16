@@ -28,10 +28,11 @@ it('[PolySpace] [Space] [Basics]', async () => {
   // })
 
 // Interesting failure case - Example provided by Delon
-  // await examPolyNumbers({
-  //   inputs: [2, 2],
-  //   expectations: [2, 3]
-  // })
+  await examPolyNumbers({
+    inputs: [2, 2],
+    expectations: [2, 3],
+    maxDimensions: 3
+  })
 
 // Simple 2nd exponential example provided by Delon
   // await examPolyNumbers({

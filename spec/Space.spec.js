@@ -12,20 +12,20 @@ jest.setTimeout(30 * 60 * 1000); // 1 second
 
 it('[PolySpace] [Space] [Basics]', async () => {
 // Complex 2nd exponential example provided by Zoe
-  await examPolyNumbers({
-    origin: [
-      {value: 0, leftLimit: -100, rightLimit: 100, baseUnit: 0.5},
-      {value: 0, leftLimit: -100, rightLimit: 100, baseUnit: 0.5},
-      {value: 0, leftLimit: -100, rightLimit: 100, baseUnit: 0.5}
-    ],
-    inputs: [1, 4, 3],
-    expectations: [4, 1, 1],
-    timeBudget: 10,
-    showVisitedPoints: true,
-    logSampleAmount: 10000000000,
-    maxDimensions: 3,
-    printFunc
-  })
+  // await examPolyNumbers({
+  //   origin: [
+  //     {value: 0, leftLimit: -100, rightLimit: 100, baseUnit: 0.5},
+  //     {value: 0, leftLimit: -100, rightLimit: 100, baseUnit: 0.5},
+  //     {value: 0, leftLimit: -100, rightLimit: 100, baseUnit: 0.5}
+  //   ],
+  //   inputs: [1, 4, 3],
+  //   expectations: [4, 1, 1],
+  //   timeBudget: 10,
+  //   showVisitedPoints: true,
+  //   logSampleAmount: 10000000000,
+  //   maxDimensions: 3,
+  //   printFunc
+  // })
 
 // Interesting failure case - Example provided by Delon
   // await examPolyNumbers({
@@ -48,12 +48,12 @@ it('[PolySpace] [Space] [Basics]', async () => {
   //   printFunc
   // })
 
-  // await examPolyNumbers({
-  //   // This is beautiful - https://plotly.com/~yuanoook/5/
-  //   inputs: [3, 5],
-  //   expectations: [3, 4],
-  //   printPrecision: 4
-  // })
+  await examPolyNumbers({
+    // This is beautiful - https://plotly.com/~yuanoook/5/
+    inputs: [3, 5],
+    expectations: [3, 4],
+    printPrecision: 4
+  })
 
   // await examPolyNumbers({
   //   inputs: [0, 1, 2],

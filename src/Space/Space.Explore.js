@@ -21,7 +21,7 @@ module.exports = {
   },
 
   findBiNeighborsMatrix () {
-    return this.minDistancePoint.findBiNeighborsMatrix(this.direction)
+    return this.minDistancePoint.findBiNeighborsMatrix(this.directions)
   },
 
   checkBiNeighborsMatrixList (list) {
@@ -50,12 +50,6 @@ module.exports = {
   // Index preferring adds a slight advantage
   exploreBiNeighborsMatrix(maxDimensions) {
     let exploredSome = this.checkBiNeighborsMatrix()
-
-    if (!exploredSome && this.direction) {
-      this.resetStartPoint()
-      exploredSome = this.checkBiNeighborsMatrix()
-    }
-
     if (!exploredSome && (this.dimension < maxDimensions)) {
       this.extendDimension()
       exploredSome = this.checkBiNeighborsMatrix()

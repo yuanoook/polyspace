@@ -22,7 +22,7 @@ module.exports = {
     this.previousVisitedIndex = 0
     this.visitingIndex = 0
     this.keyPoints = []
-    this.direction = null
+    this.directions = []
 
     this.visitedPoints = []
     this.checkedPoints = []
@@ -56,8 +56,7 @@ module.exports = {
   },
 
   updateVisitingIndex () {
-    this.visitingIndex ++
-    this.visitingIndex = this.visitingIndex % this.dimension
+    this.visitingIndex = (this.visitingIndex + 1) % this.dimension
   },
 
   beforeUpdateMinDistance () {
@@ -70,19 +69,19 @@ module.exports = {
 
   updateSettledKeyPoint (index) {
     const previousKeyPoint = this.keyPoints[index]
-    this.updateDirection(previousKeyPoint, this.minDistancePoint)
+    this.updateDirection(index, previousKeyPoint, this.minDistancePoint)
     this.keyPoints[index] = this.minDistancePoint
   },
 
-  updateDirection (previousKeyPoint, currentKeyPoint) {
-    this.direction = previousKeyPoint
+  updateDirection (index, previousKeyPoint, currentKeyPoint) {
+    this.directions[index] = previousKeyPoint
       ? previousKeyPoint.getDirection(currentKeyPoint, this.visitingIndex)
-      : this.direction
+      : this.directions[index]
   },
 
   resetStartPoint () {
     this.keyPoints = []
-    this.direction = null
+    this.directions = []
     this.minDistancePoint.shakeOff()
   },
 

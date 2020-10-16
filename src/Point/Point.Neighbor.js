@@ -30,8 +30,11 @@ module.exports = {
     return this.collect((_, index) => this.findBiNeighborsAt(index))
   },
 
-  findBiNeighborsMatrix (direction) {
-    return this.collect((_, index) => [this.findBiNeighborsAt(index, direction)])
+  findBiNeighborsMatrix (directions) {
+    // TODO: find out why random works here
+    return this.collect((_, index) => [
+      this.findBiNeighborsAt(index, Math.random() > 0.5 ? directions[index] : null)
+    ])
   },
 
   // TODO: add test

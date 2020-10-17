@@ -1,12 +1,11 @@
-import Point from '../src/Point'
 import Space from '../src/Space'
-
 import {
   polyNumbersTranslation,
   polyNumbersFormatter,
   parsePolyNumbersFormula
 } from '../src/utils'
 import parabolicAntennaCurveData from '../spec/data/data.delon'
+import { parseDelonsInputsExpectations } from '../spec/data/data.delon.parse'
 
 (async() => {
 // Complex 2nd exponential example provided by Zoe
@@ -57,7 +56,6 @@ import parabolicAntennaCurveData from '../spec/data/data.delon'
   // await examPolyNumbers({
   //   inputs: [0, 1, 2],
   //   expectations: [0, 1, 4],
-  //   solution: [0, 0, 1],
   //   timeBudget: 60
   // })
 
@@ -67,27 +65,19 @@ import parabolicAntennaCurveData from '../spec/data/data.delon'
   //   printFunc
   // })
 
-  // await examPolyNumbers({
-  //   // The old one, haha, tried 10+ times manually for half hour
-  //   // startFormula: `f(x) = -21.185792266795538 + 5.731037866496542e-11x + 0.0000864332833576694x²`,
-
-  //   // The new one, reached in one go, what a big improvement
-  //   // startFormula: `f(x) = -21.185792952095674 + 2.4253114229740615e-11x + 0.00008643328341505862x²`
-  //   ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
-  //   maxDimensions: 3,
-  //   printPrecision: 0,
-  //   showVisitedPoints: true,
-  //   logSampleAmount: 10000000000,
-  //   timeBudget: 60,
-  //   printFunc
-  // })
+  await examPolyNumbers({
+    ...parseDelonsInputsExpectations(parabolicAntennaCurveData),
+    maxDimensions: 3,
+    printPrecision: 0,
+    showVisitedPoints: true,
+    timeBudget: 60
+  })
 })()
 
 async function examPolyNumbers ({
   origin,
   inputs,
   expectations,
-  solution,
   timeBudget,
   printPrecision = 4,
   trialBudget = Infinity,
@@ -112,3 +102,6 @@ async function examPolyNumbers ({
     printFunc
   })
 }
+
+
+

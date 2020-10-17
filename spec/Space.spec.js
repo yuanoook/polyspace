@@ -8,6 +8,8 @@ const {
 
 const { getPrintFunc } = require('../src/print')
 const parabolicAntennaCurveData = require('./data/data.delon')
+const { parseDelonsInputsExpectations } = require('../spec/data/data.delon.parse')
+
 const printFunc = getPrintFunc('space')
 jest.setTimeout(30 * 60 * 1000); // 1 second
 
@@ -130,13 +132,4 @@ function printDesmos ({inputs, expectations}) {
   ).join('\n')
 
   console.log(`Plot on https://www.desmos.com/calculator \n${dataTable}`)
-}
-
-function parseDelonsInputsExpectations (str = `600 0`) {
-    return str.split('\n').map(x => x.split(/\s+/))
-    .reduce(
-      ({inputs, expectations}, [i, e]) =>
-      ({inputs: inputs.concat(+i), expectations: expectations.concat(+e)}),
-      {inputs: [], expectations: []}
-    )
 }

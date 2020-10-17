@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '14'
-      - run: npx parcel build index.html
+      - run: npx parcel build index.html --public-url ./polyspace/
       -
         name: Deploy to GitHub Pages
         if: success()

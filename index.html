@@ -24,7 +24,10 @@
   <p><a href="http://www.songho.ca/dsp/index.html"></a></p>
   <p><a href="http://storage.googleapis.com/tfjs-vis/mnist/dist/index.html"></a></p>
   <script src="./fixtures/logger.js"></script>
-  <script>Logger.open(); log = (...args) => Logger.print(JSON.stringify(args, null, 2));</script>
+  <script>
+    Logger.open();
+    log = (...args) => Logger.print(JSON.stringify(args, null, 2));
+  </script>
 	<script src="./fixtures/tf-test.js"></script>
   <script src="./fixtures/index.js"></script>
 </body>

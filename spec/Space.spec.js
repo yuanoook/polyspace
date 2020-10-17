@@ -3,9 +3,10 @@ const Space = require('../src/Space')
 const {
   polyNumbersTranslation,
   polyNumbersFormatter,
-  parsePolyNumbersFormula,
-  getPrintFunc
+  parsePolyNumbersFormula
 } = require('../src/utils')
+
+const { getPrintFunc } = require('../src/print')
 const parabolicAntennaCurveData = require('./data/data.delon')
 const printFunc = getPrintFunc('space')
 jest.setTimeout(30 * 60 * 1000); // 1 second

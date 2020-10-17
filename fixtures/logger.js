@@ -70,7 +70,7 @@ function log(...msgs)
 
 
 ///////////////////////////////////////////////////////////////////////////////
-let Logger = (function()
+let Logger = window.Logger = (function()
 {
     "use strict";
 

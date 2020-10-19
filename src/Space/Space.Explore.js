@@ -75,7 +75,10 @@ module.exports = {
       const timeUsed= new Date() - startAt
       if (timeUsed > timePlaned) break
       if (this.gotPerfectSolution()) break
-      if (isCloseToPeriod(timeUsed, 100)) await sleep(0)
+      if (isCloseToPeriod(timeUsed, 100)) {
+        this.onProgress && this.onProgress(this.minDistancePoint, this)
+        await sleep(0)
+      }
       if (!this.exploreBiNeighborsMatrix(maxDimensions)) break
       count ++
     }

@@ -161,21 +161,25 @@ Object.keys(Superscripts).forEach(key => SuperscriptsReverseMap[Superscripts[key
 function toSuperscripts (number) {
   return (number + '').split('').map(n => Superscripts[n] || n)
 }
-function polyNumberFormatter (nomial, index) {
+function polyNumberFormatter ({nomial, index, useSuperScripts}) {
   return nomial ? `${
     (nomial === 1 && index)
       ? ''
       : (nomial === -1 ? '-' : nomial)
   }${
     index ? `x${
-      index !== 1 ? toSuperscripts(index) : ''
+      index !== 1 ? (
+        useSuperScripts
+          ? toSuperscripts(index)
+          : `^${index}`
+      ) : ''
     }` : ''
   }` : ''
 }
-function polyNumbersFormatter (nomials) {
+function polyNumbersFormatter (nomials, useSuperScripts = true) {
   return `f(x) = ${
     nomials
-      .map(polyNumberFormatter)
+      .map((nomial, index) => polyNumberFormatter({nomial, index, useSuperScripts}))
       .filter(s => s)
       .join(' + ')
       .replace(/\+\s\-/g, '- ')

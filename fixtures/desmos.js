@@ -21,24 +21,28 @@ class DesmosView {
     this.bindEvents()
   }
 
-  bindEvents () {
-    this.elt.addEventListener('click', evt => {
-      if (!/dcg-graph-outer/.test(evt.target.className)) return
+  async bindEvents () {
+    this.elt.addEventListener('touchend', e => this.onClick(e))
+    this.elt.addEventListener('click', e => this.onClick(e))
+  }
 
-      const rect = this.elt.getBoundingClientRect()
-      const x = evt.clientX - rect.left
-      const y = evt.clientY - rect.top
-      const mathCoordinates = this.calculator.pixelsToMath({x: x, y: y})
+  onClick (evt) {
+    if (!/dcg-graph-outer/.test(evt.target.className)) return
+    evt = (evt.touches && evt.touches[0]) || (evt.changedTouches && evt.changedTouches[0]) || evt
 
-      if (!this.inRectangle(
-        mathCoordinates,
-        this.calculator.graphpaperBounds.mathCoordinates
-      )) return
+    const rect = this.elt.getBoundingClientRect()
+    const x = evt.clientX - rect.left
+    const y = evt.clientY - rect.top
+    const mathCoordinates = this.calculator.pixelsToMath({x: x, y: y})
 
-      this.xValues.push(mathCoordinates.x.toPrecision(2))
-      this.yValues.push(mathCoordinates.y.toPrecision(2))
-      this.updateTable()
-    })
+    if (!this.inRectangle(
+      mathCoordinates,
+      this.calculator.graphpaperBounds.mathCoordinates
+    )) return
+
+    this.xValues.push(mathCoordinates.x.toPrecision(2))
+    this.yValues.push(mathCoordinates.y.toPrecision(2))
+    this.updateTable()
   }
 
   updateLatex (latex) {
@@ -70,8 +74,8 @@ class DesmosView {
       id: 'table-nomial',
       type: 'table',
       columns: [
-        {latex: 'Co', values: Object.keys(nomials).map(k => +k), hidden: true},
-        {latex: 'Po', values: nomials, hidden: true}
+        {latex: 'n', values: Object.keys(nomials).map(k => +k), hidden: true},
+        {latex: 'a_n', values: nomials, hidden: true}
       ],
       points: false
     })

@@ -27,6 +27,9 @@ module.exports = {
     this.visitedPoints = []
     this.checkedPoints = []
     this.check(new Point(origin, config))
+
+    this.destroyed = false
+    this.onProgress = null
   },
 
   gotPerfectSolution () {
@@ -50,7 +53,8 @@ module.exports = {
     this.beforeUpdateMinDistance()
     this.minDistance = point.distance
     this.minDistancePoint = point
-    this.visitedPoints.push(point)
+    // this.visitedPoints.push(point)
+
     this.stepCount ++
     return true
   },
@@ -102,5 +106,15 @@ module.exports = {
       error + this.squaredError(point, input, this.expectations[index])
     , 0)
     return Math.sqrt(totalSquaredError)
+  },
+
+  destroy () {
+    this.destroyed = true
+    this.keyPoints.length = 0
+    this.directions.length = 0
+    this.visitedPoints.length = 0
+    this.checkedPoints.length = 0
+    this.minDistancePoint.shakeOff()
+    this.onProgress = null
   }
 }

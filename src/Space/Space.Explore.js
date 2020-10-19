@@ -49,6 +49,8 @@ module.exports = {
   // Quick breaking contributes the most performance improvement
   // Index preferring adds a slight advantage
   exploreBiNeighborsMatrix(maxDimensions) {
+    if (this.destroyed) return false
+
     let exploredSome = this.checkBiNeighborsMatrix()
     if (!exploredSome && (this.dimension < maxDimensions)) {
       this.extendDimension()

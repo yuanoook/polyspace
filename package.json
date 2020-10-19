@@ -19,5 +19,8 @@
   "homepage": "https://github.com/yuanoook/polyspace#readme",
   "devDependencies": {
     "jest": "^26.0.1"
+  },
+  "dependencies": {
+    "regenerator-runtime": "^0.13.7"
   }
 }

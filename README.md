@@ -1,5 +1,4 @@
-# Polyspace
-![](./fixtures/assets/demo.gif)
+![Polyspace](./fixtures/assets/demo.gif)
 
 ## Everything is already set.
 

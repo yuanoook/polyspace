@@ -1,5 +1,5 @@
-const Atom = require('../src/Atom')
-const AtomConst = require('../src/Atom/Atom.Const')
+const Atom = require('../packages/Atom')
+const AtomConst = require('../packages/Atom/Atom.Const')
 
 it('[PolySpace] [Atom] [getChainAtoms]', () => {
   const atom = new Atom(3)

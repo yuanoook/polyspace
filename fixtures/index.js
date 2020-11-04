@@ -1,10 +1,10 @@
 import 'regenerator-runtime/runtime'
-import Space from '../src/Space'
+import Space from '../packages/Space'
 import {
   polyNumbersTranslation,
   polyNumbersFormatter,
   parsePolyNumbersFormula
-} from '../src/utils'
+} from '../packages/utils'
 import { DesmosView } from './desmos'
 
 ;(async() => {

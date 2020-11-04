@@ -1,4 +1,4 @@
-const Point = require('../src/Point')
+const Point = require('../packages/Point')
 
 it('[PolySpace] [Point] [findBiNeighbors]', () => {
   const point = new Point([

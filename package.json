@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "watch": "jest --watch"
+    "watch": "jest --watch",
+    "build_without_test": "yarn prebuild && yarn rollup",
+    "build": "yarn test && yarn prebuild && yarn rollup",
+    "rollup": "node ./scripts/rollup/index.js"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,15 @@
   },
   "homepage": "https://github.com/yuanoook/polyspace#readme",
   "devDependencies": {
-    "jest": "^26.0.1"
+    "jest": "^26.0.1",
+    "rollup": "^2.33.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-babel-minify": "^10.0.0",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-prettier": "^2.1.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-strip-banner": "^2.0.0"
   },
   "dependencies": {
     "regenerator-runtime": "^0.13.7"

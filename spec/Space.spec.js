@@ -1,12 +1,12 @@
-const Point = require('../src/Point')
-const Space = require('../src/Space')
+const Point = require('../packages/Point')
+const Space = require('../packages/Space')
 const {
   polyNumbersTranslation,
   polyNumbersFormatter,
   parsePolyNumbersFormula
-} = require('../src/utils')
+} = require('../packages/utils')
 
-const { getPrintFunc } = require('../src/print')
+const { getPrintFunc } = require('../packages/print')
 const parabolicAntennaCurveData = require('./data/data.delon')
 const { parseDelonsInputsExpectations } = require('../spec/data/data.delon.parse')
 

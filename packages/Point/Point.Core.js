@@ -6,7 +6,7 @@ const {
   isSameNomials,
   trimNomials,
   euclideanDistance
-} = require('../utils')
+} = require('../shared/utils')
 const PointConst = require('./Point.Const')
 
 module.exports = {

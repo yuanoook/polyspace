@@ -3,7 +3,7 @@ const {
   randomSafeNumber,
   randomPositiveSafeNumber,
   repeat
-} = require('../utils')
+} = require('../shared/utils')
 
 module.exports = {
   findLeftConnectedAt (index, distance = Atom.DISTANCE_STEP_ONE) {

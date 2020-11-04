@@ -2,7 +2,7 @@ const {
   randomNaturalNumber,
   randomSafeNumber,
   repeat
-} = require('../utils')
+} = require('../shared/utils')
 const AtomConst = require('./Atom.Const')
 
 module.exports = {

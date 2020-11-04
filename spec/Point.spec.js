@@ -371,7 +371,7 @@ it('[PolySpace] [Point] [getInNetworkPoints / isInNetwork]', () => {
   expect(point.getInNetworkPoints()[0]).toBe(point)
   expect(point.getInNetworkPoints(false)[0]).not.toBe(point)
 
-  pointsInNetwork = point.getInNetworkPoints()
+  const pointsInNetwork = point.getInNetworkPoints()
   expect(pointsInNetwork[3].isInNetwork(pointsInNetwork[10])).toBe(true)
 
   const sum59 = sumPointsNomials(rNeighbors9) + sumPointsNomials(rNeighbors5)

@@ -19,7 +19,7 @@ const {
   isCloseIn,
   isCloseToPeriod,
   sleep
-} = require('../packages/utils')
+} = require('../packages/shared/utils')
 
 it('[PolySpace] [utils] [randomDistanceRatio]', () => {
   expect(randomDistanceRatio()).not.toBe(0)

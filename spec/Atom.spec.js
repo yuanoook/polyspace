@@ -98,7 +98,7 @@ it('[PolySpace] [Atom] [random] [gotoRandomNeighbor]', () => {
   const atom = new Atom()
   let left = atom.findLeftNeighbor()
   let right = atom.findRightNeighbor()
-  neighbor = atom.gotoRandomNeighbor()
+  const neighbor = atom.gotoRandomNeighbor()
   expect(left === neighbor || right === neighbor).toBe(true)
 })
 
@@ -107,7 +107,7 @@ it('[PolySpace] [Atom] [random] [gotoRandomConnected]', () => {
   atom.findRandomConnected()
   atom.findRandomConnected()
   atom.findRandomConnected()
-  neighbor = atom.gotoRandomConnected()
+  const neighbor = atom.gotoRandomConnected()
   expect(atom.getChainAtoms().indexOf(neighbor) > -1).toBe(true)
 })
 

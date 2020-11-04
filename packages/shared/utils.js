@@ -155,7 +155,7 @@ Object.assign(Superscripts, {
   'n': 'ⁿ',
   'i': 'ⁱ'
 })
-SuperscriptsReverseMap = {}
+const SuperscriptsReverseMap = {}
 Object.keys(Superscripts).forEach(key => SuperscriptsReverseMap[Superscripts[key]] = key)
 
 function toSuperscripts (number) {

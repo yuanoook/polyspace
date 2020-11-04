@@ -4,9 +4,9 @@ const {
   polyNumbersTranslation,
   polyNumbersFormatter,
   parsePolyNumbersFormula
-} = require('../packages/utils')
+} = require('../packages/shared/utils')
 
-const { getPrintFunc } = require('../packages/print')
+const { getPrintFunc } = require('../packages/shared/print')
 const parabolicAntennaCurveData = require('./data/data.delon')
 const { parseDelonsInputsExpectations } = require('../spec/data/data.delon.parse')
 

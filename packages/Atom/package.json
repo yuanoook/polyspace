@@ -1,0 +1,20 @@
+{
+  "name": "atom",
+  "version": "1.0.0",
+  "description": "polyspace atom",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yuanoook/polyspace.git",
+    "directory": "packages/Atom"
+  },
+  "bugs": {
+    "url": "https://github.com/yuanoook/polyspace/issues"
+  },
+  "homepage": "https://yuanoook.github.io/polyspace/",
+  "keywords": [
+    "polyspace"
+  ],
+  "author": "Rango Yuan",
+  "license": "MIT"
+}

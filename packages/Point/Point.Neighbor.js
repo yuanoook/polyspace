@@ -3,7 +3,7 @@ const {
   randomDistanceRatio,
   randomPositiveDistanceRatio,
   repeat
-} = require('../utils')
+} = require('../shared/utils')
 
 module.exports = {
   findLeftNeighborAt (index, distanceRatio = Atom.DISTANCE_RATIO_HALF) {

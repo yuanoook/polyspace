@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/yuanoook/polyspace#readme",
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
     "jest": "^26.0.1",
     "rollup": "^2.33.1",
     "rollup-plugin-babel": "^4.4.0",

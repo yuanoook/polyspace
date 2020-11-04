@@ -1,7 +1,7 @@
 const Point = require('../Point')
 const {
   isCloseTo
-} = require('../utils')
+} = require('../shared/utils')
 const SpaceConst = require('./Space.Const')
 
 module.exports = {

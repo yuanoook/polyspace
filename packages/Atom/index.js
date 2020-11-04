@@ -1,7 +1,7 @@
 const {
   validatePositive,
   validateLimits
-} = require('../utils')
+} = require('../shared/utils')
 const AtomConst = require('./Atom.Const')
 const AtomCore = require('./Atom.Core')
 const AtomNeighbor = require('./Atom.Neighbor')

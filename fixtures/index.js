@@ -4,7 +4,7 @@ import {
   polyNumbersTranslation,
   polyNumbersFormatter,
   parsePolyNumbersFormula
-} from '../packages/utils'
+} from '../packages/shared/utils'
 import { DesmosView } from './desmos'
 
 ;(async() => {

@@ -1,8 +1,6 @@
 module.exports = {
   'plugins': [
-    '@babel/plugin-proposal-class-properties',
-    '@babel/plugin-transform-runtime',
-    '@babel/plugin-external-helpers'
+    '@babel/plugin-proposal-class-properties'
   ],
   'presets': [
     [
@@ -12,4 +10,8 @@ module.exports = {
       },
     ],
   ],
+  "env": {
+    "test": {
+    }
+  }
 };

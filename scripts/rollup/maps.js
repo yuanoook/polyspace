@@ -1,7 +1,5 @@
 const nameMap = {
-  'Atom': 'Atom',
-  'Point': 'Point',
-  'Space': 'Space'
+  'Space': 'polyspace'
 };
 
 const externalMap = {

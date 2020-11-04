@@ -6,6 +6,7 @@ const sourceDir = name => `packages/${name}/`;
 const targetDir = name => `build/node_modules/${name}/`;
 const buildOne = async c => await (await require('rollup').rollup(c)).write(c.output);
 const buildAll = async names => {
+  console.log(names)
   const configs = names.reduce((list, name) => [...list, ...getConfig(name)], []);
   await Promise.all(configs.map(buildOne));
 };
@@ -13,7 +14,7 @@ const buildAll = async names => {
 const syncFiles = async name => {
   await Promise.all([
     'LICENSE',
-    'readme.md',
+    'README.md',
   ].map(file =>
     bash(`cp -r ${file} ${targetDir(name)}`)
   ));

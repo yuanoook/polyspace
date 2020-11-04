@@ -1,5 +1,9 @@
 [![Polyspace](./fixtures/assets/demo.gif)](https://yuanoook.github.io/polyspace/)
 
+```bash
+npm install polyspace
+```
+
 ## Everything is already set.
 
 Motion in lower dimensional space,

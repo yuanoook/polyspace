@@ -1,5 +1,8 @@
 [![Polyspace](./fixtures/assets/demo.gif)](https://yuanoook.github.io/polyspace/)
 
+# Interactive Demo
+https://observablehq.com/@yuanoook/polyspace-randomnet
+
 ```bash
 npm install polyspace
 ```
